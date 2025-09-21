@@ -1,0 +1,19 @@
+@keyframes arm-wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-10deg); }
+}
+
+@keyframes bar {
+    0%, 100% { width: 286px; }
+    50% { width: 350px; }
+}
+
+@keyframes bar2 {
+    0%, 100% { width: 367px; }
+    50% { width: 267px; }
+}
+
+@keyframes bar3 {
+    0%, 100% { width: 350px; }
+    50% { width: 400px; }
+}
