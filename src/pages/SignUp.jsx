@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { fetchSignUp } from '../features/api/authApi';
 import { title2 } from '../shared/styles/commonTailwind';
 import { formStyle } from '../features/styles/authFormTailwind';
+import { useState } from 'react';
 
 const SignUp = () => {
     const {state, authInputChanged, authInputReset} = useAuthState();
@@ -68,38 +69,50 @@ const SignUp = () => {
                 <InputField 
                     label='이메일'
                     type='email'
+                    htmlFor='email'
                     onChange={(e) => authInputChanged(e, 'email')}
                     value={state.email}
+                    inputReset={() => authInputReset('email')}
                 />
                 <InputField 
                     label='인증번호'
                     type='text'
+                    htmlFor='emailCheck'
                     onChange={(e) => authInputChanged(e, 'emailCheck')}
                     value={state.emailCheck}
+                    inputReset={() => authInputReset('emailCheck')}
                 />
                 <InputField 
                     label='비밀번호'
                     type='password'
+                    htmlFor='password'
                     onChange={(e) => authInputChanged(e, 'password')}
                     value={state.password}
+                    inputReset={() => authInputReset('password')}
                 />
                 <InputField 
                     label='비밀번호 확인'
                     type='password'
+                    htmlFor='passwordCheck'
                     onChange={(e) => authInputChanged(e, 'passwordCheck')}
                     value={state.passwordCheck}
+                    inputReset={() => authInputReset('passwordCheck')}
                 />
                 <InputField 
                     label='이름'
                     type='text'
+                    htmlFor='name'
                     onChange={(e) => authInputChanged(e, 'name')}
                     value={state.name}
+                    inputReset={() => authInputReset('name')}
                 />
                 <InputField 
                     label='연락처'
                     type='tel'
+                    htmlFor='phone'
                     onChange={(e) => authInputChanged(e, 'phone')}
                     value={state.phone}
+                    inputReset={() => authInputReset('phone')}
                 />
                 <CommonButton 
                     text='가입 신청'
