@@ -1,5 +1,5 @@
 import React from 'react';
-import { inner, shortButton, textDescription } from '../shared/styles/commonTailwind';
+import { inner, longButton, textDescription } from '../shared/styles/commonTailwind';
 import { Link } from 'react-router-dom';
 import '../features/styles/animation.css';
 
@@ -15,7 +15,7 @@ const Home = () => {
                             모든 과정을 하나의 플랫폼으로 단순화합니다. <br />
                             SAWONZ에서 더 체계적이고 편리한 관리를 경험하세요.
                         </p>
-                        <Link to={'/login'} className={`${shortButton}`}>시작하기</Link>
+                        <Link to={'/login'} className={`${longButton}`}>시작하기</Link>
                     </div>
                 </div>
                 <div className='absolute bottom-[0] right-[0] pr-[50px]'>
@@ -72,7 +72,6 @@ const Home = () => {
                         </defs>
                         </g>
                     </svg>
-
                 </div>
             </main>
         </>

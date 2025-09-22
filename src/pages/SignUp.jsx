@@ -2,8 +2,10 @@ import InputField from '../shared/components/InputField';
 import CommonButton from '../shared/components/CommonButton';
 import { regularExpression } from '../utils/validation';
 import useAuthState from '../features/hooks/useAuthState';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchSignUp } from '../features/api/authApi';
+import { title2 } from '../shared/styles/commonTailwind';
+import { formStyle } from '../features/styles/authFormTailwind';
 
 const SignUp = () => {
     const {state, authInputChanged, authInputReset} = useAuthState();
@@ -57,41 +59,56 @@ const SignUp = () => {
     };
 
     return (
-        <>
-            <form onSubmit={signUpSubmit}>
+        <main className='bg-[#f8f8f8] relative min-h-screen'>
+            <form 
+                className={formStyle}
+                onSubmit={signUpSubmit}
+            >  
+                <p className={title2}>회원가입</p>
+                <InputField 
+                    label='이메일'
+                    type='email'
+                    onChange={(e) => authInputChanged(e, 'email')}
+                    value={state.email}
+                />
+                <InputField 
+                    label='인증번호'
+                    type='text'
+                    onChange={(e) => authInputChanged(e, 'emailCheck')}
+                    value={state.emailCheck}
+                />
+                <InputField 
+                    label='비밀번호'
+                    type='password'
+                    onChange={(e) => authInputChanged(e, 'password')}
+                    value={state.password}
+                />
+                <InputField 
+                    label='비밀번호 확인'
+                    type='password'
+                    onChange={(e) => authInputChanged(e, 'passwordCheck')}
+                    value={state.passwordCheck}
+                />
                 <InputField 
                     label='이름'
                     type='text'
-                    placeholder='이름 입력'
                     onChange={(e) => authInputChanged(e, 'name')}
                     value={state.name}
                 />
                 <InputField 
                     label='연락처'
                     type='tel'
-                    placeholder='연락처 입력'
                     onChange={(e) => authInputChanged(e, 'phone')}
                     value={state.phone}
                 />
-                <InputField 
-                    label='이메일'
-                    type='email'
-                    placeholder='이메일 입력'
-                    onChange={(e) => authInputChanged(e, 'email')}
-                    value={state.email}
-                />
-                <InputField 
-                    label='패스워드'
-                    type='password'
-                    placeholder='비밀번호 입력'
-                    onChange={(e) => authInputChanged(e, 'password')}
-                    value={state.password}
-                />
                 <CommonButton 
-                    text='success'
+                    text='가입 신청'
                 />
+                <p className='text-[1rem] text-[#9CA3AF] text-center mt-[52px]'>
+                    이미 계정이 있으신가요? <Link to={'/login'} className='text-[#62CCD0] font-[600]'>로그인</Link>
+                </p>
             </form>
-        </>
+        </main>
     );
 };
 

@@ -4,7 +4,9 @@ const initialValue = {
     name: '',
     phone: '',
     email: '',
-    password: ''
+    emailCheck: '',
+    password: '',
+    passwordCheck: ''
 };
 
 const reducer = (state, action) => {
