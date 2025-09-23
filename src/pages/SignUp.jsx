@@ -2,28 +2,19 @@ import InputField from '../shared/components/InputField';
 import { regularExpression } from '../utils/validation';
 import useAuthState from '../features/hooks/useAuthState';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchSignUp } from '../features/api/authApi';
+import { citationCheck, fetchSignUp, postEmail } from '../features/api/authApi';
 import { buttonDisabled, commonButton, title2 } from '../shared/styles/commonTailwind';
 import { formStyle } from '../features/styles/authFormTailwind';
 import InputFieldCitation from '../features/components/InputFieldCitation';
 import { useEffect, useState } from 'react';
 import Modal from '../shared/components/Modal';
-import axios from 'axios';
+import useModalShow from '../shared/hooks/useModalShow';
 
 const SignUp = () => {
-    const {state, authInputChanged, authInputReset} = useAuthState();
-    const [modalShow, setModalShow] = useState(false);
-    const [modalText, setModalText] = useState('');
+    const {state, authInputChanged, authInputReset, regexCheck, regexErrMsg} = useAuthState();
+    const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const [hasInput, setHasInput] = useState(false);
     const [emailCitationCheckPostcheck, setemailCitationCheckPostcheck] = useState(false);
-    const [regexErrMsg, setRegexErrMsg] = useState({
-        pwdErrMsg: '',
-        pwdCheckErrMsg: '',
-        nameErrMsg: '',
-        phoneErrMsg: '',
-    });
-
-    console.log(regexErrMsg.nameErrMsg)
 
     const navigate = useNavigate();
 
@@ -46,22 +37,16 @@ const SignUp = () => {
         };
 
         try {
-            const res = await axios.post('...APi주소...',
-                {
-                    email: state.email
-                },
-                {withCredentials: true}
-            );
+            const res = await postEmail({email: state.email});
 
-            if(res.status !== 201) {
+            if(res.status < 200 || res.status >= 300) {
                 console.log('전송오류');
             }
 
-            setModalText('인증번호 발송 중 최대 1분 소요');
+            setModalText(res.data.message);
             setModalShow(true);
-            console.log(res.data);
         } catch(err) {
-            setModalText('인증번호 발송 실패');
+            setModalText(err.response.data.message);
             setModalShow(true);
             console.log('에러 내용 : ', err);
             console.error('인증번호 발송 서버 오류', err);
@@ -86,68 +71,26 @@ const SignUp = () => {
         }
 
         try{
-            const res = await axios.post('...API...', 
-                {
-                    email: state.email,
-                    emailCheck: state.emailCheck
-                },
-                {withCredentials: true}
-            );
+            const res = await citationCheck({
+                email: state.email,
+                emailCheck: state.emailCheck
+            });
 
-            if(res.status !== 201) {
+            if(res.status < 200 || res.status >= 300) {
                 console.log('전송오류');
             }
 
-            setModalText('인증 완료');
+            setModalText(res.data.message);
             setModalShow(true);
             setemailCitationCheckPostcheck(true);
-            console.log(res.data);
         } catch(err) {
             console.log('에러 내용 : ', err);
-            setModalText('인증번호가 만료되었거나, 틀렸습니다.');
+            setModalText(err.response.data.message);
             setModalShow(true);
             console.error('인증완료 서버 오류', err);
         }
     };  
-
-    //유효성 검사
-    const regexCheck = (field) => {
-        if(field === 'name') {
-            if(!regularExpression.nameRegex.test(state.name.trim())) {
-                authInputReset('name');
-                setRegexErrMsg(prev => ({...prev, nameErrMsg: '올바르지 않은 이름입니다.'}));
-                return;
-            } else return setRegexErrMsg(prev => ({...prev, nameErrMsg: ''}));
-        };
-
-        if(field === 'phone') {
-            if(!regularExpression.phoneRegex.test(state.phone.trim())) {
-                authInputReset('phone');
-                setRegexErrMsg(prev => ({...prev, phoneErrMsg: '올바르지 않은 연락처입니다.'}));
-                return;
-            } else return setRegexErrMsg(prev => ({...prev, phoneErrMsg: ''}));
-        }
-
-        if(field === 'password') {
-            if(!regularExpression.pwdRegex.test(state.password.trim())) {
-                authInputReset('password');
-                setRegexErrMsg(prev => ({...prev, pwdErrMsg: '올바르지 않은 비밀번호입니다.'}));
-                return;
-            } else return setRegexErrMsg(prev => ({...prev, pwdErrMsg: ''}));   
-        }
-
-        if(field === 'passwordCheck') {
-            if(state.password !== state.passwordCheck) {
-                authInputReset('passwordCheck');
-                setRegexErrMsg(prev => ({...prev, pwdCheckErrMsg: '비밀번호가 일치하지 않습니다.'}));
-                return;
-            } else return setRegexErrMsg(prev => ({...prev, pwdCheckErrMsg: ''}));
-        }
-
-        return false;
-    };
     
-
     //가입신청 서브밋
     const signUpSubmit = async (e) => {
         e.preventDefault();
