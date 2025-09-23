@@ -71,7 +71,7 @@ const Login = () => {
                     onChange={(e) => authInputChanged(e, 'email')}
                     value={state.email}
                     inputReset={() => authInputReset('email')}
-                    regexCheck={() => regexCheck('')}
+                    regexCheck={regexCheck}
                 />
                 <InputField 
                     label='패스워드'
@@ -80,7 +80,7 @@ const Login = () => {
                     onChange={(e) => authInputChanged(e, 'password')}
                     value={state.password}
                     inputReset={() => authInputReset('password')}
-                    regexCheck={() => regexCheck('')}
+                    regexCheck={regexCheck}
                 />
                 <CommonButton 
                     text='로그인'
