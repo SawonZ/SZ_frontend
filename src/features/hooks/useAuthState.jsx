@@ -23,8 +23,6 @@ const reducer = (state, action) => {
 const useAuthState = () => {
     const [state, dispatch] = useReducer(reducer, initialValue);
 
-    console.log(state);
-
     const authInputChanged = (e, field) => {
         dispatch({ type: 'SET_FIELD', field, payload: e.target.value });
     };

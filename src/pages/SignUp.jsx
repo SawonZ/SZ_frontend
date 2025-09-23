@@ -1,43 +1,162 @@
 import InputField from '../shared/components/InputField';
-import CommonButton from '../shared/components/CommonButton';
 import { regularExpression } from '../utils/validation';
 import useAuthState from '../features/hooks/useAuthState';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchSignUp } from '../features/api/authApi';
-import { title2 } from '../shared/styles/commonTailwind';
+import { buttonDisabled, commonButton, title2 } from '../shared/styles/commonTailwind';
 import { formStyle } from '../features/styles/authFormTailwind';
-import { useState } from 'react';
+import InputFieldCitation from '../features/components/InputFieldCitation';
+import { useEffect, useState } from 'react';
+import Modal from '../shared/components/Modal';
+import axios from 'axios';
 
 const SignUp = () => {
     const {state, authInputChanged, authInputReset} = useAuthState();
+    const [modalShow, setModalShow] = useState(false);
+    const [modalText, setModalText] = useState('');
+    const [hasInput, setHasInput] = useState(false);
+    const [emailCitationCheckPostcheck, setemailCitationCheckPostcheck] = useState(false);
+    const [regexErrMsg, setRegexErrMsg] = useState({
+        pwdErrMsg: '',
+        pwdCheckErrMsg: '',
+        nameErrMsg: '',
+        phoneErrMsg: '',
+    });
+
+    console.log(regexErrMsg.nameErrMsg)
+
     const navigate = useNavigate();
 
-    const signUpSubmit = async (e) => {
+    //이메일 인증번호 발송
+    // 인증번호 발송 후 딜레이가 걸린다면 setModalShow를 항상 on 상태
+    const postCitation = async (e) => {
         e.preventDefault();
 
-        if(!regularExpression.nameRegex.test(state.name.trim())) {
-            console.log('이름오류');
-            authInputReset('name');
-            return;
-        };
-
-        if(!regularExpression.phoneRegex.test(state.phone.trim())) {
-            console.log('전화번호오류');
-            authInputReset('phone');
+        if(state.email.trim() === '') {
+            setModalText('이메일을 작성해 주세요.');
+            setModalShow(true);
             return;
         };
 
         if(!regularExpression.emailRegex.test(state.email.trim())) {
-            console.log('이메일오류');
+            setModalText('이메일 유형이 올바르지 않습니다.');
+            setModalShow(true);
             authInputReset('email');
             return;
         };
 
-        if(!regularExpression.pwdRegex.test(state.password.trim())) {
-            console.log('비밀번호오류');
-            authInputReset('password');
+        try {
+            const res = await axios.post('...APi주소...',
+                {
+                    email: state.email
+                },
+                {withCredentials: true}
+            );
+
+            if(res.status !== 201) {
+                console.log('전송오류');
+            }
+
+            setModalText('인증번호 발송 중 최대 1분 소요');
+            setModalShow(true);
+            console.log(res.data);
+        } catch(err) {
+            setModalText('인증번호 발송 실패');
+            setModalShow(true);
+            console.log('에러 내용 : ', err);
+            console.error('인증번호 발송 서버 오류', err);
+        }
+    };
+
+    //이메일 인증 번호 확인
+    const postCitationCheck = async (e) => {
+        e.preventDefault();
+
+        if(state.emailCheck.trim() === '') {
+            setModalText('인증번호를 입력해주세요.');
+            setModalShow(true);
             return;
+        }
+
+        if(!regularExpression.emailCheckRegex.test(state.emailCheck.trim())) {
+            setModalText('인증번호는 숫자 6자리만 들어가야합니다.');
+            setModalShow(true);
+            authInputReset('emailCheck');
+            return;
+        }
+
+        try{
+            const res = await axios.post('...API...', 
+                {
+                    email: state.email,
+                    emailCheck: state.emailCheck
+                },
+                {withCredentials: true}
+            );
+
+            if(res.status !== 201) {
+                console.log('전송오류');
+            }
+
+            setModalText('인증 완료');
+            setModalShow(true);
+            setemailCitationCheckPostcheck(true);
+            console.log(res.data);
+        } catch(err) {
+            console.log('에러 내용 : ', err);
+            setModalText('인증번호가 만료되었거나, 틀렸습니다.');
+            setModalShow(true);
+            console.error('인증완료 서버 오류', err);
+        }
+    };  
+
+    //유효성 검사
+    const regexCheck = (field) => {
+        if(field === 'name') {
+            if(!regularExpression.nameRegex.test(state.name.trim())) {
+                authInputReset('name');
+                setRegexErrMsg(prev => ({...prev, nameErrMsg: '올바르지 않은 이름입니다.'}));
+                return;
+            } else return setRegexErrMsg(prev => ({...prev, nameErrMsg: ''}));
         };
+
+        if(field === 'phone') {
+            if(!regularExpression.phoneRegex.test(state.phone.trim())) {
+                authInputReset('phone');
+                setRegexErrMsg(prev => ({...prev, phoneErrMsg: '올바르지 않은 연락처입니다.'}));
+                return;
+            } else return setRegexErrMsg(prev => ({...prev, phoneErrMsg: ''}));
+        }
+
+        if(field === 'password') {
+            if(!regularExpression.pwdRegex.test(state.password.trim())) {
+                authInputReset('password');
+                setRegexErrMsg(prev => ({...prev, pwdErrMsg: '올바르지 않은 비밀번호입니다.'}));
+                return;
+            } else return setRegexErrMsg(prev => ({...prev, pwdErrMsg: ''}));   
+        }
+
+        if(field === 'passwordCheck') {
+            if(state.password !== state.passwordCheck) {
+                authInputReset('passwordCheck');
+                setRegexErrMsg(prev => ({...prev, pwdCheckErrMsg: '비밀번호가 일치하지 않습니다.'}));
+                return;
+            } else return setRegexErrMsg(prev => ({...prev, pwdCheckErrMsg: ''}));
+        }
+
+        return false;
+    };
+    
+
+    //가입신청 서브밋
+    const signUpSubmit = async (e) => {
+        e.preventDefault();
+
+        if(!emailCitationCheckPostcheck) {
+            setModalText('이메일 인증을 진행해주세요.');
+            setModalShow(true);
+            return;
+        }
 
         try{
             const res = await fetchSignUp({
@@ -47,7 +166,7 @@ const SignUp = () => {
                 password: state.password
             });
 
-            if(res.status !== 200) {
+            if(res.status !== 201) {
                 console.log('회원가입 POST 실패');
                 return;
             }
@@ -59,6 +178,20 @@ const SignUp = () => {
         };
     };
 
+    //가입 완료 버튼 활성화/비활성화
+    useEffect(() => {
+        const isButtonDisabled = () => {
+            const hasInputs = Object.values(state).some((state) => state === '');
+            if(hasInputs) {
+                setHasInput(true);
+            } else {
+                setHasInput(false);
+            }
+        };  
+
+        isButtonDisabled();
+    }, [state]);
+
     return (
         <main className='bg-[#f8f8f8] relative min-h-screen'>
             <form 
@@ -66,21 +199,25 @@ const SignUp = () => {
                 onSubmit={signUpSubmit}
             >  
                 <p className={title2}>회원가입</p>
-                <InputField 
+                <InputFieldCitation 
                     label='이메일'
                     type='email'
                     htmlFor='email'
                     onChange={(e) => authInputChanged(e, 'email')}
                     value={state.email}
                     inputReset={() => authInputReset('email')}
+                    text='인증번호'
+                    onClick={postCitation}
                 />
-                <InputField 
+                <InputFieldCitation 
                     label='인증번호'
                     type='text'
                     htmlFor='emailCheck'
                     onChange={(e) => authInputChanged(e, 'emailCheck')}
                     value={state.emailCheck}
                     inputReset={() => authInputReset('emailCheck')}
+                    text='확인'
+                    onClick={postCitationCheck}
                 />
                 <InputField 
                     label='비밀번호'
@@ -89,6 +226,8 @@ const SignUp = () => {
                     onChange={(e) => authInputChanged(e, 'password')}
                     value={state.password}
                     inputReset={() => authInputReset('password')}
+                    regexCheck={() => regexCheck('password')}
+                    errText={regexErrMsg.pwdErrMsg}
                 />
                 <InputField 
                     label='비밀번호 확인'
@@ -97,6 +236,8 @@ const SignUp = () => {
                     onChange={(e) => authInputChanged(e, 'passwordCheck')}
                     value={state.passwordCheck}
                     inputReset={() => authInputReset('passwordCheck')}
+                    regexCheck={() => regexCheck('passwordCheck')}
+                    errText={regexErrMsg.pwdCheckErrMsg}
                 />
                 <InputField 
                     label='이름'
@@ -105,6 +246,8 @@ const SignUp = () => {
                     onChange={(e) => authInputChanged(e, 'name')}
                     value={state.name}
                     inputReset={() => authInputReset('name')}
+                    regexCheck={() => regexCheck('name')}
+                    errText={regexErrMsg.nameErrMsg}
                 />
                 <InputField 
                     label='연락처'
@@ -113,14 +256,31 @@ const SignUp = () => {
                     onChange={(e) => authInputChanged(e, 'phone')}
                     value={state.phone}
                     inputReset={() => authInputReset('phone')}
+                    regexCheck={() => regexCheck('phone')}
+                    errText={regexErrMsg.phoneErrMsg}
                 />
-                <CommonButton 
-                    text='가입 신청'
-                />
+
+                <button 
+                    className={
+                        hasInput ? buttonDisabled : commonButton
+                    }
+                >
+                    가입 완료
+                </button>
+                
                 <p className='text-[1rem] text-[#9CA3AF] text-center mt-[52px]'>
                     이미 계정이 있으신가요? <Link to={'/login'} className='text-[#62CCD0] font-[600]'>로그인</Link>
                 </p>
             </form>
+
+            {
+                modalShow && 
+                <Modal 
+                    modalShowReset={() => setModalShow(false)}
+                    modalText={modalText}
+                    modalTextClear={() => setModalText('')}
+                />
+            }
         </main>
     );
 };
