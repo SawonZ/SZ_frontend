@@ -109,14 +109,19 @@ const SignUp = () => {
                 password: state.password
             });
 
-            if(res.status !== 201) {
+            if(res.status < 200 || res.status >= 300) {
                 console.log('회원가입 POST 실패');
                 return;
             }
 
             console.log(res.data);
+            setModalText('회원가입 완료');
+            setModalShow(true);
             navigate('/login');
         }catch(err) {
+            console.log('에러 내용 : ', err);
+            setModalText(err.response.data.message);
+            setModalShow(true);
             console.error('회원가입 서버 오류', err);
         };
     };

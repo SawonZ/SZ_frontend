@@ -39,18 +39,24 @@ const Login = () => {
                 password: state.password 
             });
 
-            if(res.status !== 200) {
+            if(res.status < 200 || res.status >= 300) {
                 console.log('로그인 POST 실패');
                 return;
             };
 
             console.log(res.data);
+            setModalText('회원가입 완료');
+            setModalShow(true);
+
             if(res.data.user.role !== 'admin') {
                 console.log('일반사원');
             } else {
                 navigate('관리자 페이지');
             };
         } catch(err) {
+            console.log('에러 내용 : ', err);
+            setModalText(err.response.data.message);
+            setModalShow(true);
             console.error('회원가입 서버 오류', err);
         };
     };
