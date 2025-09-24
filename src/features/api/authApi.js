@@ -11,11 +11,11 @@ export const postEmail =  async ({ email }) => {
 };
 
 //인증번호 확인
-export const citationCheck = async ({ email, emailCheck }) => {
+export const citationCheck = async ({ email, verificationCode }) => {
     const res = await axios.post('https://api.sawonz.world/email/check-code', 
         {
             email,
-            emailCheck
+            verificationCode
         },
     );
 
