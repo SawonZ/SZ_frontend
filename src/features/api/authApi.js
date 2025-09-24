@@ -38,7 +38,7 @@ export const fetchSignUp = async ({name, phone, email, password}) => {
 
 //로그인
 export const fetchLogin = async ({email, password}) => {
-    const res = await axios.post('...API주소...',
+    const res = await axios.post('https://api.sawonz.world/users/signin',
         {
             email,
             password
