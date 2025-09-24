@@ -73,7 +73,7 @@ const SignUp = () => {
         try{
             const res = await citationCheck({
                 email: state.email,
-                emailCheck: state.emailCheck
+                verificationCode: state.emailCheck
             });
 
             if(res.status < 200 || res.status >= 300) {
