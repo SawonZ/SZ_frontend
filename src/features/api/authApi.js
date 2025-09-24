@@ -11,11 +11,11 @@ export const postEmail =  async ({ email }) => {
 };
 
 //인증번호 확인
-export const citationCheck = async ({ email, verificationCode }) => {
+export const citationCheck = async ({ email, emailCheck }) => {
     const res = await axios.post('https://api.sawonz.world/email/check-code', 
         {
             email,
-            verificationCode
+            emailCheck
         },
     );
 
@@ -23,10 +23,10 @@ export const citationCheck = async ({ email, verificationCode }) => {
 };
 
 //회원가입
-export const fetchSignUp = async ({name, phone, email, password}) => {
+export const fetchSignUp = async ({userName, phone, email, password}) => {
     const res = await axios.post('https://api.sawonz.world/users/signup',
         {
-            name,
+            userName,
             phone,
             email,
             password
@@ -38,7 +38,7 @@ export const fetchSignUp = async ({name, phone, email, password}) => {
 
 //로그인
 export const fetchLogin = async ({email, password}) => {
-    const res = await axios.post('https://api.sawonz.world/users/signin',
+    const res = await axios.post('...API주소...',
         {
             email,
             password
