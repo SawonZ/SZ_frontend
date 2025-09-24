@@ -100,7 +100,7 @@ const Login = () => {
                     <label className='text-[14px] text-[#9CA3AF]'>아이디 기억하기</label>
                 </div>
 
-                <Link to={'/sign-up'} 
+                <Link to={'/policy'} 
                     className='block w-[fit-content] text-[1rem] text-[#9CA3AF] text-center mt-[52px] mx-auto underline'
                 >
                     아이디가 없으신가요?

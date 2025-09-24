@@ -1,5 +1,5 @@
 import React from 'react';
-import { landingHeader, landingHeaderLink, landingHeaderNav } from '../styles/landingHeaderTailwind';
+import { landingHeader, /* landingHeaderLink, */ landingHeaderNav } from '../styles/landingHeaderTailwind';
 import landingLogo from '../../assets/images/landing_logo.svg';
 import { inner } from '../styles/commonTailwind';
 import { Link } from 'react-router-dom';
@@ -18,11 +18,11 @@ const LandingHeader = () => {
                             />
                         </Link>
                     </h1>
-                    <div className='flex gap-[20px]'>
+                    {/* <div className='flex gap-[20px]'>
                         <Link to={'/login'} 
                         className={landingHeaderLink}>로그인</Link>
-                        <Link to={'/sign-up'} className={landingHeaderLink}>회원가입</Link>
-                    </div>
+                        <Link to={'/policy'} className={landingHeaderLink}>회원가입</Link>
+                    </div> */}
                 </nav>
             </div>
         </header>
