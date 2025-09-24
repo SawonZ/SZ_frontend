@@ -1,7 +1,7 @@
 import axios from 'axios';
 //이메일 인증번호 발송
 export const postEmail =  async ({ email }) => {
-    const res = await axios.post('http://13.124.32.14:8080/email/send-code',
+    const res = await axios.post('https://api.sawonz.world/email/send-code',
         {
             email
         },
@@ -12,7 +12,7 @@ export const postEmail =  async ({ email }) => {
 
 //인증번호 확인
 export const citationCheck = async ({ email, emailCheck }) => {
-    const res = await axios.post('http://13.124.32.14:8080/email/check-code', 
+    const res = await axios.post('https://api.sawonz.world/email/check-code', 
         {
             email,
             emailCheck
@@ -24,7 +24,7 @@ export const citationCheck = async ({ email, emailCheck }) => {
 
 //회원가입
 export const fetchSignUp = async ({name, phone, email, password}) => {
-    const res = await axios.post('...API주소...',
+    const res = await axios.post('https://api.sawonz.world/users/signup',
         {
             name,
             phone,
