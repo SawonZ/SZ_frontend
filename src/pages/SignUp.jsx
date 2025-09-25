@@ -23,15 +23,15 @@ const SignUp = () => {
     const postCitation = async (e) => {
         e.preventDefault();
 
+        await setModalShow(true);
+
         if(state.email.trim() === '') {
             setModalText('이메일을 작성해 주세요.');
-            setModalShow(true);
             return;
         };
 
         if(!regularExpression.emailRegex.test(state.email.trim())) {
             setModalText('이메일 유형이 올바르지 않습니다.');
-            setModalShow(true);
             authInputReset('email');
             return;
         };
@@ -44,7 +44,6 @@ const SignUp = () => {
             }
 
             setModalText(res.data.message);
-            setModalShow(true);
         } catch(err) {
             setModalText(err.response.data.message);
             setModalShow(true);
@@ -115,9 +114,7 @@ const SignUp = () => {
             }
 
             console.log(res.data);
-            setModalText('회원가입 완료');
-            setModalShow(true);
-            navigate('/login');
+            navigate('/waiting-to-join');
         }catch(err) {
             console.log('에러 내용 : ', err);
             setModalText(err.response.data.message);

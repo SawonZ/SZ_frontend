@@ -1,5 +1,5 @@
 import React from 'react';
-import { landingHeader, /* landingHeaderLink, */ landingHeaderNav } from '../styles/landingHeaderTailwind';
+import { landingHeader, /* landingHeaderLink, */ landingHeaderNav } from '../styles/headerTailwind';
 import landingLogo from '../../assets/images/landing_logo.svg';
 import { inner } from '../styles/commonTailwind';
 import { Link } from 'react-router-dom';
