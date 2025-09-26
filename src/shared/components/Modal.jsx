@@ -12,7 +12,7 @@ const Modal = ({ modalText, modalTextClear, modalShowReset, onClick }) => {
                     onClick={() => {
                         modalTextClear()
                         modalShowReset()
-                        onClick
+                        onClick()
                     }}
                 >
                     확인
