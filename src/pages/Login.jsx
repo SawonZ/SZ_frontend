@@ -2,7 +2,7 @@ import React from 'react';
 import InputField from '../shared/components/InputField';
 import CommonButton from '../shared/components/CommonButton';
 import useAuthState from '../features/hooks/useAuthState';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { fetchLogin } from '../features/api/authApi';
 import { regularExpression } from '../utils/validation';
 import useModalShow from '../shared/hooks/useModalShow';
@@ -14,7 +14,6 @@ import Modal from '../shared/components/Modal';
 const Login = () => {
     const {state, authInputChanged, authInputReset, regexCheck} = useAuthState();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
-    const navigate = useNavigate();
 
     const loginSubmit = async (e) => {
         e.preventDefault();
@@ -44,20 +43,13 @@ const Login = () => {
                 return;
             };
 
-            console.log(res.data);
-            setModalText('회원가입 완료');
+            setModalText(res.data.message);
             setModalShow(true);
-
-            if(res.data.user.role !== 'admin') {
-                console.log('일반사원');
-            } else {
-                navigate('관리자 페이지');
-            };
         } catch(err) {
             console.log('에러 내용 : ', err);
             setModalText(err.response.data.message);
             setModalShow(true);
-            console.error('회원가입 서버 오류', err);
+            console.error('로그인 서버 오류', err);
         };
     };
 
