@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     userInfo();
-  }, []);
+  }, [userInfo]);
 
   return (
       <Home />

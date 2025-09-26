@@ -4,6 +4,7 @@ import { useAuth } from '../store/useUserStore';
 
 const Main = () => {
     const {user, isLogged, error} = useAuth();
+    console.log("Main user 상태:", user, isLogged, error);
     
     return (
         <main className={mainLayout}>
