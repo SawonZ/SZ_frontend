@@ -3,14 +3,16 @@ import { useAuth } from "./store/useUserStore";
 import Main from "./pages/Main";
 
 function App() {
-  const {userInfo} = useAuth();
+  const {userInfo, user} = useAuth();
 
   useEffect(() => {
     userInfo();
   }, [userInfo]);
 
   return (
-      <Main />
+      <>
+        <p>{user.userName}</p>
+      </>
   )
 }
 
