@@ -2,7 +2,7 @@ import React from 'react';
 import InputField from '../shared/components/InputField';
 import CommonButton from '../shared/components/CommonButton';
 import useAuthState from '../features/hooks/useAuthState';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchLogin } from '../features/api/authApi';
 import { regularExpression } from '../utils/validation';
 import useModalShow from '../shared/hooks/useModalShow';
@@ -14,6 +14,7 @@ import Modal from '../shared/components/Modal';
 const Login = () => {
     const {state, authInputChanged, authInputReset, regexCheck} = useAuthState();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
+    const navigate = useNavigate();
 
     const loginSubmit = async (e) => {
         e.preventDefault();
@@ -45,6 +46,7 @@ const Login = () => {
 
             setModalText(res.data.message);
             setModalShow(true);
+            navigate('/main');
         } catch(err) {
             console.log('에러 내용 : ', err);
             setModalText(err.response.data.message);

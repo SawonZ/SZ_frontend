@@ -1,18 +1,16 @@
 import { useEffect } from "react"
 import { useAuth } from "./store/useUserStore";
-import Main from "./pages/Main";
+import Home from './pages/Home';
 
 function App() {
-  const {userInfo, user} = useAuth();
+  const {userInfo} = useAuth();
 
   useEffect(() => {
     userInfo();
   }, [userInfo]);
 
   return (
-      <>
-        <p>{user.userName}</p>
-      </>
+      <Home />
   )
 }
 

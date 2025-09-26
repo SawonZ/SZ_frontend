@@ -1,11 +1,14 @@
 import React from 'react';
 import { mainContents, mainLayout } from '../shared/styles/commonTailwind';
+import { useAuth } from '../store/useUserStore';
 
 const Main = () => {
+    const {user} = useAuth();
+    
     return (
         <main className={mainLayout}>
             <div className={mainContents}>
-                메인 컨텐츠 영역
+                {user.userName}
             </div>
         </main>
     );
