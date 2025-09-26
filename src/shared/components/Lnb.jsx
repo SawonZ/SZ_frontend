@@ -3,15 +3,18 @@ import { lnbFigure, lnbHeading, lnbListTab, lnbProfileStyle, lnbStyle } from '..
 import profileImg from '../../assets/images/profile_test.png';
 import lnbIco1 from '../../assets/images/lnb_ico1.png';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../store/useUserStore';
 
 const Lnb = () => {
+    const {user} = useAuth();
+
     return (
         <div className={lnbStyle}>
             <div className={lnbProfileStyle}>
                 <figure className={lnbFigure}>
                     <img src={profileImg} alt="직원 프로필 사진" className='w-full h-full'/>
                 </figure>
-                <p className='text-[#5E6778]'>홍길동 <span className='text-[13px] text-[#9CA3AF]'>관리자</span></p>
+                <p className='text-[#5E6778]'>{user?.userName} <span className='text-[13px] text-[#9CA3AF]'>{user?.role === "ROLE_ADMIN" ? "관리자" : "사원"}</span></p>
             </div>
 
             <div className='mb-[24px]'>

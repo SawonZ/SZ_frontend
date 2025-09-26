@@ -10,12 +10,11 @@ export const useAuth = create(
             isLogged: false,
             isLoading: false,
 
-            userInfo: async () => {
+            login: async () => {
                 try {
                     set({ isLoading: true })
 
                     const res = await userMe();
-                    console.log("userMe 응답:", res.data);
 
                     set({ user: res.data.data, error: null, isLogged: true, isLoading: false });
                 } catch(err) {

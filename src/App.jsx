@@ -3,11 +3,11 @@ import { useAuth } from "./store/useUserStore";
 import Home from './pages/Home';
 
 function App() {
-  const {userInfo} = useAuth();
+  const {login} = useAuth();
 
   useEffect(() => {
-    userInfo();
-  }, [userInfo]);
+    login();
+  }, [login]);
 
   return (
       <Home />

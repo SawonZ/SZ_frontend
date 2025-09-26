@@ -16,20 +16,22 @@ const Login = () => {
     const {state, authInputChanged, authInputReset, regexCheck} = useAuthState();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const navigate = useNavigate();
-    const { userInfo } = useAuth();
+    const { login } = useAuth();
+
+    const loginSubmitErrMsg = '이메일 또는 비밀번호를 확인해주세요.';
 
     const loginSubmit = async (e) => {
         e.preventDefault();
 
         if(!regularExpression.emailRegex.test(state.email.trim())) {
-            setModalText('이메일 또는 비밀번호를 확인해주세요.');
+            setModalText(loginSubmitErrMsg);
             setModalShow(true);
             authInputReset('email');
             return;
         };
 
         if(!regularExpression.pwdRegex.test(state.password.trim())) {
-            setModalText('이메일 또는 비밀번호를 확인해주세요.');
+            setModalText(loginSubmitErrMsg);
             setModalShow(true);
             authInputReset('password');
             return;
@@ -46,7 +48,7 @@ const Login = () => {
                 return;
             };
 
-            userInfo();
+            login();
             setModalText(res.data.message);
             setModalShow(true);
         } catch(err) {
@@ -109,7 +111,9 @@ const Login = () => {
                     modalShowReset={() => setModalShow(false)}
                     modalText={modalText}
                     modalTextClear={() => setModalText('')}
-                    onClick={() => navigate('/main')}
+                    onClick={() => {
+                        modalText === loginSubmitErrMsg ? null : navigate('/main')
+                    }}
                 />
             }
         </main>
