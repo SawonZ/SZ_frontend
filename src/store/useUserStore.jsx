@@ -9,6 +9,7 @@ export const useAuth = create((set) => ({
     userInfo: async () => {
         try {
             const res = await userMe();
+            console.log("userMe 응답:", res.data);
 
             set({ user: res.data.data, error: null, isLogged: true });
         } catch(err) {
