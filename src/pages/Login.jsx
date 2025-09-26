@@ -46,7 +46,7 @@ const Login = () => {
                 return;
             };
 
-            await userInfo();
+            userInfo();
             setModalText(res.data.message);
             setModalShow(true);
             await navigate('/main');
