@@ -8,7 +8,7 @@ const Main = () => {
     return (
         <main className={mainLayout}>
             <div className={mainContents}>
-                {user.userName}
+                {user.data.userName}
             </div>
         </main>
     );
