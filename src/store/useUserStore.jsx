@@ -10,7 +10,7 @@ export const useAuth = create((set) => ({
         try {
             const res = await userMe();
 
-            set({ user: res.data, error: null, isLogged: true });
+            set({ user: res.data.data, error: null, isLogged: true });
         } catch(err) {
             set({ user: null, error: err.response.data.message, isLogged: false });
         }
