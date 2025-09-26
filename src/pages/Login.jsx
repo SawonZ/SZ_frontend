@@ -46,10 +46,10 @@ const Login = () => {
                 return;
             };
 
+            await userInfo();
             setModalText(res.data.message);
             setModalShow(true);
-            await userInfo();
-            navigate('/main');
+            await navigate('/main');
         } catch(err) {
             console.log('에러 내용 : ', err);
             setModalText(err.response.data.message);
