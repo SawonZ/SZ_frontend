@@ -15,8 +15,8 @@ import { useAuth } from '../store/useUserStore';
 const Login = () => {
     const {state, authInputChanged, authInputReset, regexCheck} = useAuthState();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
-    const { userInfo } = useAuth();
     const navigate = useNavigate();
+    const { userInfo } = useAuth();
 
     const loginSubmit = async (e) => {
         e.preventDefault();
@@ -49,7 +49,6 @@ const Login = () => {
             userInfo();
             setModalText(res.data.message);
             setModalShow(true);
-            await navigate('/main');
         } catch(err) {
             console.log('에러 내용 : ', err);
             setModalText(err.response.data.message);
@@ -110,6 +109,7 @@ const Login = () => {
                     modalShowReset={() => setModalShow(false)}
                     modalText={modalText}
                     modalTextClear={() => setModalText('')}
+                    onClick={() => navigate('/main')}
                 />
             }
         </main>

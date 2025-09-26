@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ modalText, modalTextClear, modalShowReset }) => {
+const Modal = ({ modalText, modalTextClear, modalShowReset, onClick }) => {
     return (
         <div className='fixed top-[0] left-[0] w-full h-full bg-[rgba(0,0,0,0.5)] z-99'>
             <div className='w-[506px] h-[198px] p-[40px] rounded-[20px] bg-[#fff] box-border fixed top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]'>
@@ -12,6 +12,7 @@ const Modal = ({ modalText, modalTextClear, modalShowReset }) => {
                     onClick={() => {
                         modalTextClear()
                         modalShowReset()
+                        onClick
                     }}
                 >
                     확인
