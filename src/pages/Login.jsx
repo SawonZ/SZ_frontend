@@ -10,10 +10,12 @@ import { formStyle } from '../features/styles/authFormTailwind';
 import logoSymbol from '../assets/images/logo_symbol.svg';
 import { title2 } from '../shared/styles/commonTailwind';
 import Modal from '../shared/components/Modal';
+import { useAuth } from '../store/useUserStore';
 
 const Login = () => {
     const {state, authInputChanged, authInputReset, regexCheck} = useAuthState();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
+    const { userInfo } = useAuth();
     const navigate = useNavigate();
 
     const loginSubmit = async (e) => {
@@ -46,6 +48,7 @@ const Login = () => {
 
             setModalText(res.data.message);
             setModalShow(true);
+            await userInfo();
             navigate('/main');
         } catch(err) {
             console.log('에러 내용 : ', err);
