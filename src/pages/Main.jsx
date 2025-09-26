@@ -8,7 +8,7 @@ const Main = () => {
     return (
         <main className={mainLayout}>
             <div className={mainContents}>
-                {user?.userName}
+                <p>{user?.userName ?? "로그인 필요"}</p>
             </div>
         </main>
     );
