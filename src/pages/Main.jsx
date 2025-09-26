@@ -3,12 +3,12 @@ import { mainContents, mainLayout } from '../shared/styles/commonTailwind';
 import { useAuth } from '../store/useUserStore';
 
 const Main = () => {
-    const {user} = useAuth();
+    const {user, isLogged, error} = useAuth();
     
     return (
         <main className={mainLayout}>
             <div className={mainContents}>
-                <p>{user?.userName ?? "로그인 필요"}</p>
+                {isLogged ? <p>{user?.email}</p> : error}
             </div>
         </main>
     );
