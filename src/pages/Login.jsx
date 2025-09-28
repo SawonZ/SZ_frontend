@@ -112,7 +112,14 @@ const Login = () => {
                     modalText={modalText}
                     modalTextClear={() => setModalText('')}
                     onClick={() => {
-                        modalText === loginSubmitErrMsg ? null : navigate('/main')
+                        const isError = modalText === loginSubmitErrMsg ||
+                                        modalText === "토큰이 없거나, 유효하지 않은 토큰입니다" ||
+                                        modalText === "관리자 승인 대기중입니다." ||
+                                        modalText === "이메일 또는 비밀번호가 올바르지 않습니다."
+                        
+                        if(!isError) {
+                            navigate('/main')
+                        }
                     }}
                 />
             }

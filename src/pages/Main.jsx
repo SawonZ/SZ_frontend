@@ -1,22 +1,20 @@
 import React from 'react';
 import { mainContents, mainLayout } from '../shared/styles/commonTailwind';
-import { useAuth } from '../store/useUserStore';
+import Commute from './Commute';
+import CommuteBoard from '../features/components/CommuteBoard';
+import { boardGrid } from '../features/styles/boardTailwind';
 
 const Main = () => {
-    const {user, isLogged, error, isLoading} = useAuth();
-        
-    if(isLoading) {
-        return (
-            <main className={mainLayout}>
-                <p>로딩 중...</p>
-            </main>
-        )
-    }
-
     return (
         <main className={mainLayout}>
             <div className={mainContents}>
-                {isLogged ? <p>{user?.email}</p> : error}
+                <div className='flex gap-[30px]'>
+                    <div className={boardGrid}>
+                        <CommuteBoard />
+                        
+                    </div>
+                    <div className='w-[538px] bg-[#ddd]'>달력 공간</div>
+                </div>
             </div>
         </main>
     );
