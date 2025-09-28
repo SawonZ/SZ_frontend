@@ -18,6 +18,8 @@ const Login = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
 
+    console.log
+
     const loginSubmitErrMsg = '이메일 또는 비밀번호를 확인해주세요.';
 
     const loginSubmit = async (e) => {

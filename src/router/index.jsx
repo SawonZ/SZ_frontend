@@ -8,6 +8,8 @@ import RequireAgreement from "../RequireAgreement";
 import WaitingToJoin from "../pages/WaitingToJoin";
 import LayoutTwo from "../LayoutTwo";
 import Main from "../pages/Main";
+import UserLists from "../pages/UserLists";
+import UserListsPortion from "../pages/UserListsPortion";
 
 const router = createBrowserRouter([
     { 
@@ -27,10 +29,12 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: "/main",
+        path: "/",
         element: <LayoutTwo />,
         children:[
             { path: "/main", element: <Main /> },
+            { path: "/user-lists", element: <UserLists /> },
+            { path: "/user-lists-portion", element: <UserListsPortion /> }
         ]
     }
 ]);

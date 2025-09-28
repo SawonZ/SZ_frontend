@@ -1,7 +1,7 @@
 import React from 'react';
 import { inner, longButton, textDescription } from '../shared/styles/commonTailwind';
 import { Link } from 'react-router-dom';
-import '../features/styles/animation.css';
+import '../shared/styles/animation.css';
 
 const Home = () => {
     return (

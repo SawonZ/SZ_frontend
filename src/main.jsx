@@ -5,12 +5,15 @@ import './shared/styles/index.css';
 import { RouterProvider } from 'react-router-dom';
 import router from './router/index.jsx';
 import LandingHeader from './shared/components/LandingHeader.jsx';
+import AuthProvider from './provider/AuthProvider.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router}>
-    <StrictMode>
-      <LandingHeader />
-      <App />
-    </StrictMode>,
-  </RouterProvider>
+  <AuthProvider>
+    <RouterProvider router={router}>
+      <StrictMode>
+        <LandingHeader />
+        <App />
+      </StrictMode>,
+    </RouterProvider>
+  </AuthProvider>
 )

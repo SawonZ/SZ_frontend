@@ -43,3 +43,14 @@ export const fetchLogin = async ({ email, password }) => {
 
   return res;
 };
+
+//로그아웃
+export const fetchLogout = async () => {
+  const res = await axios.post(
+    "https://api.sawonz.world/auth/logout",
+    {},
+    {withCredentials: true}
+  );
+
+  return res;
+}
