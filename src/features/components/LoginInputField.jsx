@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { errMsg, inputFieldStyle, inputFieldStyleActive, labelStyle, labelStyleActive } from '../../features/styles/authFormTailwind';
+import { inputFieldStyle, inputFieldStyleActive, labelStyle, labelStyleActive } from '../styles/authFormTailwind';
 import inputClear from '../../assets/images/input_clear.svg';
 
-const InputField = ({ label, type, onChange, value, htmlFor, inputReset, regexCheck, errText }) => {
+const LoginInputField = ({ value, htmlFor, label, type, onChange, inputReset, checked, checkedClear }) => {
     const [isInputFocus, setisInputFocus] = useState(false);
     const [isInputFocusLabel, setisInputFocusLabel] = useState(false);
-        
+
     const onBlurStyles= () => {
         setisInputFocus(false);
 
@@ -19,7 +19,7 @@ const InputField = ({ label, type, onChange, value, htmlFor, inputReset, regexCh
     return (
         <>
             <div className={isInputFocus ? inputFieldStyleActive : inputFieldStyle}>
-                <label className={isInputFocusLabel ?  labelStyleActive : labelStyle} htmlFor={htmlFor}>{label}</label>
+                <label className={isInputFocusLabel || checked ?  labelStyleActive : labelStyle} htmlFor={htmlFor}>{label}</label>
                 <input 
                     id={htmlFor}
                     className='w-[calc(100%-20px)] h-[35px] outline-none border-0 block absolute bottom-[0] text-[16px] text-[#1F2937]'
@@ -30,16 +30,14 @@ const InputField = ({ label, type, onChange, value, htmlFor, inputReset, regexCh
                         setisInputFocus(true)
                         setisInputFocusLabel(true)
                     }}
-                    onBlur={() => {
-                        regexCheck()
-                        onBlurStyles()
-                    }}
+                    onBlur={() => {onBlurStyles()}}
                 />
                 <button 
                     className='absolute top-[50%] right-[20px] translate-y-[-50%]'
                     type='button'
                     onClick={() => {
                         inputReset()
+                        checkedClear()
                         setisInputFocus(false)
                         setisInputFocusLabel(false)
                     }}
@@ -47,9 +45,8 @@ const InputField = ({ label, type, onChange, value, htmlFor, inputReset, regexCh
                     {isInputFocusLabel && <img src={inputClear} alt='모두 지우기' />}
                 </button>
             </div>
-            <p className={errMsg}>{errText}</p>
         </>
     );
 };
 
-export default InputField;
+export default LoginInputField;

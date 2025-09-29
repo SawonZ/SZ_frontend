@@ -1,11 +1,11 @@
-import InputField from '../shared/components/InputField';
+import SignUpInputField from '../features/components/SignUpInputField';
 import { regularExpression } from '../utils/validation';
 import useAuthState from '../features/hooks/useAuthState';
 import { Link, useNavigate } from 'react-router-dom';
 import { citationCheck, fetchSignUp, postEmail } from '../features/api/authApi';
 import { buttonDisabled, commonButton, title2 } from '../shared/styles/commonTailwind';
 import { formStyle } from '../features/styles/authFormTailwind';
-import InputFieldCitation from '../features/components/InputFieldCitation';
+import SignUpInputFieldCitation from '../features/components/SignUpInputFieldCitation';
 import { useEffect, useState } from 'react';
 import Modal from '../shared/components/Modal';
 import useModalShow from '../shared/hooks/useModalShow';
@@ -144,7 +144,7 @@ const SignUp = () => {
                 onSubmit={signUpSubmit}
             >  
                 <p className={title2}>회원가입</p>
-                <InputFieldCitation 
+                <SignUpInputFieldCitation 
                     label='이메일'
                     type='email'
                     htmlFor='email'
@@ -154,7 +154,7 @@ const SignUp = () => {
                     text='인증번호'
                     onClick={postCitation}
                 />
-                <InputFieldCitation 
+                <SignUpInputFieldCitation 
                     label='인증번호'
                     type='text'
                     htmlFor='emailCheck'
@@ -164,7 +164,7 @@ const SignUp = () => {
                     text='확인'
                     onClick={postCitationCheck}
                 />
-                <InputField 
+                <SignUpInputField 
                     label='비밀번호'
                     type='password'
                     htmlFor='password'
@@ -174,7 +174,7 @@ const SignUp = () => {
                     regexCheck={() => regexCheck('password')}
                     errText={regexErrMsg.pwdErrMsg}
                 />
-                <InputField 
+                <SignUpInputField 
                     label='비밀번호 확인'
                     type='password'
                     htmlFor='passwordCheck'
@@ -184,7 +184,7 @@ const SignUp = () => {
                     regexCheck={() => regexCheck('passwordCheck')}
                     errText={regexErrMsg.pwdCheckErrMsg}
                 />
-                <InputField 
+                <SignUpInputField 
                     label='이름'
                     type='text'
                     htmlFor='name'
@@ -194,7 +194,7 @@ const SignUp = () => {
                     regexCheck={() => regexCheck('name')}
                     errText={regexErrMsg.nameErrMsg}
                 />
-                <InputField 
+                <SignUpInputField 
                     label='연락처'
                     type='tel'
                     htmlFor='phone'

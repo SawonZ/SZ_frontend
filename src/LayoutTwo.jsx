@@ -8,7 +8,7 @@ const LayoutTwo = () => {
         <>
             <Header />
             <Lnb />
-            <Outlet />
+            <Outlet />  
         </>
     );
 };

@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import { citationButton, inputFieldCitationStyle, inputFieldCitationStyleActive, labelStyle, labelStyleActive } from '../styles/authFormTailwind';
+import { errMsg, inputFieldStyle, inputFieldStyleActive, labelStyle, labelStyleActive } from '../styles/authFormTailwind';
 import inputClear from '../../assets/images/input_clear.svg';
 
-const InputFieldCitation = ({ label, type, onChange, value, htmlFor, inputReset, text, onClick }) => {
-        const [isInputFocus, setisInputFocus] = useState(false);
-        const [isInputFocusLabel, setisInputFocusLabel] = useState(false);
+const SignUpInputField = ({ label, type, onChange, value, htmlFor, inputReset, regexCheck, errText }) => {
+    const [isInputFocus, setisInputFocus] = useState(false);
+    const [isInputFocusLabel, setisInputFocusLabel] = useState(false);
             
-        const onBlurStyles = () => {
-            setisInputFocus(false);
-    
-            if(value.trim() !== '') {
-                setisInputFocusLabel(true);
-            } else {
-                setisInputFocusLabel(false);
-            }
-        };
+    const onBlurStyles = () => {
+        setisInputFocus(false);
+
+        if(value.trim() !== '') {
+            setisInputFocusLabel(true);
+        } else {
+            setisInputFocusLabel(false);
+        }
+    };
 
     return (
-        <div className='flex gap-[8px]'>
-            <div className={isInputFocus ? inputFieldCitationStyleActive : inputFieldCitationStyle}>
+        <>
+            <div className={isInputFocus ? inputFieldStyleActive : inputFieldStyle}>
                 <label className={isInputFocusLabel ?  labelStyleActive : labelStyle} htmlFor={htmlFor}>{label}</label>
                 <input 
                     id={htmlFor}
@@ -30,7 +30,10 @@ const InputFieldCitation = ({ label, type, onChange, value, htmlFor, inputReset,
                         setisInputFocus(true)
                         setisInputFocusLabel(true)
                     }}
-                    onBlur={onBlurStyles}
+                    onBlur={() => {
+                        regexCheck()
+                        onBlurStyles()
+                    }}
                 />
                 <button 
                     className='absolute top-[50%] right-[20px] translate-y-[-50%]'
@@ -44,13 +47,9 @@ const InputFieldCitation = ({ label, type, onChange, value, htmlFor, inputReset,
                     {isInputFocusLabel && <img src={inputClear} alt='모두 지우기' />}
                 </button>
             </div>
-            <button 
-                onClick={onClick}
-                className={citationButton}>
-                {text}
-            </button>
-        </div>
+            <p className={errMsg}>{errText}</p>
+        </>
     );
 };
 
-export default InputFieldCitation;
+export default SignUpInputField;

@@ -7,7 +7,7 @@ import useModalShow from '../hooks/useModalShow';
 import Modal from './Modal';
 
 const Header = () => {
-    const { isLogged, logout, user } = useAuth();
+    const { isLogged, logout } = useAuth();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const navigate = useNavigate();
     
@@ -15,10 +15,8 @@ const Header = () => {
         e.preventDefault();        
         setModalText('로그아웃이 완료되었습니다.');
         setModalShow(true);
-        logout();
-
         return;
-    }
+    };
 
     return (
         <header className={header}>
@@ -46,7 +44,10 @@ const Header = () => {
                     modalShowReset={() => setModalShow(false)}
                     modalText={modalText}
                     modalTextClear={() => setModalText('')}
-                    onClick={() => navigate('/')}
+                    onClick={() => {
+                        logout()
+                        navigate('/')
+                    }}
                 />
             }
         </header>

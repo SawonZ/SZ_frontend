@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, {useReducer, useState } from 'react';
 import { regularExpression } from '../../utils/validation';
 
 const initialValue = {
@@ -22,8 +22,12 @@ const reducer = (state, action) => {
 };
 
 const useAuthState = () => {
-    const [state, dispatch] = useReducer(reducer, initialValue);
-    const [regexErrMsg, setRegexErrMsg] = useState({
+    const [state, dispatch] = useReducer(reducer, initialValue); //회원가입 리듀서
+    const [loginState, setLoginState] = useState({ //로그인 상태관리
+        email: '',
+        pwd: ''
+    });
+    const [regexErrMsg, setRegexErrMsg] = useState({ //에러 메세지
         pwdErrMsg: '',
         pwdCheckErrMsg: '',
         nameErrMsg: '',
@@ -31,6 +35,7 @@ const useAuthState = () => {
         emailErrMsg: '',
     });
 
+    //회원가입 인풋 상태관리
     const authInputChanged = (e, field) => {
         dispatch({ type: 'SET_FIELD', field, payload: e.target.value });
     };
@@ -84,7 +89,15 @@ const useAuthState = () => {
         return false;
     };
 
-    return {state, authInputChanged, authInputReset, regexCheck, regexErrMsg};
+    return {
+        state, 
+        authInputChanged, 
+        authInputReset, 
+        regexCheck, 
+        regexErrMsg,
+        loginState,
+        setLoginState
+    };
 };
 
 export default useAuthState;

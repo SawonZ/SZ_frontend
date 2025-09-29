@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import { mainContents } from '../shared/styles/commonTailwind';
+import { mainContents, mainLayout } from '../shared/styles/commonTailwind';
 import { useUserInquiryPortion } from '../store/useUserStore';
 
 const UserListsPortion = () => {
-    const {usersPortion, isLoading, userListsNotAdmin} = useUserInquiryPortion();
+    const {usersPortion, status, userListsNotAdmin, error} = useUserInquiryPortion();
 
     useEffect(() => {
         userListsNotAdmin();        
-    }, [])
+    }, [userListsNotAdmin])
 
-    if(isLoading) {
-        return <p>로딩 중...</p>
-    }
+    if(status === 'loading') return <p style={{ padding: '300px', zIndex: 100}}>로딩 중...</p>
+    if(status === 'error') return <p style={{ padding: '300px', zIndex: 100}}>에러: {error}</p>
+    if(status === 'success' && usersPortion.length === 0) return <p style={{ padding: '300px', zIndex: 100}}>데이터 없음</p>
 
     return (
         <main className={mainLayout}>

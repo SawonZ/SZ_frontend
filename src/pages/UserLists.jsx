@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import { mainContents, mainLayout } from '../shared/styles/commonTailwind';
 import { useUserInquiry } from '../store/useUserStore';
+import useLoading from '../features/hooks/useLoading';
 
 const UserLists = () => {
-    const {users, isLoading, userLists} = useUserInquiry();
+    const {users, status, error, userLists} = useUserInquiry();
+    const {userListLoading} = useLoading();
 
+    //리스트
     useEffect(() => {
         userLists();        
-    }, [])
+    }, [userLists]);
 
-    if(isLoading) {
-        return <p>로딩 중...</p>
-    }
+    //로딩/에러처리
+    const pending = userListLoading(status, error, users);
+    if(pending) return pending;
 
     return (
         <main className={mainLayout}>

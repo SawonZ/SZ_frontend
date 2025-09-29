@@ -1,5 +1,4 @@
-import React from 'react';
-import InputField from '../shared/components/InputField';
+import React, { useEffect, useState } from 'react';
 import CommonButton from '../shared/components/CommonButton';
 import useAuthState from '../features/hooks/useAuthState';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,38 +10,43 @@ import logoSymbol from '../assets/images/logo_symbol.svg';
 import { title2 } from '../shared/styles/commonTailwind';
 import Modal from '../shared/components/Modal';
 import { useAuth } from '../store/useUserStore';
+import LoginInputField from '../features/components/LoginInputField';
 
 const Login = () => {
-    const {state, authInputChanged, authInputReset, regexCheck} = useAuthState();
+    const {loginState, setLoginState} = useAuthState();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const navigate = useNavigate();
     const { login } = useAuth();
+    const [savedIdCheck, setSavedIdCheck] = useState(false);
 
-    console.log
-
-    const loginSubmitErrMsg = '이메일 또는 비밀번호를 확인해주세요.';
+    useEffect(() => {
+        const savedId = localStorage.getItem('savedId');
+        if(savedId) {
+            setLoginState(prev => ({ ...prev, email: savedId }));
+            setSavedIdCheck(true);
+        }
+    }, []);
 
     const loginSubmit = async (e) => {
         e.preventDefault();
 
-        if(!regularExpression.emailRegex.test(state.email.trim())) {
-            setModalText(loginSubmitErrMsg);
+        if(!regularExpression.emailRegex.test(loginState.email.trim())) {
+            setModalText('이메일 또는 비밀번호를 확인해주세요.');
             setModalShow(true);
-            authInputReset('email');
             return;
         };
 
-        if(!regularExpression.pwdRegex.test(state.password.trim())) {
-            setModalText(loginSubmitErrMsg);
+        if(!regularExpression.pwdRegex.test(loginState.pwd.trim())) {
+            setModalText('이메일 또는 비밀번호를 확인해주세요.');
             setModalShow(true);
-            authInputReset('password');
+            setLoginState(prev => ({ ...prev, pwd: '' }));
             return;
         };
 
         try{
             const res = await fetchLogin({
-                email: state.email,
-                password: state.password 
+                email: loginState.email,
+                password: loginState.pwd 
             });
 
             if(res.status < 200 || res.status >= 300) {
@@ -53,6 +57,12 @@ const Login = () => {
             login();
             setModalText(res.data.message);
             setModalShow(true);
+
+            if(savedIdCheck) {
+                localStorage.setItem('savedId', loginState.email);
+            } else {
+                localStorage.removeItem('savedId');
+            }
         } catch(err) {
             console.log('에러 내용 : ', err);
             setModalText(err.response.data.message);
@@ -71,22 +81,23 @@ const Login = () => {
                     <img src={logoSymbol} alt="사원즈 로고" />
                 </div>
                 <p className={title2}>로그인</p>
-                <InputField 
-                    label='이메일'
+                <LoginInputField 
+                    label='아이디'
+                    htmlFor='login-id'
                     type='email'
-                    onChange={(e) => authInputChanged(e, 'email')}
-                    value={state.email}
-                    inputReset={() => authInputReset('email')}
-                    regexCheck={regexCheck}
+                    onChange={(e) => setLoginState(perv => ({...perv, email: e.target.value }))}
+                    value={loginState.email}
+                    inputReset={() => setLoginState(perv => ({...perv, email: '' }))}
+                    checked={savedIdCheck}
+                    checkedClear={() => {setSavedIdCheck(false)}}
                 />
-                <InputField 
-                    label='패스워드'
+                <LoginInputField 
+                    label='비밀번호'
+                    htmlFor='login-pwd'
                     type='password'
-                    placeholder='비밀번호 입력'
-                    onChange={(e) => authInputChanged(e, 'password')}
-                    value={state.password}
-                    inputReset={() => authInputReset('password')}
-                    regexCheck={regexCheck}
+                    onChange={(e) => setLoginState(perv => ({...perv, pwd: e.target.value }))}
+                    value={loginState.pwd}
+                    inputReset={() => setLoginState(perv => ({...perv, pwd: '' }))}
                 />
                 <CommonButton 
                     text='로그인'
@@ -95,7 +106,9 @@ const Login = () => {
                     <input 
                         style={{ accentColor: '#62CCD0' }}
                         className='w-[16px] h-[16px]'
-                        type="checkbox" 
+                        type="checkbox"
+                        onChange={(e) => setSavedIdCheck(e.target.checked)}
+                        checked={savedIdCheck}
                     />
                     <label className='text-[14px] text-[#9CA3AF]'>아이디 기억하기</label>
                 </div>
@@ -114,7 +127,7 @@ const Login = () => {
                     modalText={modalText}
                     modalTextClear={() => setModalText('')}
                     onClick={() => {
-                        const isError = modalText === loginSubmitErrMsg ||
+                        const isError = modalText === "이메일 또는 비밀번호를 확인해주세요." ||
                                         modalText === "토큰이 없거나, 유효하지 않은 토큰입니다" ||
                                         modalText === "관리자 승인 대기중입니다." ||
                                         modalText === "이메일 또는 비밀번호가 올바르지 않습니다."
