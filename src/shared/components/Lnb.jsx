@@ -1,4 +1,3 @@
-import React, { use, useEffect } from 'react';
 import '../../shared/styles/animation.css';
 import { lnbFigure, lnbHeading, lnbProfileStyle, lnbStyle, newBadge } from '../styles/commonTailwind';
 import profileImg from '../../assets/images/profile_test.png';

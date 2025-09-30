@@ -5,19 +5,31 @@ import CommuteBoard from '../features/components/CommuteBoard';
 import { boardGrid } from '../features/styles/boardTailwind';
 import StaffDirectoryBoard from '../features/components/StaffDirectoryBoard';
 import boardArrow from '../assets/images/board_arrow.png';
+import Calendar from '../features/components/Calendar';
+
 
 const Main = () => {
     return (
         <main className={mainLayout}>
             <div className={mainContents}>
-                <div className='flex gap-[30px]'>
+                <div className='flex gap-[30px] h-full'>
                     <div className={boardGrid}>
-                        <CommuteBoard />
+                        <CommuteBoard 
+                            arrow={boardArrow}
+                        />
+                        
+                        <StaffDirectoryBoard 
+                            arrow={boardArrow}
+                        />
+                        <StaffDirectoryBoard 
+                            arrow={boardArrow}
+                        />
                         <StaffDirectoryBoard 
                             arrow={boardArrow}
                         />
                     </div>
-                    <div className='w-[538px] bg-[#ddd]'>달력 공간</div>
+
+                    <Calendar />
                 </div>
             </div>
         </main>

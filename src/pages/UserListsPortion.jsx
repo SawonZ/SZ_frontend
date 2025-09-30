@@ -3,15 +3,15 @@ import { mainContents, mainLayout } from '../shared/styles/commonTailwind';
 import { useUserInquiryPortion } from '../store/useUserStore';
 
 const UserListsPortion = () => {
-    const {usersPortion, status, userListsNotAdmin, error} = useUserInquiryPortion();
+    const {usersPortion, situation, userListsNotAdmin, error} = useUserInquiryPortion();
 
     useEffect(() => {
         userListsNotAdmin();        
     }, [userListsNotAdmin])
 
-    if(status === 'loading') return <p style={{ padding: '300px', zIndex: 100}}>로딩 중...</p>
-    if(status === 'error') return <p style={{ padding: '300px', zIndex: 100}}>에러: {error}</p>
-    if(status === 'success' && usersPortion.length === 0) return <p style={{ padding: '300px', zIndex: 100}}>데이터 없음</p>
+    if(situation === 'loading') return <p style={{ padding: '300px', zIndex: 100}}>로딩 중...</p>
+    if(situation === 'error') return <p style={{ padding: '300px', zIndex: 100}}>에러: {error}</p>
+    if(situation === 'success' && usersPortion.length === 0) return <p style={{ padding: '300px', zIndex: 100}}>데이터 없음</p>
 
     return (
         <main className={mainLayout}>

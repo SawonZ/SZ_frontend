@@ -4,7 +4,7 @@ import { useUserInquiry } from '../store/useUserStore';
 import useLoading from '../features/hooks/useLoading';
 
 const UserLists = () => {
-    const {users, status, error, userLists} = useUserInquiry();
+    const {users, situation, error, userLists} = useUserInquiry();
     const {userListLoading} = useLoading();
 
     //리스트
@@ -13,7 +13,7 @@ const UserLists = () => {
     }, [userLists]);
 
     //로딩/에러처리
-    const pending = userListLoading(status, error, users);
+    const pending = userListLoading(situation, error, users);
     if(pending) return pending;
 
     return (

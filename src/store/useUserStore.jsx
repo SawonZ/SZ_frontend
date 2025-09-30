@@ -12,7 +12,7 @@ export const useAuth = create(
 
         login: async () => {
             try {
-                const res = await userMe({ withCredentials: true });
+                const res = await userMe();
 
                 set({ user: res.data.data, error: null, isLogged: true, isLoading: false });
             } catch(err) {
@@ -37,16 +37,16 @@ export const useUserInquiry = create(
         users: [],
         isLoading: true,
         error: '',
-        status: 'loading',
+        situation: 'loading',
 
         //관리자용 직원 리스트
         userLists: async () => {
             try {
                 const res = await userAllLists();
 
-                set({ users: res.data.data, isLoading: false, status: 'success', error: '' });
+                set({ users: res.data.data, isLoading: false, situation: 'success', error: '' });
             } catch(err) {
-                set({ users: [], isLoading: false, status: 'error', error: err.response?.data?.message});
+                set({ users: [], isLoading: false, situation: 'error', error: err.response?.data?.message});
                 console.log(err.response?.data?.message)
             }
         },
@@ -58,15 +58,15 @@ export const useUserInquiryPortion = create(
         usersPortion: [],
         isLoading: true,
         error: '',
-        status: 'loading',
+        situation: 'loading',
 
         //직원용 직원 리스트
         userListsNotAdmin: async () => {
             try{
                 const res = await userAllListsNotAdmin();
-                set({ usersPortion: res.data.data, isLoading: false, status: 'success', error: '' });
+                set({ usersPortion: res.data.data, isLoading: false, situation: 'success', error: '' });
             }catch(err) {
-                set({ usersPortion: [], isLoading: false, status: 'error', error: err.response?.data?.message });
+                set({ usersPortion: [], isLoading: false, situation: 'error', error: err.response?.data?.message });
                 console.log(err.response?.data?.message)
             }
         },
