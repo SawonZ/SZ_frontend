@@ -92,10 +92,13 @@ const Lnb = () => {
                         user?.role !== "ROLE_ADMIN" ? null
                         : 
                         <li>
-                            <Link to={''} className='lnb-lists-tab'>
+                            <Link 
+                                to={'/new-signup-lists'} 
+                                className={location.pathname === '/new-signup-lists' ? 'lnb-lists-tab on' : 'lnb-lists-tab'}
+                            >
                                 <img src={lnbIco3} alt="신규 가입승인 아이콘" className='lnb-ico' />
                                 <img src={lnbIco1On} alt="신규 가입승인 아이콘" className='lnb-ico-on' />
-                                신규 가입승인
+                                신규 가입 내역
                                 <span className={newBadge}>NEW</span>
                             </Link>
                         </li>

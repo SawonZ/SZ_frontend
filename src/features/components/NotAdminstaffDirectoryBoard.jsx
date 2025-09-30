@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import searchIco from '../../assets/images/search.png';
 import profileTest2 from '../../assets/images/profile_test2.png';
 import useLoading from '../hooks/useLoading';
-import {useUserInquiry } from '../../store/useUserStore';
+import {useUserInquiryPortion } from '../../store/useUserStore';
 import usePositionTitle from '../hooks/usePositionTitle';
 
-const StaffDirectoryBoard = ({ arrow }) => {
-    const {users, situation, error, userLists} = useUserInquiry();
+const NotAdminstaffDirectoryBoard = ({ arrow }) => {
+    const {usersPortion, situation, error, userListsNotAdmin} = useUserInquiryPortion();
     const {userListLoading} = useLoading();
     const {koreanPositionTitle} = usePositionTitle();
     const [searchList, setSearchList] = useState('');
@@ -16,8 +16,8 @@ const StaffDirectoryBoard = ({ arrow }) => {
 
     //리스트
     useEffect(() => {
-        userLists();        
-    }, [userLists]);
+        userListsNotAdmin();        
+    }, [userListsNotAdmin]);
 
     //검색 디바운싱
     useEffect(() => {
@@ -29,12 +29,12 @@ const StaffDirectoryBoard = ({ arrow }) => {
     }, [searchList]);
 
     //로딩/에러처리
-    const pending = userListLoading(situation, error, users);
+    const pending = userListLoading(situation, error, usersPortion);
     if(pending) return pending;
 
     //이름, 이메일, 직급으로 필터링
-    const filteredUsers = users.filter(user => {
-        if(!user.status) return;
+    const filteredUsers = usersPortion.filter(user => {
+        // if(!user.status) return; status 값 추가
 
         const koreanPositionTitles = koreanPositionTitle(user.positionTitle);
         return (
@@ -48,7 +48,7 @@ const StaffDirectoryBoard = ({ arrow }) => {
         <div className={board}>
             <div className={boardTitleWrap}>
                 <h4 className={boardTitle}>직원조회</h4>
-                <Link to={"/user-lists"}>
+                <Link to={"/user-lists-portion"}>
                     <img src={arrow} alt="페이지 이동 화살표" />
                 </Link>
             </div>
@@ -82,4 +82,4 @@ const StaffDirectoryBoard = ({ arrow }) => {
     );
 };
 
-export default StaffDirectoryBoard;
+export default NotAdminstaffDirectoryBoard;

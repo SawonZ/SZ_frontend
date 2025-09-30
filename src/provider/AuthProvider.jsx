@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
             await login(); 
         };
         initAuth();
-    }, [login]);
+    }, []);
 
     if(isLoading) return <p>로딩중...</p>
 

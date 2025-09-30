@@ -22,3 +22,4 @@ export const newBadge = 'absolute top-[15px] right-[31px] w-[31px] h-[16px] bg-[
 //main
 export const mainLayout = 'bg-[#FAFAFC] relative min-h-screen pt-[80px] box-border';
 export const mainContents = 'w-[calc(100%-240px)] ml-[auto] p-[105px] pt-[85px] pb-[85px] box-border h-[calc(100vh-80px)] bg-[#FAFAFC]';
+export const mainContentsTwo = 'w-[calc(100%-240px)] ml-[auto] p-[20px] box-border h-[calc(100vh-80px)] bg-[#fff]';

@@ -6,9 +6,13 @@ import { boardGrid } from '../features/styles/boardTailwind';
 import StaffDirectoryBoard from '../features/components/StaffDirectoryBoard';
 import boardArrow from '../assets/images/board_arrow.png';
 import Calendar from '../features/components/Calendar';
+import { useAuth } from '../store/useUserStore';
+import NotAdminstaffDirectoryBoard from '../features/components/NotAdminstaffDirectoryBoard';
 
 
 const Main = () => {
+    const {user} = useAuth();
+
     return (
         <main className={mainLayout}>
             <div className={mainContents}>
@@ -17,16 +21,15 @@ const Main = () => {
                         <CommuteBoard 
                             arrow={boardArrow}
                         />
-                        
-                        <StaffDirectoryBoard 
-                            arrow={boardArrow}
-                        />
-                        <StaffDirectoryBoard 
-                            arrow={boardArrow}
-                        />
-                        <StaffDirectoryBoard 
-                            arrow={boardArrow}
-                        />
+                        {
+                            user?.role === "ROLE_ADMIN" ? 
+                            <StaffDirectoryBoard 
+                                arrow={boardArrow}
+                            /> : 
+                            <NotAdminstaffDirectoryBoard 
+                                arrow={boardArrow}
+                            />
+                        }
                     </div>
 
                     <Calendar />

@@ -25,3 +25,15 @@
 .fc-today-button  {
     display: none !important;
 }
+
+.fc-button-group > button {
+    background: none no-repeat center / cover !important;
+    width: 30px;
+    height: 30px;
+    border: none !important;
+    border-radius: 50%;
+}
+
+.fc-button-group > button > span {
+    display: none;
+}

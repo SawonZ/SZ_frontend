@@ -55,7 +55,7 @@ const Login = () => {
             };
 
             login();
-            setModalText(res.data.message);
+            setModalText('로그인에 성공했습니다!');
             setModalShow(true);
 
             if(savedIdCheck) {

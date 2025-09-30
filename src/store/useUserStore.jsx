@@ -26,7 +26,7 @@ export const useAuth = create(
 
                 set({ user: null, error: '', isLogged: false, isLoading: false });
             } catch(err) {
-                set({ error: `${err} 로그아웃 실패`, isLoading: false });
+                set({ error: `${err} 로그아웃 실패`, isLogged: false, isLoading: false });
             }
         },
     })

@@ -7,7 +7,7 @@ import useModalShow from '../hooks/useModalShow';
 import Modal from './Modal';
 
 const Header = () => {
-    const { isLogged, logout } = useAuth();
+    const { user, logout } = useAuth();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const navigate = useNavigate();
     
@@ -29,7 +29,7 @@ const Header = () => {
                 </Link>
             </h1>
             {   
-                isLogged && 
+                user !== null && 
                 <button 
                     className={landingHeaderLink}
                     onClick={handleClickLogout}
