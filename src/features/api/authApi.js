@@ -45,8 +45,7 @@ export const fetchApproval = async ({ email, status }) => {
 
 //로그인
 export const fetchLogin = async ({ email, password }) => {
-  const res = await axios.post(
-    "https://api.sawonz.world/auth/login",
+  const res = await axios.post("https://api.sawonz.world/auth/login",
     {
       email,
       password,

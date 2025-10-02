@@ -8,24 +8,24 @@ import lnbIco3 from '../../assets/images/lnb_ico3.png';
 import lnbIco4 from '../../assets/images/lnb_ico4.png';
 import lnbIco5 from '../../assets/images/lnb_ico5.png';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth, useUserInquiry, useUserInquiryPortion } from '../../store/useUserStore';
+import { useAuth, useUserInquiry } from '../../store/useUserStore';
 import { useEffect, useState } from 'react';
 
 const Lnb = () => {
     const {user} = useAuth();
-    const {usersPortion, userListsNotAdmin} = useUserInquiryPortion();
+    const {users, userLists} = useUserInquiry();
     const location = useLocation();
     const [hasNewUser, setHasNewUser] = useState(false);
 
     //리스트
     useEffect(() => {
-        userListsNotAdmin();        
-    }, [userListsNotAdmin]);
+        userLists();        
+    }, [userLists]);
 
     useEffect(() => {
-        const newUsersExist = usersPortion.some(user => user.status === null);
+        const newUsersExist = users.some(user => user.status === null);
         setHasNewUser(newUsersExist);
-    }, [usersPortion]);
+    }, [users]);
 
     return (
         <div className={lnbStyle}>

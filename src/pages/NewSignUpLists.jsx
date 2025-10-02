@@ -11,7 +11,7 @@ const NewSignUpLists = () => {
     const { userListLoading } = useLoading();
 
     // 필터 + 히스토리 상태
-    const [filterStatus, setFilterStatus] = useState("ALL"); 
+    const [filterStatus, setFilterStatus] = useState("ALL"); // ALL, PENDING, APPROVED, REJECTED
     const [history, setHistory] = useState([]);
 
     // 검색 + 페이징 훅
