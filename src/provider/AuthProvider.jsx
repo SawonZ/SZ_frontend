@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
             await login(); 
         };
         initAuth();
-    }, [login]);
+    }, []);
 
     if(isLoading) return <LoadingUi />
 
