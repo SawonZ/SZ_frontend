@@ -10,7 +10,6 @@ import LayoutTwo from "../LayoutTwo";
 import Main from "../pages/Main";
 import UserLists from "../pages/UserLists";
 import UserListsPortion from "../pages/UserListsPortion";
-import RequireAuth from "../guards/RequireAuth";
 import NewSignUpLists from "../pages/NewSignUpLists";
 
 const router = createBrowserRouter([
@@ -34,15 +33,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <LayoutTwo />,
         children:[
-            { 
-                element: <RequireAuth />,
-                children: [
-                    { path: "main", element: <Main /> },
-                    { path: "user-lists", element: <UserLists /> },
-                    { path: "user-lists-portion", element: <UserListsPortion /> },
-                    { path: "new-signup-lists", element: <NewSignUpLists /> }
-                ]
-            },
+            { path: "main", element: <Main /> },
+            { path: "user-lists", element: <UserLists /> },
+            { path: "user-lists-portion", element: <UserListsPortion /> },
+            { path: "new-signup-lists", element: <NewSignUpLists /> }
         ]
     }
 ]);
