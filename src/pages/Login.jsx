@@ -11,7 +11,6 @@ import { title2 } from '../shared/styles/commonTailwind';
 import Modal from '../shared/components/Modal';
 import { useAuth } from '../store/useUserStore';
 import LoginInputField from '../features/components/LoginInputField';
-import LoadingUi from '../shared/components/LoadingUi';
 
 const Login = () => {
     const {loginState, setLoginState} = useAuthState();
