@@ -16,7 +16,10 @@ const NotAdminstaffDirectoryBoard = ({ arrow }) => {
 
     //리스트
     useEffect(() => {
-        userListsNotAdmin();        
+        const initLists = async () => {
+            await userListsNotAdmin();
+        }
+        initLists();   
     }, [userListsNotAdmin]);
 
     //검색 디바운싱
@@ -34,7 +37,7 @@ const NotAdminstaffDirectoryBoard = ({ arrow }) => {
 
     //이름, 이메일, 직급으로 필터링
     const filteredUsers = usersPortion.filter(user => {
-        // if(!user.status) return; status 값 추가
+        if(!user.status) return;
 
         const koreanPositionTitles = koreanPositionTitle(user.positionTitle);
         return (

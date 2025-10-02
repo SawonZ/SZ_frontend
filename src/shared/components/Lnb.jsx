@@ -8,12 +8,24 @@ import lnbIco3 from '../../assets/images/lnb_ico3.png';
 import lnbIco4 from '../../assets/images/lnb_ico4.png';
 import lnbIco5 from '../../assets/images/lnb_ico5.png';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth, useUserInquiryPortion } from '../../store/useUserStore';
+import { useAuth, useUserInquiry } from '../../store/useUserStore';
+import { useEffect, useState } from 'react';
 
 const Lnb = () => {
     const {user} = useAuth();
-    const {users} = useUserInquiryPortion();
+    const {users, userLists} = useUserInquiry();
     const location = useLocation();
+    const [hasNewUser, setHasNewUser] = useState(false);
+
+    //리스트
+    useEffect(() => {
+        userLists();        
+    }, [userLists]);
+
+    useEffect(() => {
+        const newUsersExist = users.some(user => user.status === null);
+        setHasNewUser(newUsersExist);
+    }, [users]);
 
     return (
         <div className={lnbStyle}>
@@ -99,7 +111,7 @@ const Lnb = () => {
                                 <img src={lnbIco3} alt="신규 가입승인 아이콘" className='lnb-ico' />
                                 <img src={lnbIco1On} alt="신규 가입승인 아이콘" className='lnb-ico-on' />
                                 신규 가입 내역
-                                <span className={newBadge}>NEW</span>
+                                {hasNewUser && <span className={newBadge}>NEW</span>}
                             </Link>
                         </li>
                     }

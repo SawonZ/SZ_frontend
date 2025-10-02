@@ -3,7 +3,14 @@ import { tableStyle, tdRadio, tdSearchInput, tdSearchInputIco, tdStyleOne, tdSty
 import searchIco from '../../assets/images/search.png';
 import { useLocation } from 'react-router-dom';
 
-const DetailedSearchTable = () => {
+const DetailedSearchTable = ({ 
+        filterStatus,
+        setFilterStatus,
+        searchText,
+        setSearchText,
+        setSearchQuery,
+        onReset
+    }) => {
     const location = useLocation();
 
     return (
@@ -29,6 +36,8 @@ const DetailedSearchTable = () => {
                                         className={tdSearchInput}
                                         type="text" 
                                         placeholder='검색어를 입력하세요.'
+                                        value={searchText}
+                                        onChange={(e) => setSearchText(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -45,6 +54,9 @@ const DetailedSearchTable = () => {
                                             className={tdRadio}
                                             type="radio" 
                                             name='state'
+                                            value="ALL"
+                                            checked={filterStatus === "ALL"}
+                                            onChange={() => setFilterStatus("ALL")}
                                         />
                                         <label className='text-[0.875rem] text-[#1F2937]'>전체</label>
                                     </li>
@@ -53,6 +65,9 @@ const DetailedSearchTable = () => {
                                             className={tdRadio}
                                             type="radio" 
                                             name='state'
+                                            value="PENDING"
+                                            checked={filterStatus === "PENDING"}
+                                            onChange={() => setFilterStatus("PENDING")}
                                         />
                                         <label className='text-[0.875rem] text-[#1F2937]'>대기</label>
                                     </li>
@@ -61,6 +76,9 @@ const DetailedSearchTable = () => {
                                             className={tdRadio}
                                             type="radio" 
                                             name='state'
+                                            value="APPROVED"
+                                            checked={filterStatus === "APPROVED"}
+                                            onChange={() => setFilterStatus("APPROVED")}
                                         />
                                         <label className='text-[0.875rem] text-[#1F2937]'>승인</label>
                                     </li>
@@ -69,6 +87,9 @@ const DetailedSearchTable = () => {
                                             className={tdRadio}
                                             type="radio" 
                                             name='state'
+                                            value="REJECTED"
+                                            checked={filterStatus === "REJECTED"}
+                                            onChange={() => setFilterStatus("REJECTED")}
                                         />
                                         <label className='text-[0.875rem] text-[#1F2937]'>반려</label>
                                     </li>
@@ -80,8 +101,23 @@ const DetailedSearchTable = () => {
             </table>
 
             <div className='flex w-[fit-content] mx-auto mt-[12px] gap-[12px]'>
-                <button className='p-[24px] pt-[6px] pb-[6px] border border-[#E6E8EB] rounded-[0.5rem]'>초기화</button>
-                <button className='p-[24px] pt-[6px] pb-[6px] bg-[#62CCD0] text-[#fff] rounded-[0.5rem]'>검색</button>
+                <button 
+                    className='p-[24px] pt-[6px] pb-[6px] border border-[#E6E8EB] rounded-[0.5rem]'
+                    onClick={() => {
+                        setSearchText("");
+                        setSearchQuery("");
+                        setFilterStatus("ALL");
+                        onReset()
+                    }}
+                >
+                        초기화
+                </button>
+                <button 
+                    className='p-[24px] pt-[6px] pb-[6px] bg-[#62CCD0] text-[#fff] rounded-[0.5rem]'
+                    onClick={() => setSearchQuery(searchText)}
+                >
+                        검색
+                </button>
             </div>
         </div>
     );

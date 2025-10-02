@@ -30,6 +30,19 @@ export const fetchSignUp = async ({ userName, phone, email, password }) => {
   return res;
 };
 
+//신규직원 승인
+export const fetchApproval = async ({ email, status }) => {
+  const res = await axios.patch("https://api.sawonz.world/admin/user/status", 
+  {
+    email,
+    status
+  }, 
+  {withCredentials: true}
+);
+
+  return res;
+};
+
 //로그인
 export const fetchLogin = async ({ email, password }) => {
   const res = await axios.post(

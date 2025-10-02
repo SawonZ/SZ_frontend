@@ -6,7 +6,7 @@ const usePositionTitle = () => {
             return '대표';
         } else if(positionTitle === "TeamJang") {
             return '팀장';
-        } else if(positionTitle === "Sawon") {
+        } else if(positionTitle === "Sawon" || "사원") {
             return '사원';
         }
     };

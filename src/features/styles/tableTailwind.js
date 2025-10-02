@@ -1,8 +1,11 @@
-export const tableStyle = 'border border-[#E6E8EB] border-r-0 border-l-0 border-b-0';
+export const tableStyle = 'border border-[#E6E8EB] border-r-0 border-l-0 border-b-0 w-full';
 
 export const trStyle = 'border-b border-[#E6E8EB]';
+export const thStyle = 'p-[13px] bg-[#FAFAFC] h-[50px] box-border text-[#1F2937] border-r border-[#E6E8EB] last:border-r-0';
+
 export const tdStyleOne = 'p-[13px] bg-[#FAFAFC] h-[50px] box-border text-[#1F2937]';
 export const tdStyleTwo = 'p-[13px] bg-[#fff] h-[50px] box-border text-[#1F2937]';
+export const tdStyleThree = 'p-[13px] bg-[#fff] h-[50px] box-border text-[#1F2937] text-center border-r border-[#E6E8EB] last:border-r-0';
 
 export const tdTitle = 'w-[120px] h-[32px] leading-[30px] border rounded-[4px] border-[#E6E8EB] pl-[13px] box-border';
 
@@ -14,3 +17,6 @@ export const tdRadio = `w-[18px] h-[18px] rounded-full border-1 border-[gray]
                         before:content-[''] before:absolute before:inset-[4px]
                         before:rounded-full before:bg-white
                         checked:before:bg-[#62CCD0]`
+
+export const approvalBtn = 'p-[8px] pl-[12px] pr-[12px] border border-[#E6E8EB] rounded-[4px] text-[12px] text-[#63C0B2] box-border mr-[8px]'
+export const companionlBtn = 'p-[8px] pl-[12px] pr-[12px] border border-[#E6E8EB] rounded-[4px] text-[12px] text-[#FF4242] box-border'

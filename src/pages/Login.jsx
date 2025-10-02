@@ -11,6 +11,7 @@ import { title2 } from '../shared/styles/commonTailwind';
 import Modal from '../shared/components/Modal';
 import { useAuth } from '../store/useUserStore';
 import LoginInputField from '../features/components/LoginInputField';
+import LoadingUi from '../shared/components/LoadingUi';
 
 const Login = () => {
     const {loginState, setLoginState} = useAuthState();
@@ -55,8 +56,7 @@ const Login = () => {
             };
 
             login();
-            setModalText('로그인에 성공했습니다!');
-            setModalShow(true);
+            navigate('/main');
 
             if(savedIdCheck) {
                 localStorage.setItem('savedId', loginState.email);
@@ -126,16 +126,6 @@ const Login = () => {
                     modalShowReset={() => setModalShow(false)}
                     modalText={modalText}
                     modalTextClear={() => setModalText('')}
-                    onClick={() => {
-                        const isError = modalText === "이메일 또는 비밀번호를 확인해주세요." ||
-                                        modalText === "토큰이 없거나, 유효하지 않은 토큰입니다" ||
-                                        modalText === "관리자 승인 대기중입니다." ||
-                                        modalText === "이메일 또는 비밀번호가 올바르지 않습니다."
-                        
-                        if(!isError) {
-                            navigate('/main')
-                        }
-                    }}
                 />
             }
         </main>

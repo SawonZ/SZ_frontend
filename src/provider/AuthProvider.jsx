@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '../store/useUserStore';
+import LoadingUi from '../shared/components/LoadingUi';
 
 const AuthProvider = ({ children }) => {
     const {login, isLoading} = useAuth();
@@ -9,9 +10,9 @@ const AuthProvider = ({ children }) => {
             await login(); 
         };
         initAuth();
-    }, []);
+    }, [login]);
 
-    if(isLoading) return <p>로딩중...</p>
+    if(isLoading) return <LoadingUi />
 
     return children;
 };
