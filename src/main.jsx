@@ -8,12 +8,12 @@ import LandingHeader from './shared/components/LandingHeader.jsx';
 import AuthProvider from './provider/AuthProvider';
 
 createRoot(document.getElementById('root')).render(
-    <RouterProvider router={router}>
-      <AuthProvider>
-        <StrictMode>
-          <LandingHeader />
-          <App />
-        </StrictMode>,
-      </AuthProvider>
-    </RouterProvider>
+  <StrictMode>
+    <AuthProvider>
+      <RouterProvider router={router}>
+        <LandingHeader />
+        <App />
+      </RouterProvider>
+    </AuthProvider>
+  </StrictMode>
 )
