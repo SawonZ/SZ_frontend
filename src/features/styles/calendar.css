@@ -112,19 +112,19 @@
 }
 
 .fc-day-sun .fc-daygrid-day-number {
-  color: #FF4242;
+    color: #FF4242;
 }
 
 /* 토요일 파랑 */
 .fc-day-sat .fc-daygrid-day-number {
-  color: #3198FF;
+    color: #3198FF;
 }
 
 /* 달력 상세 */
 .big-calendar .fc {
     width: 100%;     
-    height: 88vh;  
-    min-height: 88vh;
+    height: 89vh;  
+    min-height: 89vh;
     overflow: hidden;
     border-radius: 0;
     background-color: #fff;
@@ -158,4 +158,51 @@
 
 .big-calendar .fc .fc-daygrid-day-top {
     justify-content: flex-end;
+}
+
+.big-calendar .fc .fc-daygrid-day-frame {
+    height: 116.5px;
+    overflow: hidden;
+}
+.big-calendar .fc .fc-daygrid-day-events {
+    overflow: auto;
+    height: 100px;
+    padding-bottom: 10px;
+}
+
+
+/* 이벤트 별 커스텀 */
+.holidays {
+    background-color: rgba(255, 66, 66, 0.12) !important;
+    border-radius: 4px !important;     
+    color: #FF4242 !important;   
+    padding: 6px;     
+}
+
+.eventDay {
+    background-color: rgba(98, 204, 208, 0.12) !important;
+    border-radius: 4px !important;     
+    color: #1F2937 !important;   
+    padding: 6px;
+}
+
+.ball {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.green-ball {
+    background-color: #62D083;
+}
+
+.red-ball {
+    background-color: #FF4242;
+}
+
+.yellow-ball {
+    background-color: #FFDC47;
 }

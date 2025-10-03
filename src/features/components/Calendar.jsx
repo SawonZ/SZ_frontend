@@ -12,7 +12,7 @@ const Calendal = ({ arrow }) => {
                 <img src={arrow} alt="달력 페이지 이동" />
             </Link>
             <FullCalendar 
-                defaultView="dayGridMonth"
+                initialView="dayGridMonth"
                 plugins={[ dayGridPlugin, googleCalendarPlugin ]}
                 locale="ko"
                 dayCellContent={(arg) => {

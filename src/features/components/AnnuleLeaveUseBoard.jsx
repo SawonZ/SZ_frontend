@@ -41,7 +41,7 @@ const AnnuleLeaveUseBoard = ({ arrow }) => {
             {
                 schedulePopupShow && 
                 <SchedulePopup 
-                    onClick={() => setSchedulePopupShow(false)}
+                    closePopup={() => setSchedulePopupShow(false)}
                 />
             }
         </div>
