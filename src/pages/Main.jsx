@@ -8,6 +8,7 @@ import boardArrow from '../assets/images/board_arrow.png';
 import Calendar from '../features/components/Calendar';
 import { useAuth } from '../store/useUserStore';
 import NotAdminstaffDirectoryBoard from '../features/components/NotAdminstaffDirectoryBoard';
+import AnnuleLeaveUseBoard from '../features/components/AnnuleLeaveUseBoard';
 
 
 const Main = () => {
@@ -21,6 +22,11 @@ const Main = () => {
                         <CommuteBoard 
                             arrow={boardArrow}
                         />
+
+                        <AnnuleLeaveUseBoard 
+                            arrow={boardArrow}
+                        />
+
                         {
                             user?.role === "ROLE_ADMIN" ? 
                             <StaffDirectoryBoard 
@@ -32,7 +38,9 @@ const Main = () => {
                         }
                     </div>
 
-                    <Calendar />
+                    <Calendar 
+                        arrow={boardArrow}
+                    />
                 </div>
             </div>
         </main>

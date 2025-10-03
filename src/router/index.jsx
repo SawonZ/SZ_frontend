@@ -11,6 +11,7 @@ import Main from "../pages/Main";
 import UserLists from "../pages/UserLists";
 import UserListsPortion from "../pages/UserListsPortion";
 import NewSignUpLists from "../pages/NewSignUpLists";
+import CalendarView from "../pages/CalendarView";
 
 const router = createBrowserRouter([
     { 
@@ -36,7 +37,8 @@ const router = createBrowserRouter([
             { path: "main", element: <Main /> },
             { path: "user-lists", element: <UserLists /> },
             { path: "user-lists-portion", element: <UserListsPortion /> },
-            { path: "new-signup-lists", element: <NewSignUpLists /> }
+            { path: "new-signup-lists", element: <NewSignUpLists /> },
+            { path: "calendar", element: <CalendarView /> },
         ]
     }
 ]);

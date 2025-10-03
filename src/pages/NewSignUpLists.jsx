@@ -100,54 +100,54 @@ const NewSignUpLists = () => {
 
     return (
         <main className={mainLayout}>
-        <div className={mainContentsTwo}>
-            <h4 className={`${title2} text-left`}>신규 가입 내역</h4>
+            <div className={mainContentsTwo}>
+                <h4 className={`${title2} text-left`}>신규 가입 내역</h4>
 
-            <DetailedSearchTable
-            filterStatus={filterStatus}
-            setFilterStatus={setFilterStatus}
-            searchText={searchText}
-            setSearchText={setSearchText}
-            setSearchQuery={setSearchQuery}
-            setCurrentPage={setCurrentPage}
-            reset={() => {
-                setFilterStatus("ALL");
-                setSearchText("");
-                setSearchQuery("");
-                setCurrentPage(1);
-            }}
-            />
+                <DetailedSearchTable
+                filterStatus={filterStatus}
+                setFilterStatus={setFilterStatus}
+                searchText={searchText}
+                setSearchText={setSearchText}
+                setSearchQuery={setSearchQuery}
+                setCurrentPage={setCurrentPage}
+                reset={() => {
+                    setFilterStatus("ALL");
+                    setSearchText("");
+                    setSearchQuery("");
+                    setCurrentPage(1);
+                }}
+                />
 
-            <table className={tableStyle}>
-            <colgroup>
-                <col width={80} />
-                <col width={140} />
-                <col width={610} />
-                <col width={610} />
-                <col width={200} />
-            </colgroup>
-            <tbody>
-                <tr className={trStyle}>
-                <th className={thStyle}>상태</th>
-                <th className={thStyle}>이름</th>
-                <th className={thStyle}>아이디(이메일)</th>
-                <th className={thStyle}>휴대폰 번호</th>
-                <th className={thStyle}>가입 요청</th>
-                </tr>
-                {statusNewLists()}
-            </tbody>
-            </table>
+                <table className={tableStyle}>
+                <colgroup>
+                    <col width={80} />
+                    <col width={140} />
+                    <col width={610} />
+                    <col width={610} />
+                    <col width={200} />
+                </colgroup>
+                <tbody>
+                    <tr className={trStyle}>
+                    <th className={thStyle}>상태</th>
+                    <th className={thStyle}>이름</th>
+                    <th className={thStyle}>아이디(이메일)</th>
+                    <th className={thStyle}>휴대폰 번호</th>
+                    <th className={thStyle}>가입 요청</th>
+                    </tr>
+                    {statusNewLists()}
+                </tbody>
+                </table>
 
-            {totalPages > 1 && (
-            <div className="flex justify-center mt-4 gap-2">
-                <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="px-2 py-1 border rounded disabled:opacity-50">이전</button>
-                {Array.from({ length: totalPages }, (_, i) => (
-                <button key={i + 1} className={`px-2 py-1 border rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : ""}`} onClick={() => setCurrentPage(i + 1)}>{i + 1}</button>
-                ))}
-                <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)} className="px-2 py-1 border rounded disabled:opacity-50">다음</button>
+                {totalPages > 1 && (
+                <div className="flex justify-center mt-4 gap-2">
+                    <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="px-2 py-1 border rounded disabled:opacity-50">이전</button>
+                    {Array.from({ length: totalPages }, (_, i) => (
+                    <button key={i + 1} className={`px-2 py-1 border rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : ""}`} onClick={() => setCurrentPage(i + 1)}>{i + 1}</button>
+                    ))}
+                    <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)} className="px-2 py-1 border rounded disabled:opacity-50">다음</button>
+                </div>
+                )}
             </div>
-            )}
-        </div>
         </main>
     );
 };

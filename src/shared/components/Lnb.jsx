@@ -60,7 +60,10 @@ const Lnb = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to={''} className='lnb-lists-tab'>
+                        <Link 
+                            to={'/calendar'} 
+                            className={location.pathname === '/calendar' ? 'lnb-lists-tab on' : 'lnb-lists-tab'}
+                        >
                             <img src={lnbIco1} alt="출퇴근 기록 조회 아이콘" className='lnb-ico' />
                             <img src={lnbIco1On} alt="출퇴근 기록 조회 아이콘" className='lnb-ico-on' />
                             연차 신청

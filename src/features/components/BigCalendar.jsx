@@ -1,17 +1,13 @@
 import React from 'react';
-import '../styles/calendar.css';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
-import { Link } from 'react-router-dom';
+import '../styles/calendar.css';
 
-const Calendal = ({ arrow }) => {
+const BigCalendar = () => {
     return (
-        <div className='relative'>
-            <Link to={'/calendar'} className='absolute top-[43px] right-[39px]' >
-                <img src={arrow} alt="달력 페이지 이동" />
-            </Link>
-            <FullCalendar 
+        <div className='relative big-calendar'>
+            <FullCalendar
                 defaultView="dayGridMonth"
                 plugins={[ dayGridPlugin, googleCalendarPlugin ]}
                 locale="ko"
@@ -35,4 +31,4 @@ const Calendal = ({ arrow }) => {
     );
 };
 
-export default Calendal;
+export default BigCalendar;

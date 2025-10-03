@@ -64,7 +64,7 @@ const Login = () => {
             }
         } catch(err) {
             console.log('에러 내용 : ', err);
-            setModalText('로그인 오류');
+            setModalText(err.response.data.message);
             setModalShow(true);
             console.error('로그인 서버 오류', err);
         };
