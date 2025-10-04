@@ -28,14 +28,6 @@ const BigCalendar = () => {
                 },
             ]}
             eventDisplay="block"
-            // Google Calendar 공휴일 색상
-            eventDidMount={(info) => {
-                if (info.event.source?.googleCalendarId) {
-                    const dayNumber = info.el.closest('.fc-daygrid-day')?.querySelector('.fc-daygrid-day-number');
-                    if (dayNumber) dayNumber.style.color = '#FF4242';
-                }
-            }}
-
             events={events}
             // status별 이벤트 커스터마이징
             eventContent={(info) => {
@@ -43,7 +35,7 @@ const BigCalendar = () => {
 
                 // API 이벤트 status에 따라 색상 변경
                 const status = info.event.extendedProps.status;
-
+            
                 let statusClass = '';
                 switch (status) {
                     case true:
@@ -59,6 +51,22 @@ const BigCalendar = () => {
                         statusClass = '';
                 };
 
+                const calendarType = info.event.extendedProps.calendarType;
+                const getCalendarTypeText = (type) => {
+                    switch(type) {
+                        case 'pm_rest':
+                            return '오후 반차';
+                        case 'am_rest':
+                            return '오전 반차';
+                        case 'full_rest':
+                            return '연차';
+                        case 'outside_work':
+                            return '외근';
+                        default:
+                            return type;
+                    }
+                };
+
                 //날짜 및 시간 형식 변경
                 const startTime = formatTime(info.event.start);
 
@@ -70,7 +78,7 @@ const BigCalendar = () => {
                         <span className={statusClass}></span>
                         {
                             isGoogleEvent ? info.event.title :
-                            `${info.event.extendedProps.userName} - ${startTime}`
+                            `${info.event.extendedProps.userName} - ${startTime} ${getCalendarTypeText(calendarType)}`
                         }
                     </div>
                 );

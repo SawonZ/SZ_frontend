@@ -83,6 +83,11 @@
     font-weight: 300;
 }
 
+.fc-daygrid-day-events {
+    height: 63px;
+    overflow: hidden;
+}
+
 .fc-h-event .fc-event-title-container {
     text-align: center;
 }
@@ -91,6 +96,10 @@
     font-size: 12px;
     font-weight: 300;
     text-align: center;
+}
+
+.fc-event {
+    pointer-events: none;
 }
 
 .fc-h-event {
@@ -176,7 +185,15 @@
     background-color: rgba(255, 66, 66, 0.12) !important;
     border-radius: 4px !important;     
     color: #FF4242 !important;   
-    padding: 6px;     
+    padding: 6px;    
+}
+
+.main-calendar .holidays {
+    font-size: 12px;
+    font-weight: 300;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .eventDay {
@@ -184,6 +201,21 @@
     border-radius: 4px !important;     
     color: #1F2937 !important;   
     padding: 6px;
+    pointer-events: visible;
+    cursor: pointer;
+}
+
+.main-calendar .eventDay {
+    background-color: #FAFAFC !important;
+    border-radius: 4px !important;     
+    color: #1F2937 !important;   
+    padding: 4px;
+    pointer-events: visible;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 300;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .ball {

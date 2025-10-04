@@ -9,6 +9,7 @@ import Calendar from '../features/components/Calendar';
 import { useAuth } from '../store/useUserStore';
 import NotAdminstaffDirectoryBoard from '../features/components/NotAdminstaffDirectoryBoard';
 import AnnuleLeaveUseBoard from '../features/components/AnnuleLeaveUseBoard';
+import ScheduleViewBoard from '../features/components/ScheduleViewBoard';
 
 
 const Main = () => {
@@ -36,6 +37,11 @@ const Main = () => {
                                 arrow={boardArrow}
                             />
                         }
+
+                        <ScheduleViewBoard 
+                            arrow={boardArrow}
+                        />
+
                     </div>
 
                     <Calendar 

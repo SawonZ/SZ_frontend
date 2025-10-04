@@ -15,3 +15,5 @@ export const annuleLeaveInputDate = 'w-[calc(100%-26px)] h-[40px] border border-
 export const annuleLeaveInputTime = 'w-[113px] h-[40px] border border-[#D1D5DB] pl-[20px]  pr-[20px] rounded-[8px] outline-none text-[14px] placeholder:text-[#D1D5DB]';
 
 export const annuleLeaveInputTextArea = 'w-[calc(100%-26px)] h-[145px] border border-[#D1D5DB] pl-[20px] pt-[12px] pr-[20px] rounded-[8px] outline-none text-[14px] placeholder:text-[#9CA3AF] resize-none';
+
+export const annuleLeaveTwo = 'w-[506px] h-[490px] p-[40px] rounded-[20px] bg-[#fff] box-border fixed top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]';

@@ -11,7 +11,6 @@ const useAllScheduleList = () => {
 
             try {
                 const res = await fetchGetAllSchedule();
-                console.log('API 응답', res);
 
                 if(res.data.responseCode !== "SUCCESS") {
                     console.log('전체 일정 조회 실패');
@@ -26,8 +25,12 @@ const useAllScheduleList = () => {
                     dataArray = [res.data.data]; // 단일 객체도 배열로 변환
                 }
 
-                // FullCalendar 이벤트 형식으로 변환
-                const fcEvents = res.data.data.map(ev => ({
+                const fcEvents = res.data.data.map(ev => {
+                const startDate = new Date(ev.date + 'T' + (ev.startTime || '00:00'));
+                const days = ['일', '월', '화', '수', '목', '금', '토']; // 한국 요일
+                const dayOfWeek = days[startDate.getDay()];
+
+                return {
                     id: ev.calendarId,
                     title: ev.calendarTitle,
                     start: ev.date + 'T' + (ev.startTime || '00:00'),
@@ -36,9 +39,12 @@ const useAllScheduleList = () => {
                         userName: ev.userName,
                         memo: ev.calendarMemo,
                         calendarType: ev.calendarType,
-                        status: ev.status
+                        status: ev.status,
+                        dayOfWeek: dayOfWeek, // 요일 추가
+                        positionTitle: ev.positionTitle // 직급 추가
                     }
-                }));
+                };
+            });
 
                 setEvents(fcEvents);
             } catch(err) {

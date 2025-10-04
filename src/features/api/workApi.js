@@ -25,3 +25,12 @@ export const fetchGetAllSchedule = async () => {
 
     return res;
 };
+
+// 본인 일정 조회
+export const fetchGetSchedule = async () => {
+    const res = await axios.get("https://api.sawonz.world/calendar?list=me", 
+        {withCredentials: true}
+    );
+
+    return res;
+};
