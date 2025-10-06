@@ -1,6 +1,6 @@
 export const tableStyle = 'border border-[#E6E8EB] border-r-0 border-l-0 border-b-0 w-full';
 
-export const trStyle = 'border-b border-[#E6E8EB]';
+export const trStyle = 'border-b border-[#E6E8EB] cursor-pointer first:cursor-auto';
 export const thStyle = 'p-[13px] bg-[#FAFAFC] h-[50px] box-border text-[#1F2937] border-r border-[#E6E8EB] last:border-r-0';
 
 export const tdStyleOne = 'p-[13px] bg-[#FAFAFC] h-[50px] box-border text-[#1F2937]';

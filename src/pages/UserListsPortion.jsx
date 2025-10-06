@@ -1,15 +1,19 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { mainContentsTwo, mainLayout, title2 } from '../shared/styles/commonTailwind';
-import { useUserInquiryPortion } from '../store/useUserStore';
+import { useAuth, useUserInquiryPortion } from '../store/useUserStore';
 import useLoading from '../features/hooks/useLoading';
 import DetailedSearchTable from '../features/components/DetailedSearchTable';
 import { tableStyle, tdStyleThree, thStyle, trStyle } from '../features/styles/tableTailwind';
 import usePositionTitle from '../features/hooks/usePositionTitle';
+import { useNavigate } from 'react-router-dom';
 
 const UserListsPortion = () => {
+    const { user:userData } = useAuth();
     const { usersPortion = [], situation, error, userListsNotAdmin } = useUserInquiryPortion();
     const { userListLoading } = useLoading();
     const { koreanPositionTitle } = usePositionTitle();
+
+    const navigate = useNavigate();
 
     // 검색 상태
     const [searchText, setSearchText] = useState("");    // 입력값
@@ -46,6 +50,14 @@ const UserListsPortion = () => {
         setSearchText("");
         setSearchQuery("");
         setCurrentPage(1);
+    };
+
+    //연락처 형식 변환
+    const formatPhoneNumber = (phone) => {
+        if (!phone) return "";
+        const cleaned = phone.replace(/\D/g, ""); // 숫자만 추출
+
+        return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
     };
 
     // 로딩/에러 처리
@@ -86,12 +98,19 @@ const UserListsPortion = () => {
                         </tr>
 
                         {paginatedUsers.map(user => (
-                            <tr className={trStyle} key={user.email}>
+                            <tr 
+                                className={trStyle} key={user.email}
+                                onClick={() => {
+                                    if(userData.email === user.email) {
+                                        navigate(`/staff-view/${user.email}`);
+                                    }
+                                }}
+                            >
                                 <td className={tdStyleThree}>사진</td>
                                 <td className={tdStyleThree}>{user.userName}</td>
                                 <td className={tdStyleThree}>{koreanPositionTitle(user.positionTitle)}</td>
                                 <td className={tdStyleThree}>{user.email}</td>
-                                <td className={tdStyleThree}>{user.phone}</td>
+                                <td className={tdStyleThree}>{formatPhoneNumber(user.phone)}</td>
                             </tr>
                         ))}
                     </tbody>

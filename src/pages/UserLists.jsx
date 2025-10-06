@@ -5,11 +5,13 @@ import useLoading from '../features/hooks/useLoading';
 import DetailedSearchTable from '../features/components/DetailedSearchTable';
 import { tableStyle, tdStyleThree, thStyle, trStyle } from '../features/styles/tableTailwind';
 import usePositionTitle from '../features/hooks/usePositionTitle';
+import { useNavigate } from 'react-router-dom';
 
 const UserLists = () => {
     const { users, situation, error, userLists } = useUserInquiry();
     const { userListLoading } = useLoading();
     const { koreanPositionTitle } = usePositionTitle();
+    const navigate = useNavigate();
 
     // 검색 상태
     const [searchText, setSearchText] = useState("");    // 입력값
@@ -35,6 +37,22 @@ const UserLists = () => {
         currentPage * itemsPerPage
     );
 
+    //연락처 형식 변환
+    const formatPhoneNumber = (phone) => {
+        if (!phone) return "";
+        const cleaned = phone.replace(/\D/g, ""); // 숫자만 추출
+
+        return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    };
+
+    // 연봉 3자리마다 콤마 표시
+    const formatSalaryNumber = (salary) => {
+        if (salary == null) return "";
+        const cleaned = String(salary).replace(/\D/g, "");
+
+        return Number(cleaned).toLocaleString();
+    };
+    
     // 로딩/에러 처리
     const pending = userListLoading(situation, error, users);
     if (pending) return pending;
@@ -79,15 +97,19 @@ const UserLists = () => {
                         </tr>
 
                         {paginatedUsers.map(user => (
-                            <tr className={trStyle} key={user.email}>
+                            <tr 
+                                className={trStyle} 
+                                key={user.email}
+                                onClick={() => navigate(`/user-view/${user.email}`)}
+                            >
                                 <td className={tdStyleThree}>사진</td>
                                 <td className={tdStyleThree}>{user?.userName}</td>
                                 <td className={tdStyleThree}>{koreanPositionTitle(user?.positionTitle)}</td>
                                 <td className={tdStyleThree}>{user?.email}</td>
-                                <td className={tdStyleThree}>{user?.phone}</td>
+                                <td className={tdStyleThree}>{formatPhoneNumber(user?.phone)}</td>
                                 <td className={tdStyleThree}>{user?.address}</td>
                                 <td className={tdStyleThree}>{user?.hiredAt}</td>
-                                <td className={tdStyleThree}>{user?.salary}</td>
+                                <td className={tdStyleThree}>{formatSalaryNumber(user?.salary)}원</td>
                                 <td className={tdStyleThree}>{user?.annualLeaveCount}</td>
                             </tr>
                         ))}

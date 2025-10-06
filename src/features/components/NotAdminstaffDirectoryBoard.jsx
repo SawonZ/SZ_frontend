@@ -68,7 +68,7 @@ const NotAdminstaffDirectoryBoard = ({ arrow }) => {
                     />
                 </div>
 
-                <ul className='overflow-auto max-h-[128px]'>
+                <ul className='overflow-auto max-h-[128px] pb-[10px] box-border [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden'>
                     {filteredUsers.map((user) => (
                         <li key={user?.email} className='flex items-center gap-[12px] mb-[0.875rem] last:mb-[0]'>
                             <img src={profileTest2} alt="프로필" />

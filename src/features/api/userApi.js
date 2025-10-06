@@ -25,3 +25,41 @@ export const userMe = async () => {
 
     return res;
 };
+
+//관리자 유저 정보 수정
+export const userInfoPatch = async ({ email, salary, annualLeaveCount, positionTitle, hiredAt }) => {
+    const res = await axios.patch('https://api.sawonz.world/admin/user/info', 
+        {
+            email,
+            salary,
+            annualLeaveCount,
+            positionTitle,
+            hiredAt
+        },
+        {withCredentials: true}
+    );
+
+    return res;
+};
+
+// 직원 본인 정보 조회
+export const staffGetFetch = async () => {
+    const res = await axios.get('https://api.sawonz.world/users/my-info',
+        {withCredentials:true}
+    );
+
+    return res;
+};
+
+//직원 본인 정보 수정
+export const staffInfoPatch = async ({ address, phone }) => {
+    const res = await axios.patch('https://api.sawonz.world/users/my-info', 
+        {
+            address,
+            phone
+        },
+        {withCredentials: true}
+    );
+
+    return res;
+};

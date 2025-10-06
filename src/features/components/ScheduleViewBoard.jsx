@@ -6,8 +6,6 @@ import { formatDate } from '../../utils/formatTime';
 const ScheduleViewBoard = () => {
     const [scheduleHistoryState, setScheduleHistoryState] = useState([]);
 
-    console.log(scheduleHistoryState);
-
     useEffect(() => {
         const scheduleHistory = async () => {
             try {
@@ -18,7 +16,6 @@ const ScheduleViewBoard = () => {
                     return;
                 }
 
-                console.log(res.data.data);
                 setScheduleHistoryState([...res.data.data]);
             } catch (err) {
                 console.log('에러 내역 : ', err);
