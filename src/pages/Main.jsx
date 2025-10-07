@@ -10,6 +10,7 @@ import { useAuth } from '../store/useUserStore';
 import NotAdminstaffDirectoryBoard from '../features/components/NotAdminstaffDirectoryBoard';
 import AnnuleLeaveUseBoard from '../features/components/AnnuleLeaveUseBoard';
 import ScheduleViewBoard from '../features/components/ScheduleViewBoard';
+import StaffAnnuleLeaveUseBoard from '../features/components/StaffAnnuleLeaveUseBoard';
 
 
 const Main = () => {
@@ -24,9 +25,16 @@ const Main = () => {
                             arrow={boardArrow}
                         />
 
-                        <AnnuleLeaveUseBoard 
-                            arrow={boardArrow}
-                        />
+                        {
+                            user?.role === "ROLE_ADMIN" ? 
+                            <AnnuleLeaveUseBoard 
+                                arrow={boardArrow}
+                            /> :
+                            <StaffAnnuleLeaveUseBoard 
+                                arrow={boardArrow}
+                            />
+                        }
+                        
 
                         {
                             user?.role === "ROLE_ADMIN" ? 

@@ -10,12 +10,19 @@ import lnbIco5 from '../../assets/images/lnb_ico5.png';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth, useUserInquiry } from '../../store/useUserStore';
 import { useEffect, useState } from 'react';
+import useStaffData from '../../features/hooks/useStaffData';
+import LoadingUi from './LoadingUi';
+import usePositionTitle from '../../features/hooks/usePositionTitle';
 
 const Lnb = () => {
     const {user} = useAuth();
     const {users, userLists} = useUserInquiry();
     const location = useLocation();
     const [hasNewUser, setHasNewUser] = useState(false);
+    const {staffData, isLoading} = useStaffData();
+    const {koreanPositionTitle} = usePositionTitle();
+
+    console.log(user)
 
     //리스트
     useEffect(() => {
@@ -27,13 +34,16 @@ const Lnb = () => {
         setHasNewUser(newUsersExist);
     }, [users]);
 
+    // 로딩/에러 처리
+    if (isLoading || !staffData) return <LoadingUi />;
+
     return (
         <div className={lnbStyle}>
             <div className={lnbProfileStyle}>
                 <figure className={lnbFigure}>
                     <img src={profileImg} alt="직원 프로필 사진" className='w-full h-full'/>
                 </figure>
-                <p className='text-[#5E6778]'>{user?.userName} <span className='text-[13px] text-[#9CA3AF]'>{user?.role === "ROLE_ADMIN" ? "관리자" : users?.positionTitle}</span></p>
+                <p className='text-[#5E6778]'>{user?.userName} <span className='text-[13px] text-[#9CA3AF]'>{user?.role === "ROLE_ADMIN" ? "관리자" : koreanPositionTitle(staffData.positionTitle)}</span></p>
             </div>
 
             <div className='mb-[24px]'>
@@ -96,41 +106,43 @@ const Lnb = () => {
                         </Link>
                     </li>
                     {
-                        user?.role !== "ROLE_ADMIN" ? null
-                        : 
-                        <li>
-                            <Link to={''} className='lnb-lists-tab'>
-                                <img src={lnbIco2} alt="직원 정보 수정 아이콘" className='lnb-ico' />
-                                <img src={lnbIco1On} alt="직원 정보 수정 아이콘" className='lnb-ico-on' />
-                                직원 정보 수정
-                            </Link>
-                        </li>
+                        (user?.role === "ROLE_ADMIN") && (
+                            <li>
+                                <Link to={''} className='lnb-lists-tab'>
+                                    <img src={lnbIco2} alt="직원 정보 수정 아이콘" className='lnb-ico' />
+                                    <img src={lnbIco1On} alt="직원 정보 수정 아이콘" className='lnb-ico-on' />
+                                    직원 정보 수정
+                                </Link>
+                            </li>
+                        )
                     }
+
                     {
-                        user?.role !== "ROLE_ADMIN" ? null
-                        : 
-                        <li>
-                            <Link 
-                                to={'/new-signup-lists'} 
-                                className={location.pathname === '/new-signup-lists' ? 'lnb-lists-tab on' : 'lnb-lists-tab'}
-                            >
-                                <img src={lnbIco3} alt="신규 가입승인 아이콘" className='lnb-ico' />
-                                <img src={lnbIco1On} alt="신규 가입승인 아이콘" className='lnb-ico-on' />
-                                신규 가입 내역
-                                {hasNewUser && <span className={newBadge}>NEW</span>}
-                            </Link>
-                        </li>
+                        (user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER") && (
+                            <li>
+                                <Link 
+                                    to={'/new-signup-lists'} 
+                                    className={location.pathname === '/new-signup-lists' ? 'lnb-lists-tab on' : 'lnb-lists-tab'}
+                                >
+                                    <img src={lnbIco3} alt="신규 가입승인 아이콘" className='lnb-ico' />
+                                    <img src={lnbIco1On} alt="신규 가입승인 아이콘" className='lnb-ico-on' />
+                                    신규 가입 내역
+                                    {hasNewUser && <span className={newBadge}>NEW</span>}
+                                </Link>
+                            </li>
+                        )
                     }
+
                     {
-                        user?.role !== "ROLE_ADMIN" ? null
-                        : 
-                        <li>
-                            <Link to={''} className='lnb-lists-tab'>
-                                <img src={lnbIco3} alt="퇴사 처리 아이콘" className='lnb-ico' />
-                                <img src={lnbIco1On} alt="퇴사 처리 아이콘" className='lnb-ico-on' />
-                                퇴사 처리
-                            </Link>
-                        </li>
+                        (user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER") && (
+                            <li>
+                                <Link to={''} className='lnb-lists-tab'>
+                                    <img src={lnbIco3} alt="퇴사 처리 아이콘" className='lnb-ico' />
+                                    <img src={lnbIco1On} alt="퇴사 처리 아이콘" className='lnb-ico-on' />
+                                    퇴사 처리
+                                </Link>
+                            </li>
+                        )
                     }
                 </ul>
             </div>

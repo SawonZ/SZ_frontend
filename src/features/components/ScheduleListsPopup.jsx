@@ -64,7 +64,7 @@ const ScheduleListsPopup = ({ sameDateEventsApi = [], isLoading, onClose }) => {
                                 </div>
                                 <div>
                                     {
-                                        user?.role === "ROLE_ADMIN" ? (
+                                        user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER" ? (
                                             <>
                                                 {event.extendedProps?.status === true && (
                                                     <span className='flex items-center justify-center w-[45px] h-[32px] bg-[rgba(99,192,178,0.1)] text-[12px] text-[#63C0B2] rounded-[4px]'>승인</span>

@@ -4,37 +4,11 @@ import StaffUserView from '../features/components/StaffUserView';
 import usePositionTitle from '../features/hooks/usePositionTitle';
 import { staffGetFetch } from '../features/api/userApi';
 import LoadingUi from '../shared/components/LoadingUi';
+import useStaffData from '../features/hooks/useStaffData';
 
 const StaffView = () => {
-    const [staffData, setStaffData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const {staffData, isLoading} = useStaffData();
     const {koreanPositionTitle} = usePositionTitle();
-
-    console.log(staffData)
-
-    useEffect(() => {
-        const staffFetch = async () => {
-            setIsLoading(true);
-
-            try{
-                const res = await staffGetFetch();
-
-                if(res.data.responseCode !== "SUCCESS") {
-                    console.log('내 정보 조회 오류');
-                    return;
-                }
-
-                setStaffData(res.data.data);
-            } catch(err) {
-                console.log('에러 내용 :', err);
-                console.error(err.response?.data.message);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        staffFetch();
-    }, []);
 
     //연락처 형식 변환
     const formatPhoneNumber = (phone) => {
@@ -53,7 +27,7 @@ const StaffView = () => {
     };
 
     // 로딩/에러 처리
-    if (isLoading) return <LoadingUi />;
+    if (isLoading || !staffData) return <LoadingUi />;
 
     return (
         <main className={mainLayout}>

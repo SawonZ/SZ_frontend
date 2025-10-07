@@ -1,27 +1,19 @@
-import React, { useEffect } from 'react';
-import { board, boardTitle, boardTitleWrap } from '../styles/boardTailwind';
-import CommonButton from '../../shared/components/CommonButton';
-import { Link } from 'react-router-dom';
-import CircularLeaveProgress from './CircularLeaveProgress';
-import SchedulePopup from './SchedulePopup';
+import React, { useEffect, useState } from 'react';
+import { useAuth, useUserInquiryPortion } from '../../store/useUserStore';
 import useSchedulePopup from '../hooks/useSchedulePopup';
-import { useAuth, useUserInquiry } from '../../store/useUserStore';
 import useLoading from '../hooks/useLoading';
+import { board, boardTitle, boardTitleWrap } from '../styles/boardTailwind';
+import { Link } from 'react-router-dom';
+import SchedulePopup from './SchedulePopup';
+import CommonButton from '../../shared/components/CommonButton';
+import CircularLeaveProgress from './CircularLeaveProgress';
+import { staffGetFetch } from '../api/userApi';
+import LoadingUi from '../../shared/components/LoadingUi';
+import useStaffData from '../hooks/useStaffData';
 
-const AnnuleLeaveUseBoard = ({ arrow }) => {
-    const { user } = useAuth();
+const StaffAnnuleLeaveUseBoard = ({ arrow }) => {
     const { schedulePopupShow, openSchedulePopup, setSchedulePopupShow } = useSchedulePopup();
-    const { users, situation, error, userLists } = useUserInquiry();
-    const { userListLoading } = useLoading();
-
-    // 사용자 목록 초기화 / 관리자용 API
-    useEffect(() => {
-        userLists();        
-    }, [userLists]);
-
-    //관리자 총 연차 갯수
-    const filtedUser = users.filter(u => u.email === user.email);
-    const findUser = filtedUser.find(u => u.email === user.email);
+    const {staffData, isLoading} = useStaffData();
 
     const fullAnnual = (title) => {  
         switch(title) {
@@ -36,8 +28,8 @@ const AnnuleLeaveUseBoard = ({ arrow }) => {
         }
     };
 
-    const pending = userListLoading(situation, error, users);
-    if (pending) return pending;
+    // 로딩/에러 처리
+    if (isLoading || !staffData) return <LoadingUi />;
 
     return (
         <div className={`${board} after:content-none`}>
@@ -48,13 +40,13 @@ const AnnuleLeaveUseBoard = ({ arrow }) => {
                 </Link>
             </div>
             <div className='relative'>
-                <p className='text-[#1F2937] mb-[4px] leading-[1.5]'>총 연차 갯수 : {fullAnnual(findUser.positionTitle)}개</p>
-                <p className='text-[#1F2937] leading-[1.5] mb-[72px]'>남은 연차 : {findUser.annualLeaveCount}개</p>
+                <p className='text-[#1F2937] mb-[4px] leading-[1.5]'>총 연차 갯수 : {fullAnnual(staffData.positionTitle)}개</p>
+                <p className='text-[#1F2937] leading-[1.5] mb-[72px]'>남은 연차 : {staffData.annualLeaveCount}개</p>
 
                 <div className='absolute right-[0] top-[-20px]'>
                     <CircularLeaveProgress 
-                        total={fullAnnual(findUser.positionTitle)}        
-                        remaining={findUser.annualLeaveCount}     
+                        total={fullAnnual(staffData.positionTitle)}        
+                        remaining={staffData.annualLeaveCount}     
                         size={130}        
                         strokeWidth={12}  
                         circleColor="#ededed"
@@ -78,4 +70,4 @@ const AnnuleLeaveUseBoard = ({ arrow }) => {
     );
 };
 
-export default AnnuleLeaveUseBoard;
+export default StaffAnnuleLeaveUseBoard;
