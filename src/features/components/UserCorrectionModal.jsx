@@ -10,24 +10,26 @@ const UserCorrectionModal = ({ params, closePopup }) => {
     const [correction, setCorrection] = useState({
         email: params.email,
         salary: params.salary,
-        annualLeaveCount: params.annualLeaveCount,
         hiredAt: params.hiredAt
     });
+
     const {
             dropdown,
             setDropDown,
     } = useSchedule();   
     const [Keyword, setKeyword] = useState(params.positionTitle);
     const [KeywordType, setKeywordType] = useState(null);
-    const {koreanPositionTitle} = usePositionTitle();
-    
+    const [annualLeaveCount, setAnnualLeaveCount] = useState(params.annualLeaveCount);
+    const {koreanPositionTitle} = usePositionTitle();    
+
+    console.log(Keyword)
 
     const handleKeywordSelect = (title) => {
         switch(title) {
-            case '사원':
-                return setKeyword('사원');
-            case '팀장':
-                return setKeyword('팀장');
+            case 'Sawon':
+                return setKeyword('Sawon'), setAnnualLeaveCount(11);
+            case 'TeamJang':
+                return setKeyword('TeamJang'), setAnnualLeaveCount(20);
         }
     };
 
@@ -47,7 +49,7 @@ const UserCorrectionModal = ({ params, closePopup }) => {
             const res = await userInfoPatch({
                 email: correction.email,
                 salary: correction.salary,
-                annualLeaveCount: correction.annualLeaveCount,
+                annualLeaveCount: annualLeaveCount,
                 positionTitle: KeywordType,
                 hiredAt: correction.hiredAt
             });
@@ -84,6 +86,7 @@ const UserCorrectionModal = ({ params, closePopup }) => {
                         <label className='block text-[14px] text-[#9CA3AF] mb-[8px]'>이메일</label>
                         <input 
                             className={annuleLeaveInput}
+                            readOnly
                             type="email" 
                             value={correction.email}
                         />
@@ -106,8 +109,8 @@ const UserCorrectionModal = ({ params, closePopup }) => {
                         <input 
                             className={annuleLeaveInput}
                             type="number" 
-                            value={correction.annualLeaveCount}
-                            onChange={(e) => setCorrection(prev => ({...prev, annualLeaveCount: e.target.value }))}
+                            value={annualLeaveCount}
+                            onChange={(e) => setAnnualLeaveCount(e.target.value)}
                         />
                     </div>
 
@@ -130,7 +133,7 @@ const UserCorrectionModal = ({ params, closePopup }) => {
                             <p 
                                 className={annuleLeaveDropdownListItem}
                                 onClick={() => {
-                                    handleKeywordSelect('사원');
+                                    handleKeywordSelect('Sawon');
                                     handleKeywordType('사원');
                                     setDropDown(false);
                                 }}
@@ -140,7 +143,7 @@ const UserCorrectionModal = ({ params, closePopup }) => {
                             <p 
                                 className={annuleLeaveDropdownListItem}
                                 onClick={() => {
-                                    handleKeywordSelect('팀장');
+                                    handleKeywordSelect('TeamJang');
                                     handleKeywordType('팀장');
                                     setDropDown(false);
                                 }}

@@ -22,8 +22,6 @@ const Lnb = () => {
     const {staffData, isLoading} = useStaffData();
     const {koreanPositionTitle} = usePositionTitle();
 
-    console.log(user)
-
     //리스트
     useEffect(() => {
         userLists();        

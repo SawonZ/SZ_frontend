@@ -1,0 +1,22 @@
+.progress {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: #D1D5DB;
+    border-radius: 20px;
+}
+
+.progress-ico {
+    position: absolute;
+    top: 50%;
+    left: -3px;
+    transform: translateY(-50%);
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: #62CCD0;
+    border-radius: 20px;
+}

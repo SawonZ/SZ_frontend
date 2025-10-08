@@ -77,7 +77,7 @@ const ScheduleViewBoard = () => {
             <div className={boardTitleWrap}>
                 <h4 className={boardTitle}>연차 내역</h4>
             </div>
-            <div className='h-[180px] overflow-auto'>
+            <div className='h-[180px] overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden'>
                 <ul>
                     {
                         scheduleHistoryState.map((his) => (
