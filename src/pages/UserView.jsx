@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import useLoading from '../features/hooks/useLoading';
 import { mainContentsTwo, mainLayout, title2 } from '../shared/styles/commonTailwind';
 import usePositionTitle from '../features/hooks/usePositionTitle';
-import AdminUserView from '../features/components/adminUserView';
+import AdminUserView from '../features/components/AdminUserView';
 import { useUserInquiry } from '../store/useUserStore';
 
 const UserView = () => {

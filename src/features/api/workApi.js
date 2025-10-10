@@ -34,3 +34,32 @@ export const fetchGetSchedule = async () => {
 
     return res;
 };
+
+// 본인 일정 수정(대기상태 일때만 가능)
+export const fetchPutSchedule = async ({ calendarId, calendarType, date, startTime, endTime, calendarTitle, calendarMemo}) => {
+    const res = await axios.put(`https://api.sawonz.world/calendar/${calendarId}`, 
+        {
+            calendarType,
+            date,
+            startTime,
+            endTime,
+            calendarTitle,
+            calendarMemo
+        },
+        {withCredentials: true}
+    );
+
+    return res;
+};
+
+// 관리자가 일정 승인 / 반려
+export const fetchRejectApprovalSchedule = async ({ calendarId, status }) => {
+    const res = await axios.patch(`https://api.sawonz.world/calendar/${calendarId}`, 
+        {
+            status
+        },
+        {withCredentials: true}
+    );
+
+    return res;
+};

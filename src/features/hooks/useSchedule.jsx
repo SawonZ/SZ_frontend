@@ -1,102 +1,117 @@
 import React, { useState } from 'react';
-import { fetchPostSchedule } from '../api/workApi';
+import { fetchPostSchedule, fetchPutSchedule } from '../api/workApi';
 
-const useSchedule = (closePopup) => {
+const useSchedule = (closePopup, initialData = null) => {
     const [dropdown, setDropDown] = useState(false);
-    const [schedulTitle, setSchedulTitle] = useState('');
-    const [scheduleKeyword, setScheduleKeyword] = useState('근무신청');
-    const [scheduleKeywordType, setScheduleKeywordType] = useState('');
-    const [scheduleDate, setScheduleDate] = useState('');
+    const [schedulTitle, setSchedulTitle] = useState(initialData?.calendarTitle || '');
+    const [scheduleKeyword, setScheduleKeyword] = useState(initialData?.calendarType ? getKeywordText(initialData.calendarType) : '근무신청');
+    const [scheduleKeywordType, setScheduleKeywordType] = useState(initialData?.calendarType || '');
+    const [scheduleDate, setScheduleDate] = useState(initialData?.date || '');
     const [scheduleTime, setscheduleTime] = useState({
-        start: '',
-        end: ''
+        start: initialData?.startTime || '',
+        end: initialData?.endTime || ''
     });
-    const [schedulInfo, setSchedulInfo] = useState('');
+    const [schedulInfo, setSchedulInfo] = useState(initialData?.calendarMemo || '');
+
+    // 초기 calendarType -> 키워드 텍스트 변환
+    function getKeywordText(type) {
+        switch(type) {
+            case 'worktime_update': return '근무시간 조정';
+            case 'outside_work': return '외근';
+            case 'full_rest': return '연차';
+            case 'am_rest': return '오전 반차';
+            case 'pm_rest': return '오후 반차';
+            default: return '근무신청';
+        }
+    }
 
     const handleKeywordSelect = (id) => {
         switch (id) {
             case 'keyword1':
                 setScheduleKeyword('근무시간 조정');
+                setScheduleKeywordType('worktime_update');
                 break;
             case 'keyword2':
                 setScheduleKeyword('외근');
+                setScheduleKeywordType('outside_work');
                 break;
             case 'keyword3':
                 setScheduleKeyword('연차');
+                setScheduleKeywordType('full_rest');
                 setscheduleTime({ start: "09:00", end: "18:00" });
                 break;
             case 'keyword4':
                 setScheduleKeyword('오전 반차');
+                setScheduleKeywordType('am_rest');
                 setscheduleTime({ start: "09:00", end: "13:00" });
                 break;
             case 'keyword5':
                 setScheduleKeyword('오후 반차');
+                setScheduleKeywordType('pm_rest');
                 setscheduleTime({ start: "13:00", end: "18:00" });
                 break;
             default:
                 setScheduleKeyword('근무신청');
+                setScheduleKeywordType('');
         }
     };
 
-    const scheduleSubmit = async (e) => {
+    const scheduleSubmit = async (e, calendarId = null) => {
         e.preventDefault();
-        // 1. 제목 체크
-        if (!schedulTitle.trim()) {
-            alert("제목을 입력해주세요.");
-            return;
-        }
 
-        // 2. 키워드 체크
-        if (scheduleKeyword === "근무신청") {
-            alert("신청 사유(키워드)를 선택해주세요.");
-            return;
-        }
+        console.log({
+    calendarType: scheduleKeywordType,
+    date: scheduleDate,
+    startTime: scheduleTime.start,
+    endTime: scheduleTime.end,
+    calendarTitle: schedulTitle,
+    calendarMemo: schedulInfo
+});
 
-        // 3. 날짜 체크
-        if (!scheduleDate) {
-            alert("날짜를 선택해주세요.");
-            return;
-        }
-
-        // 4. 시간 체크 (외근, 근무시간 조정만 필수)
+        if (!schedulTitle.trim()) { alert("제목을 입력해주세요."); return; }
+        if (scheduleKeyword === "근무신청") { alert("신청 사유(키워드)를 선택해주세요."); return; }
+        if (!scheduleDate) { alert("날짜를 선택해주세요."); return; }
         if ((scheduleKeyword === "외근" || scheduleKeyword === "근무시간 조정")) {
-            if (!scheduleTime.start || !scheduleTime.end) {
-                alert("시간을 입력해주세요.");
-                return;
-            }
+            if (!scheduleTime.start || !scheduleTime.end) { alert("시간을 입력해주세요."); return; }
         }
-
-        // 5. 신청 사유 상세내용 체크
-        if (!schedulInfo.trim()) {
-            alert("신청 사유를 입력해주세요.");
-            return;
-        }
+        if (!schedulInfo.trim()) { alert("신청 사유를 입력해주세요."); return; }
 
         try {
-            console.log('일정 제출 시작');
-            const res = await fetchPostSchedule({
-                calendarType: scheduleKeywordType,
-                date: scheduleDate,
-                startTime: scheduleTime.start,
-                endTime: scheduleTime.end,
-                calendarTitle: schedulTitle,
-                calendarMemo: schedulInfo
-            });
+            let res;
+            if(calendarId) {
+                // 수정
+                res = await fetchPutSchedule({
+                    calendarId,
+                    calendarType: scheduleKeywordType,
+                    date: scheduleDate,
+                    startTime: scheduleTime.start,
+                    endTime: scheduleTime.end,
+                    calendarTitle: schedulTitle,
+                    calendarMemo: schedulInfo
+                });
+            } else {
+                // 새 일정
+                res = await fetchPostSchedule({
+                    calendarType: scheduleKeywordType,
+                    date: scheduleDate,
+                    startTime: scheduleTime.start,
+                    endTime: scheduleTime.end,
+                    calendarTitle: schedulTitle,
+                    calendarMemo: schedulInfo
+                });
+            }
 
             if(res.data.responseCode !== "SUCCESS") {
-                alert(`${res.data.message}`);
+                alert(res.data.message);
                 return;
             }
 
-            console.log('일정 제출 성공:', res.data);
-
-            alert("일정이 성공적으로 신청되었습니다.");
+            alert(calendarId ? "일정이 수정되었습니다." : "일정이 성공적으로 신청되었습니다.");
             closePopup();
-        }catch (err) {
-            console.log('에러 내용 : ', err.response?.data?.message);
-            console.error("일정 신청 중 오류 발생:", err);
-            alert("일정 신청 중 오류가 발생했습니다. 다시 시도해주세요.");
-            return;
+
+        } catch(err) {
+            console.error("일정 제출 중 오류:", err);
+            alert("일정 제출 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     };
 
@@ -106,6 +121,7 @@ const useSchedule = (closePopup) => {
         schedulTitle,
         setSchedulTitle,
         scheduleKeyword,
+        scheduleKeywordType,
         setScheduleKeywordType,
         scheduleDate,
         setScheduleDate,

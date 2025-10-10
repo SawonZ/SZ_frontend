@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { annuleLeaveTwo } from '../styles/annuleLeaveTailwind';
 import closetIco from '../../assets/images/close.png';
 import { formatDate } from '../../utils/formatTime';
@@ -6,6 +6,7 @@ import LoadingUi from '../../shared/components/LoadingUi';
 import usePositionTitle from '../hooks/usePositionTitle';
 import { useAuth} from '../../store/useUserStore';
 import { commonButton } from '../../shared/styles/commonTailwind';
+import { fetchRejectApprovalSchedule } from '../api/workApi';
 
 const ScheduleListsPopup = ({ sameDateEventsApi = [], isLoading, onClose }) => {
     const {koreanPositionTitle} = usePositionTitle();
@@ -27,8 +28,33 @@ const ScheduleListsPopup = ({ sameDateEventsApi = [], isLoading, onClose }) => {
                 return '연차';
             case 'outside_work':
                 return '외근';
+            case 'worktime_update':
+                return '근무시간 조정';
             default:
                 return type;
+        }
+    };
+    
+    const rejectApprovalSchedule = async (calendarId, status) => {
+        try {
+            const res = await fetchRejectApprovalSchedule({
+                calendarId,
+                status
+            });
+
+            if (res.data.responseCode !== "SUCCESS") {
+                console.log("일정 승인/반려 실패");
+                return;
+            }
+
+            if (status) {
+                alert("승인이 완료되었습니다.");
+            } else {
+                alert("반려가 완료되었습니다.");
+            }
+        } catch (err) {
+            console.log("에러 내용: ", err);
+            console.error(err.response?.data?.message);
         }
     };
 
@@ -52,7 +78,7 @@ const ScheduleListsPopup = ({ sameDateEventsApi = [], isLoading, onClose }) => {
                     총 {sameDateEventsApi.length}건
                 </p>
 
-                <ul className='overflow-auto h-[215px]'>
+                <ul className='overflow-auto h-[215px] pb-[20px] box-border'>
                     {sameDateEventsApi.length > 0 ? (
                         sameDateEventsApi.map((event, index) => (
                             <li key={index} className='flex items-center justify-between mb-[16px] last:mb-[0]'>
@@ -74,8 +100,18 @@ const ScheduleListsPopup = ({ sameDateEventsApi = [], isLoading, onClose }) => {
                                                 )}
                                                 {event.extendedProps?.status === null && (
                                                     <div className='flex gap-[8px]'>
-                                                        <button className='flex items-center justify-center w-[45px] h-[32px] bg-[#fff] text-[12px] text-[#63C0B2] rounded-[4px] border border-[#E6E8EB]'>승인</button>
-                                                        <button className='flex items-center justify-center w-[45px] h-[32px] bg-[#fff] text-[12px] text-[#FF4242] rounded-[4px] border border-[#E6E8EB]'>반려</button>
+                                                        <button 
+                                                            className='flex items-center justify-center w-[45px] h-[32px] bg-[#fff] text-[12px] text-[#63C0B2] rounded-[4px] border border-[#E6E8EB]'
+                                                            onClick={() => rejectApprovalSchedule(event.id, true)}
+                                                        >
+                                                            승인
+                                                        </button>
+                                                        <button 
+                                                            className='flex items-center justify-center w-[45px] h-[32px] bg-[#fff] text-[12px] text-[#FF4242] rounded-[4px] border border-[#E6E8EB]'
+                                                            onClick={() => rejectApprovalSchedule(event.id, false)}
+                                                        >
+                                                            반려
+                                                        </button>
                                                     </div>
                                                 )}
                                             </>

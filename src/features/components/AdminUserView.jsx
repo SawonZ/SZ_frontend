@@ -32,7 +32,7 @@ const AdminUserView = ({ params, formatPhoneNumber, koreanPositionTitle, formatS
                     <p className='text-[16px] text-[#1F2937] font-[500]'>{koreanPositionTitle(params.positionTitle)}</p>
                 </li>
                 <li className='pb-[24px] border-b border-[#DEE0E4] mb-[24px]'>
-                    <p className='text-[14px] text-[#5E6778] mb-[12px]'>연차</p>
+                    <p className='text-[14px] text-[#5E6778] mb-[12px]'>잔여 연차</p>
                     <p className='text-[16px] text-[#1F2937] font-[500]'>{params.annualLeaveCount}</p>
                 </li>
                 <li className='pb-[24px] border-b border-[#DEE0E4] mb-[24px]'>

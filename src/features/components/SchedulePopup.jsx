@@ -148,19 +148,6 @@ const SchedulePopup = ({ closePopup }) => {
                         </div>
                     </div> {/* 시간 */}
 
-                {/*  <div className='flex items-center gap-[8px] mb-[8px] relative'>
-                        <div className='flex items-center gap-[8px] pl-[26px]'>
-                            <input 
-                                style={{ accentColor: '#62CCD0' }}
-                                className='w-[16px] h-[16px]'
-                                type="checkbox"
-                                checked={allDay}
-                                onChange={(e) => setAllDay(e.target.checked)}
-                            />
-                            <span className='text-[#9CA3AF]'>종일</span>
-                        </div>
-                    </div> */} {/* 종일 체크박스 */}
-
                     <div className='flex items-start gap-[8px] mb-[8px] relative'>
                         <img src={textIco} alt="텍스트 아이콘" />
                         <textarea
