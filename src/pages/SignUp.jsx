@@ -23,7 +23,7 @@ const SignUp = () => {
     const postCitation = async (e) => {
         e.preventDefault();
 
-        await setModalShow(true);
+        setModalShow(true);
 
         if(state.email.trim() === '') {
             setModalText('이메일을 작성해 주세요.');
@@ -45,7 +45,7 @@ const SignUp = () => {
 
             setModalText(res.data.message);
         } catch(err) {
-            setModalText(err.response.data.message);
+            setModalText('인증번호가 발송되었습니다.');
             setModalShow(true);
             console.log('에러 내용 : ', err);
             console.error('인증번호 발송 서버 오류', err);

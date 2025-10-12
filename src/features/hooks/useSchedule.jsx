@@ -60,13 +60,13 @@ const useSchedule = (closePopup, initialData = null) => {
         e.preventDefault();
 
         console.log({
-    calendarType: scheduleKeywordType,
-    date: scheduleDate,
-    startTime: scheduleTime.start,
-    endTime: scheduleTime.end,
-    calendarTitle: schedulTitle,
-    calendarMemo: schedulInfo
-});
+        calendarType: scheduleKeywordType,
+        date: scheduleDate,
+        startTime: scheduleTime.start,
+        endTime: scheduleTime.end,
+        calendarTitle: schedulTitle,
+        calendarMemo: schedulInfo
+    });
 
         if (!schedulTitle.trim()) { alert("제목을 입력해주세요."); return; }
         if (scheduleKeyword === "근무신청") { alert("신청 사유(키워드)를 선택해주세요."); return; }

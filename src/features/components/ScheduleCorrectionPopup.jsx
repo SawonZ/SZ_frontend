@@ -33,7 +33,8 @@ const ScheduleCorrectionPopup = ({ closePopup, initialData }) => {
         dropdown,
         setDropDown,
         handleKeywordSelect,
-        scheduleEditSubmit
+        scheduleEditSubmit,
+        deleteSchedule
     } = useScheduleEdit(closePopup, initialData);
 
     return (
@@ -105,10 +106,18 @@ const ScheduleCorrectionPopup = ({ closePopup, initialData }) => {
                         <img src={textIco} alt="텍스트 아이콘" />
                         <textarea className={annuleLeaveInputTextArea} value={schedulInfo} onChange={(e) => setSchedulInfo(e.target.value)} />
                     </div>
-
-                    <button className='w-[76px] h-[36px] text-[1rem] text-[#fff] rounded-[0.5rem] bg-[#62CCD0] hover:bg-[#59BABE] transition-all duration-300 absolute bottom-[40px] right-[40px]'>
-                        확인
-                    </button>
+                    
+                    <div className='flex absolute bottom-[40px] right-[40px] gap-[8px]'>
+                        <button 
+                            className='w-[76px] h-[36px] text-[1rem] text-[#fff] rounded-[0.5rem] bg-[#D1D5DB] hover:bg-[#9CA3AF] transition-all duration-300'
+                            onClick={deleteSchedule}
+                        >
+                            삭제
+                        </button>
+                        <button className='w-[76px] h-[36px] text-[1rem] text-[#fff] rounded-[0.5rem] bg-[#62CCD0] hover:bg-[#59BABE] transition-all duration-300'>
+                            확인
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

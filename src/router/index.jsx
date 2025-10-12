@@ -14,6 +14,7 @@ import NewSignUpLists from "../pages/NewSignUpLists";
 import CalendarView from "../pages/CalendarView";
 import UserView from "../pages/UserView";
 import StaffView from "../pages/StaffView";
+import AttendanceAdmin from "../pages/AttendanceAdmin";
 
 const router = createBrowserRouter([
     { 
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
             { path: "calendar", element: <CalendarView /> },
             { path: "user-view/:email", element: <UserView /> },
             { path: "staff-view/:email", element: <StaffView /> },
+            { path: "attendance", element: <AttendanceAdmin /> },
         ]
     }
 ]);

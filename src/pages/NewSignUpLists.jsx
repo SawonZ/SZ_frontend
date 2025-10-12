@@ -78,12 +78,20 @@ const NewSignUpLists = () => {
         currentPage * itemsPerPage
     );
 
+    //연락처 형식 변환
+    const formatPhoneNumber = (phone) => {
+        if (!phone) return "";
+        const cleaned = phone.replace(/\D/g, ""); // 숫자만 추출
+
+        return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    };
+
     const statusNewLists = () => paginatedUsers.map(user => (
         <tr className={trStyle} key={user.email}>
         <td className={tdStyleThree}>{getStatusText(user.status)}</td>
         <td className={tdStyleThree}>{user?.userName}</td>
         <td className={tdStyleThree}>{user?.email}</td>
-        <td className={tdStyleThree}>{user?.phone}</td>
+        <td className={tdStyleThree}>{formatPhoneNumber(user?.phone)}</td>
         <td className={tdStyleThree}>
             {user.status === null && (
             <>

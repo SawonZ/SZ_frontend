@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchPutSchedule } from '../api/workApi';
+import { fetchDeleteSchedule, fetchPutSchedule } from '../api/workApi';
 
 const useScheduleEdit = (closePopup, initialData) => {
     const [schedulTitle, setSchedulTitle] = useState('');
@@ -103,6 +103,28 @@ const useScheduleEdit = (closePopup, initialData) => {
         }
     };
 
+    const deleteSchedule = async (e) => {
+        e.preventDefault();
+
+        const isConfirmed = confirm("정말 삭제하시겠습니까?");
+        if (!isConfirmed) return;
+
+        try{
+            const res = await fetchDeleteSchedule({ calendarId: initialData.calendarId, });
+
+            if(res.data.responseCode !== 'SUCCESS'){
+                alert(res.data.message);
+                return;
+            }
+
+            alert('일정이 삭제되었습니다.');
+            closePopup();
+        } catch(err) {
+            console.error('삭제 중 오류:', err);
+            alert('삭제 중 오류가 발생했습니다.');
+        }
+    };
+
     return {
         schedulTitle,
         setSchedulTitle,
@@ -117,7 +139,8 @@ const useScheduleEdit = (closePopup, initialData) => {
         dropdown,
         setDropDown,
         handleKeywordSelect,
-        scheduleEditSubmit
+        scheduleEditSubmit,
+        deleteSchedule
     };
 };
 
