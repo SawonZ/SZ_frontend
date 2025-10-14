@@ -116,7 +116,7 @@ const ScheduleViewBoard = () => {
             {editPopupOpen && selectedSchedule && (
                 <ScheduleCorrectionPopup 
                     closePopup={closeEditPopup} 
-                    initialData={selectedSchedule} 
+                    initialData={selectedSchedule}
                 />
             )}
         </div>

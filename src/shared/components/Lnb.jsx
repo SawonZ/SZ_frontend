@@ -39,7 +39,7 @@ const Lnb = () => {
         <div className={lnbStyle}>
             <div className={lnbProfileStyle}>
                 <figure className={lnbFigure}>
-                    <img src={profileImg} alt="직원 프로필 사진" className='w-full h-full'/>
+                    <img src={staffData.imgUrl === null ? profileImg : staffData.imgUrl} alt="직원 프로필 사진" className='w-full h-full'/>
                 </figure>
                 <p className='text-[#5E6778]'>{user?.userName} <span className='text-[13px] text-[#9CA3AF]'>{user?.role === "ROLE_ADMIN" ? "관리자" : koreanPositionTitle(staffData.positionTitle)}</span></p>
             </div>
@@ -48,7 +48,10 @@ const Lnb = () => {
                 <p className={lnbHeading}>출퇴근 관리</p>
                 <ul>
                     <li>
-                        <Link to={''} className='lnb-lists-tab'>
+                        <Link 
+                            to={user?.role === "ROLE_ADMIN" ? "/commute-all" : "/commute-individual"} 
+                            className={location.pathname === '/commute-all' || location.pathname === '/commute-individual'  ? 'lnb-lists-tab on' : 'lnb-lists-tab'}
+                        >
                             <img src={lnbIco1} alt="출퇴근 기록 조회 아이콘" className='lnb-ico' />
                             <img src={lnbIco1On} alt="출퇴근 기록 조회 아이콘" className='lnb-ico-on' />
                             출퇴근 기록 조회
@@ -57,7 +60,7 @@ const Lnb = () => {
                 </ul>
             </div>
 
-            <div className='mb-[24px]'>
+            {/* <div className='mb-[24px]'>
                 <p className={lnbHeading}>근태 관리</p>
                 <ul>
                     <li>
@@ -88,7 +91,7 @@ const Lnb = () => {
                         </Link>
                     </li>
                 </ul>
-            </div>
+            </div> */}
 
             <div className='mb-[24px]'>
                 <p className={lnbHeading}>직원 관리</p>
@@ -103,7 +106,7 @@ const Lnb = () => {
                             직원 조회
                         </Link>
                     </li>
-                    {
+                    {/* {
                         (user?.role === "ROLE_ADMIN") && (
                             <li>
                                 <Link to={''} className='lnb-lists-tab'>
@@ -113,7 +116,7 @@ const Lnb = () => {
                                 </Link>
                             </li>
                         )
-                    }
+                    } */}
 
                     {
                         (user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER") && (
@@ -134,7 +137,10 @@ const Lnb = () => {
                     {
                         (user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER") && (
                             <li>
-                                <Link to={''} className='lnb-lists-tab'>
+                                <Link 
+                                    to={'/quitter'} 
+                                    className={location.pathname === '/quitter' ? 'lnb-lists-tab on' : 'lnb-lists-tab'}
+                                >
                                     <img src={lnbIco3} alt="퇴사 처리 아이콘" className='lnb-ico' />
                                     <img src={lnbIco1On} alt="퇴사 처리 아이콘" className='lnb-ico-on' />
                                     퇴사 처리
@@ -149,19 +155,22 @@ const Lnb = () => {
                 <p className={lnbHeading}>게시판</p>
                 <ul>
                     <li>
-                        <Link to={''} className='lnb-lists-tab'>
+                        <Link 
+                            to={'/notice'} 
+                            className={location.pathname === '/notice' ? 'lnb-lists-tab on' : 'lnb-lists-tab'}
+                        >
                             <img src={lnbIco4} alt="공지사항 아이콘" className='lnb-ico' />
                             <img src={lnbIco1On} alt="공지사항 아이콘" className='lnb-ico-on' />
                             공지사항
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to={''} className='lnb-lists-tab'>
                             <img src={lnbIco5} alt="고객문의 관리 아이콘" className='lnb-ico' />
                             <img src={lnbIco1On} alt="고객문의 관리 아이콘" className='lnb-ico-on' />
                             고객문의 관리
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
         </div>

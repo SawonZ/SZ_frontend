@@ -71,7 +71,11 @@ const NotAdminstaffDirectoryBoard = ({ arrow }) => {
                 <ul className='overflow-auto max-h-[128px] pb-[10px] box-border [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden'>
                     {filteredUsers.map((user) => (
                         <li key={user?.email} className='flex items-center gap-[12px] mb-[0.875rem] last:mb-[0]'>
-                            <img src={profileTest2} alt="프로필" />
+                            <img 
+                                className='w-[32px] h-[32px] rounded-[50%]'
+                                src={user.imgUrl === null ? profileTest2 : user.imgUrl} 
+                                alt="프로필" 
+                            />
                             <div className='flex items-center gap-[5px]'>
                                 <p className='text-[0.875rem] text-[#1F2937] font-[500]'>{user?.userName}</p>
                                 <p className='text-[0.8125rem] text-[#4B5563]'>{koreanPositionTitle(user?.positionTitle)}</p>

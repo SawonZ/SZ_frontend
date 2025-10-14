@@ -7,12 +7,18 @@ import StaffCorrectionModal from './StaffCorrectionModal';
 const StaffUserView = ({ params, formatPhoneNumber, koreanPositionTitle, formatSalaryNumber }) => {
     const [staffCorrectionModalshow , setStaffCorrectionmodalShow] = useState(false);
 
+    console.log(params);
+
     if(!params) return <LoadingUi />
 
     return (
         <div className='pb-[40px]'>
             <div className='flex flex-col items-center w-[179px] mx-auto mb-[40px]'>
-                <img src={profileIco3} alt="직원 프로필 사진" />
+                <img 
+                    className='w-[100px] h-[100px] overflow-hidden rounded-[50%]'
+                    src={params.imgUrl === null ? profileIco3 : params.imgUrl} 
+                    alt="직원 프로필 사진" 
+                />
                 <p className='mt-[24px] mb-[12px] text-[#1F2937]'>{params.userName}</p>
                 <div className='flex justify-between w-full'>
                     <p className='text-[#1F2937] text-[14px]'>입사일자</p>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { fetchPostSchedule, fetchPutSchedule } from '../api/workApi';
+import useStaffData from './useStaffData';
 
 const useSchedule = (closePopup, initialData = null) => {
     const [dropdown, setDropDown] = useState(false);
@@ -12,6 +13,7 @@ const useSchedule = (closePopup, initialData = null) => {
         end: initialData?.endTime || ''
     });
     const [schedulInfo, setSchedulInfo] = useState(initialData?.calendarMemo || '');
+    const {staffData} = useStaffData();
 
     // 초기 calendarType -> 키워드 텍스트 변환
     function getKeywordText(type) {
@@ -67,6 +69,14 @@ const useSchedule = (closePopup, initialData = null) => {
         calendarTitle: schedulTitle,
         calendarMemo: schedulInfo
     });
+
+        if (scheduleKeyword === '연차' && staffData.annualLeaveCount <= 0) {
+            return alert('잔여 연차가 없습니다. 연차를 사용할 수 없습니다.');
+        }
+
+        if (scheduleKeyword === '오전 반차' || scheduleKeyword === '오후 반차' && staffData.annualLeaveCount <= 0) {
+            return alert('잔여 연차가 없습니다. 연차를 사용할 수 없습니다.');
+        }
 
         if (!schedulTitle.trim()) { alert("제목을 입력해주세요."); return; }
         if (scheduleKeyword === "근무신청") { alert("신청 사유(키워드)를 선택해주세요."); return; }

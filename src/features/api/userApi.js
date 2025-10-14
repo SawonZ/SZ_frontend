@@ -63,3 +63,27 @@ export const staffInfoPatch = async ({ address, phone }) => {
 
     return res;
 };
+
+//프로필 수정
+export const profilePut = async (formData) => {
+    return await axios.put('https://api.sawonz.world/users/img', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+    });
+};
+
+//프로필 삭제
+export const profileDelete = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        return await axios.delete('https://api.sawonz.world/users/img', {
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+            withCredentials: true, // 쿠키 인증 필요하면 추가
+        });
+    } catch (err) {
+        console.error('프로필 삭제 API 오류:', err.response?.data?.message || err);
+        throw err;
+    }
+};

@@ -62,6 +62,8 @@ const BigCalendar = () => {
                             return '연차';
                         case 'outside_work':
                             return '외근';
+                        case 'worktime_update':
+                            return '근무시간 조정';
                         default:
                             return type;
                     }

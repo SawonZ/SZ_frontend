@@ -66,3 +66,13 @@ export const fetchLogout = async () => {
 
   return res;
 }
+
+//리프레쉬 토큰
+export const refreshToken = async () => {
+  const res = await axios.post('https://api.sawonz.world/auth/refresh',
+    {},
+    {withCredentials: true}
+  );
+
+  return res;
+};

@@ -1,36 +1,43 @@
 import { create } from "zustand";
 import { userAllLists, userAllListsNotAdmin, userMe } from "../features/api/userApi";
-import { fetchLogout } from "../features/api/authApi";
+import { fetchLogout, refreshToken } from "../features/api/authApi";
 
 //로그인, 로그아웃
-export const useAuth = create(
-    (set) => ({
-        user: null,
-        error: '',
-        isLogged: false,
-        isLoading: true,
+export const useAuth = create((set) => ({
+    user: null,
+    error: '',
+    isLogged: false,
+    isLoading: true,
 
-        login: async () => {
+    login: async () => {
+        try {
+        const res = await userMe(); // accessToken 쿠키 기반으로 인증됨
+        set({ user: res.data.data, isLogged: true, isLoading: false });
+        } catch (err) {
+        // accessToken 만료 → refresh 시도
+        if (err.response?.status === 401) {
             try {
-                const res = await userMe();
-
-                set({ user: res.data.data, error: null, isLogged: true, isLoading: false });
-            } catch(err) {
-                set({ user: null, error: `${err} 로그인 정보 없음`, isLogged: false, isLoading: false });
+            await refreshToken(); // 새 쿠키 갱신
+            const res2 = await userMe(); // 다시 유저 정보 요청
+            set({ user: res2.data.data, isLogged: true, isLoading: false });
+            return;
+            } catch (refreshErr) {
+            console.error('리프레시 실패:', refreshErr);
             }
-        },
+        }
+        set({ user: null, isLogged: false, isLoading: false });
+        }
+    },
 
-        logout: async () => {
-            try {
-                await fetchLogout();
-
-                set({ user: null, error: '', isLogged: false, isLoading: false });
-            } catch(err) {
-                set({ error: `${err} 로그아웃 실패`, isLogged: false, isLoading: false });
-            }
-        },
-    })
-);
+    logout: async () => {
+        try {
+        await fetchLogout(); // 서버가 access/refresh 쿠키 둘 다 clear
+        set({ user: null, isLogged: false, isLoading: false });
+        } catch (err) {
+        set({ error: `${err} 로그아웃 실패`, isLogged: false });
+        }
+    },
+}));
 
 export const useUserInquiry = create(
     (set) => ({

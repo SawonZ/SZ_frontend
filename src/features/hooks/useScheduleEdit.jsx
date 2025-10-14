@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchDeleteSchedule, fetchPutSchedule } from '../api/workApi';
+import useStaffData from './useStaffData';
 
 const useScheduleEdit = (closePopup, initialData) => {
     const [schedulTitle, setSchedulTitle] = useState('');
@@ -9,7 +10,8 @@ const useScheduleEdit = (closePopup, initialData) => {
     const [scheduleTime, setscheduleTime] = useState({ start: '', end: '' });
     const [schedulInfo, setSchedulInfo] = useState('');
     const [dropdown, setDropDown] = useState(false);
-
+    const {staffData} = useStaffData();
+    
     // calendarType -> 한글 매핑
     const getKeywordText = (type) => {
         switch(type){
@@ -69,8 +71,18 @@ const useScheduleEdit = (closePopup, initialData) => {
         setDropDown(false);
     };
 
+    
+
     const scheduleEditSubmit = async (e) => {
         e.preventDefault();
+
+        if (scheduleKeyword === '연차' && staffData.annualLeaveCount <= 0) {
+            return alert('잔여 연차가 없습니다. 연차를 사용할 수 없습니다.');
+        }
+
+        if (scheduleKeyword === '오전 반차' || scheduleKeyword === '오후 반차' && staffData.annualLeaveCount <= 0) {
+            return alert('잔여 연차가 없습니다. 연차를 사용할 수 없습니다.');
+        }
 
         if(!schedulTitle.trim()) return alert('제목을 입력해주세요.');
         if(scheduleKeyword === '근무신청') return alert('신청 사유를 선택해주세요.');

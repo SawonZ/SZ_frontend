@@ -3,15 +3,21 @@ import '../styles/commute.css';
 import { Link } from 'react-router-dom';
 import clockTwo from '../../assets/images/clock2.svg';
 import useCommute from '../hooks/useCommute';
+import { useAuth } from '../../store/useUserStore';
+import WorkModal from './WorkModal';
+import { useState } from 'react';
 
 const CommuteBoard = ({ arrow }) => {
+    const [workModal, setWorkModal] = useState(false);
+    const [workModalText, setWorkModalText] = useState('');
+    const { user } = useAuth();
     const {
         workState,
         leaveState,
         goToWork,
         leaveWork,
         elapsedTime,
-        progress,          
+        progress,
         formatElapsed,
         handleClickGoToWork,
         handleClickLeaveWork
@@ -26,7 +32,7 @@ const CommuteBoard = ({ arrow }) => {
         <div className={`${board} after:content-none`}>
             <div className={boardTitleWrap}>
                 <h4 className={boardTitle}>출퇴근 관리</h4>
-                <Link to={"/user-lists"}>
+                <Link to={user?.role === "ROLE_ADMIN" ? "/commute-all" : "/commute-individual"}>
                     <img src={arrow} alt="페이지 이동 화살표" />
                 </Link>
             </div>
@@ -48,7 +54,7 @@ const CommuteBoard = ({ arrow }) => {
                 <div className='mb-[10px]'>
                     <div className='flex items-end justify-between mb-[12px]'>
                         <p 
-                            className={timeToSeconds(goToWork.slice(0,5)) > timeToSeconds('09:00') ? 'text-[#9CA3AF]' : 'text-[#FF4242]'}
+                            className={timeToSeconds(goToWork.slice(0,5)) > timeToSeconds('09:00') ? 'text-[#FF4242]' : 'text-[#9CA3AF]'}
                         >
                             {goToWork.slice(0,5)}
                         </p>
@@ -68,19 +74,35 @@ const CommuteBoard = ({ arrow }) => {
                     <button
                         style={workState ? { background: '#D1D5DB', pointerEvents: 'none' } : { background: '#62CCD0' }}
                         className='w-[50%] h-[60px] rounded-[8px] text-[18px] text-[#fff]'
-                        onClick={handleClickGoToWork}
+                        onClick={() => {
+                            handleClickGoToWork();
+                            setWorkModal(true);
+                            setWorkModalText('출근 처리되었습니다.');
+                        }}
                     >
                         출근하기
                     </button>
                     <button 
                         style={workState && !leaveState ? { background: '#62CCD0' } : { background: '#D1D5DB', pointerEvents: 'none' }}
                         className='w-[50%] h-[60px] rounded-[8px] text-[18px] text-[#fff]'
-                        onClick={handleClickLeaveWork}
+                        onClick={() => {
+                            handleClickLeaveWork();
+                            setWorkModal(true);
+                            setWorkModalText('퇴근 처리되었습니다.');
+                        }}
                     >
                         퇴근하기
                     </button>
                 </div>
             </div>
+            
+            {workModal && 
+                <WorkModal 
+                    modalText={workModalText}
+                    setWorkModalText={setWorkModalText}
+                    setWorkModal={setWorkModal}
+                />
+            }
         </div>
     );
 };

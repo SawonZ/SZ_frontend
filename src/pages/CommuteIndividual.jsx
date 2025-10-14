@@ -1,7 +1,7 @@
 import React from 'react';
 import { mainContentsTwo, mainLayout } from '../shared/styles/commonTailwind';
 
-const Commute = () => {
+const CommuteIndividual = () => {
     return (
         <main className={mainLayout}>
             <div className={mainContentsTwo}>
@@ -11,4 +11,4 @@ const Commute = () => {
     );
 };
 
-export default Commute;
+export default CommuteIndividual;

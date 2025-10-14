@@ -6,6 +6,7 @@ import DetailedSearchTable from '../features/components/DetailedSearchTable';
 import { tableStyle, tdStyleThree, thStyle, trStyle } from '../features/styles/tableTailwind';
 import usePositionTitle from '../features/hooks/usePositionTitle';
 import { useNavigate } from 'react-router-dom';
+import profileTest3 from '../assets/images/profile_test3.png';
 
 const UserListsPortion = () => {
     const { user:userData } = useAuth();
@@ -106,7 +107,13 @@ const UserListsPortion = () => {
                                     }
                                 }}
                             >
-                                <td className={tdStyleThree}>사진</td>
+                                <td className={tdStyleThree}>
+                                    <img 
+                                        className='w-[100px] h-[100px] rounded-[50%]'
+                                        src={user.imgUrl === null ? profileTest3 : user.imgUrl} 
+                                        alt="직원 프로필" 
+                                    />
+                                </td>
                                 <td className={tdStyleThree}>{user.userName}</td>
                                 <td className={tdStyleThree}>{koreanPositionTitle(user.positionTitle)}</td>
                                 <td className={tdStyleThree}>{user.email}</td>

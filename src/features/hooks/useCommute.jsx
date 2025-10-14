@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { fetchGoToWork, fetchLeaveWork } from '../api/workApi';
+import { fetchGoToWork, fetchLeaveWork } from '../api/workApi'; // fetchWorkStatus 제거
 
 const useCommute = () => {
     const [workState, setWorkState] = useState(false);
@@ -7,13 +7,12 @@ const useCommute = () => {
     const [goToWork, setGoToWork] = useState('00:00:00');
     const [leaveWork, setLeaveWork] = useState('00:00:00');
     const [elapsedTime, setElapsedTime] = useState(0);
-    const [progress, setProgress] = useState(0); // ← 진행률 추가
-
-    console.log(leaveState)
-
+    const [progress, setProgress] = useState(0);
     const timerRef = useRef(null);
 
-    // --- 시간 포맷 함수 ---
+    const storageKey = (key) => `default_${key}`;
+
+    // --- 시간 포맷 ---
     const formatTime = (date) => {
         const h = String(date.getHours()).padStart(2, '0');
         const m = String(date.getMinutes()).padStart(2, '0');
@@ -28,85 +27,116 @@ const useCommute = () => {
         return `${h}:${m}:${s}`;
     };
 
-    // --- 진행률 계산 ---
     const calculateProgress = () => {
         const now = new Date();
         const nowMinutes = now.getHours() * 60 + now.getMinutes();
-        const startMinutes = 9 * 60; // 09:00
-        const endMinutes = 18 * 60;  // 18:00
-
+        const startMinutes = 9 * 60;
+        const endMinutes = 18 * 60;
         if (nowMinutes < startMinutes) return 0;
         if (nowMinutes > endMinutes) return 100;
         return ((nowMinutes - startMinutes) / (endMinutes - startMinutes)) * 100;
     };
 
-    // --- 출근 클릭 ---
+    // --- 일일 초기화 ---
+    const resetDaily = () => {
+        const todayStr = new Date().toDateString();
+        const lastDate = localStorage.getItem(storageKey('lastDate'));
+        if (lastDate !== todayStr) {
+            ['goToWork','leaveWork','workState','leaveState','startTimestamp'].forEach(key =>
+                localStorage.removeItem(storageKey(key))
+            );
+            localStorage.setItem(storageKey('lastDate'), todayStr);
+
+            setGoToWork('00:00:00');
+            setLeaveWork('00:00:00');
+            setWorkState(false);
+            setLeaveState(false);
+            setElapsedTime(0);
+            setProgress(0);
+
+            if (timerRef.current) clearInterval(timerRef.current);
+        }
+    };
+
+    // --- 출근 ---
     const handleClickGoToWork = async () => {
         try {
-            const res = await fetchGoToWork();
-            if (res.data.responseCode !== 'SUCCESS') return;
+            const res = await fetchGoToWork(); // axios 호출
+            let workTime = formatTime(new Date());
 
-            const now = new Date();
-            const nowStr = formatTime(now);
+            if (res.data.responseCode === 'SUCCESS') {
+                workTime = formatTime(new Date());
+            } else if (res.data.responseCode === 'ALREADY_CHECKED') {
+                workTime = res.data.goToWorkTime ?? formatTime(new Date());
+            } else {
+                return alert(res.data.message);
+            }
 
-            setGoToWork(nowStr);
+            setGoToWork(workTime);
             setWorkState(true);
-            localStorage.setItem('goToWork', nowStr);
-            localStorage.setItem('workState', 'true');
+            localStorage.setItem(storageKey('goToWork'), workTime);
+            localStorage.setItem(storageKey('workState'), 'true');
 
-            // 타이머 시작
-            const startTimestamp = now.getTime();
-            localStorage.setItem('startTimestamp', startTimestamp);
+            if (timerRef.current) clearInterval(timerRef.current);
+            const startTimestamp = Date.now();
+            localStorage.setItem(storageKey('startTimestamp'), startTimestamp);
+
             timerRef.current = setInterval(() => {
                 const elapsed = Math.floor((Date.now() - startTimestamp) / 1000);
                 setElapsedTime(elapsed);
-                setProgress(calculateProgress()); // ← 진행률 업데이트
+                setProgress(calculateProgress());
             }, 1000);
-
         } catch (err) {
-            console.error('출근 오류:', err);
+            console.error('출근 오류:', err.response?.data?.message || err.message);
+            alert(err.response?.data?.message || '출근 처리 중 오류 발생');
         }
     };
 
-    // --- 퇴근 클릭 ---
+    // --- 퇴근 ---
     const handleClickLeaveWork = async () => {
         try {
-            const res = await fetchLeaveWork();
-            if (res.data.responseCode !== 'SUCCESS') return;
+            const res = await fetchLeaveWork(); // axios 호출
+            let leaveTime = formatTime(new Date());
 
-            const now = new Date();
-            const nowStr = formatTime(now);
+            if (res.data.responseCode === 'SUCCESS') {
+                leaveTime = formatTime(new Date());
+            } else if (res.data.responseCode === 'ALREADY_CHECKED') {
+                leaveTime = res.data.leaveWorkTime ?? formatTime(new Date());
+            } else {
+                return alert(res.data.message);
+            }
 
-            setLeaveWork(nowStr);
+            setLeaveWork(leaveTime);
             setLeaveState(true);
-            setWorkState(false);
-            localStorage.setItem('leaveWork', nowStr);
-            localStorage.setItem('leaveState', 'true');
 
-            // 타이머 종료
-            clearInterval(timerRef.current);
-            setProgress(calculateProgress()); // 마지막으로 진행률 업데이트
+            localStorage.setItem(storageKey('leaveWork'), leaveTime);
+            localStorage.setItem(storageKey('leaveState'), 'true');
+
+            if (timerRef.current) clearInterval(timerRef.current);
+            setProgress(calculateProgress());
         } catch (err) {
-            console.error('퇴근 오류:', err);
+            console.error('퇴근 오류:', err.response?.data?.message || err.message);
+            alert(err.response?.data?.message || '퇴근 처리 중 오류 발생');
         }
     };
 
-    // --- 새로고침 시 로컬스토리지 값 복원 ---
+    // --- localStorage 기반 초기화 ---
     useEffect(() => {
-        const storedGo = localStorage.getItem('goToWork');
-        const storedLeave = localStorage.getItem('leaveWork');
-        const storedWorkState = localStorage.getItem('workState') === 'true';
-        const storedLeaveState = localStorage.getItem('leaveState') === 'true';
-        const startTimestamp = localStorage.getItem('startTimestamp');
+        resetDaily();
+
+        const storedGo = localStorage.getItem(storageKey('goToWork'));
+        const storedLeave = localStorage.getItem(storageKey('leaveWork'));
+        const storedWorkState = localStorage.getItem(storageKey('workState')) === 'true';
+        const storedLeaveState = localStorage.getItem(storageKey('leaveState')) === 'true';
+        const startTimestamp = parseInt(localStorage.getItem(storageKey('startTimestamp')), 10);
 
         if (storedGo) setGoToWork(storedGo);
         if (storedLeave) setLeaveWork(storedLeave);
         if (storedWorkState) {
             setWorkState(true);
             if (!storedLeaveState && startTimestamp) {
-                // 진행 중이면 타이머 재시작
                 timerRef.current = setInterval(() => {
-                    const elapsed = Math.floor((Date.now() - parseInt(startTimestamp)) / 1000);
+                    const elapsed = Math.floor((Date.now() - startTimestamp) / 1000);
                     setElapsedTime(elapsed);
                     setProgress(calculateProgress());
                 }, 1000);
@@ -114,10 +144,11 @@ const useCommute = () => {
         }
         if (storedLeaveState) setLeaveState(true);
 
-        // 페이지 로드 시 한 번만 계산
         setProgress(calculateProgress());
 
-        return () => clearInterval(timerRef.current);
+        return () => {
+            if (timerRef.current) clearInterval(timerRef.current);
+        };
     }, []);
 
     return {
@@ -126,7 +157,7 @@ const useCommute = () => {
         goToWork,
         leaveWork,
         elapsedTime,
-        progress,          
+        progress,
         formatElapsed,
         handleClickGoToWork,
         handleClickLeaveWork
