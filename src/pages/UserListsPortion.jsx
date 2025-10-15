@@ -67,7 +67,7 @@ const UserListsPortion = () => {
 
     return (
         <main className={mainLayout}>
-            <div className={mainContentsTwo}>
+            <div className={`${mainContentsTwo} !pb-[40px] overflow-auto`}>
                 <h4 className={`${title2} text-left`}>직원 조회</h4>
 
                 {/* 검색 입력 + 버튼 */}

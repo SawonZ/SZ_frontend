@@ -14,8 +14,6 @@ const UserLists = () => {
     const { koreanPositionTitle } = usePositionTitle();
     const navigate = useNavigate();
 
-    console.log(users)
-
     // 검색 상태
     const [searchText, setSearchText] = useState("");    // 입력값
     const [searchQuery, setSearchQuery] = useState("");  // 실제 검색 적용
@@ -62,7 +60,7 @@ const UserLists = () => {
 
     return (
         <main className={mainLayout}>
-            <div className={mainContentsTwo}>
+            <div className={`${mainContentsTwo} !pb-[40px] overflow-auto`}>
                 <h4 className={`${title2} text-left`}>직원 조회</h4>
 
                 {/* 검색 인풋 */}

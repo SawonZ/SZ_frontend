@@ -10,6 +10,8 @@ const StaffView = () => {
     const {staffData, isLoading} = useStaffData();
     const {koreanPositionTitle} = usePositionTitle();
 
+    console.log(staffData)
+
     //연락처 형식 변환
     const formatPhoneNumber = (phone) => {
         if (!phone) return "";

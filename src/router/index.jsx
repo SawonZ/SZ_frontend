@@ -15,10 +15,10 @@ import CalendarView from "../pages/CalendarView";
 import UserView from "../pages/UserView";
 import StaffView from "../pages/StaffView";
 import AttendanceAdmin from "../pages/AttendanceAdmin";
-import Commute from "../pages/Commute";
-import CommuteIndividual from "../pages/CommuteIndividual";
+import MyAttendanceTable from "../pages/MyAttendanceTable";
 import Quitter from "../pages/Quitter";
 import Notice from "../pages/Notice";
+import AttendanceTable from "../pages/AttendanceTable";
 
 const router = createBrowserRouter([
     { 
@@ -49,8 +49,8 @@ const router = createBrowserRouter([
             { path: "user-view/:email", element: <UserView /> },
             { path: "staff-view/:email", element: <StaffView /> },
             { path: "attendance", element: <AttendanceAdmin /> },
-            { path: "commute-all", element: <Commute /> },
-            { path: "commute-individual", element: <CommuteIndividual /> },
+            { path: "commute-all", element: <AttendanceTable /> },
+            { path: "commute-individual", element: <MyAttendanceTable /> },
             { path: "quitter", element: <Quitter /> },
             { path: "notice", element: <Notice /> },
         ]

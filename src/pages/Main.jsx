@@ -1,6 +1,5 @@
 import React from 'react';
 import { mainContents, mainLayout } from '../shared/styles/commonTailwind';
-import Commute from './Commute';
 import CommuteBoard from '../features/components/CommuteBoard';
 import { boardGrid } from '../features/styles/boardTailwind';
 import StaffDirectoryBoard from '../features/components/StaffDirectoryBoard';
