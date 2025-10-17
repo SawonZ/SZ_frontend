@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from 'react';
 import { mainContentsTwo, mainLayout, title2 } from '../shared/styles/commonTailwind';
 import StaffUserView from '../features/components/StaffUserView';
 import usePositionTitle from '../features/hooks/usePositionTitle';
-import { staffGetFetch } from '../features/api/userApi';
 import LoadingUi from '../shared/components/LoadingUi';
 import useStaffData from '../features/hooks/useStaffData';
 
 const StaffView = () => {
     const {staffData, isLoading} = useStaffData();
     const {koreanPositionTitle} = usePositionTitle();
-
-    console.log(staffData)
-
+    
     //연락처 형식 변환
     const formatPhoneNumber = (phone) => {
         if (!phone) return "";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { mainContentsTwo, mainLayout, title2 } from '../shared/styles/commonTailwind';
 import { useUserInquiry } from '../store/useUserStore';
 import useLoading from '../features/hooks/useLoading';
@@ -20,16 +20,22 @@ const UserLists = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8;
 
-    // 사용자 목록 초기화
-    useEffect(() => {
-        userLists();        
-    }, [userLists]);
+    useEffect(() => { userLists(); }, [userLists]);
 
-    // 검색 적용 + 페이징
+    // ✅ 퇴사 후 7일 경과 여부 체크 헬퍼
+    const isWithin7Days = (dateStr) => {
+        if (!dateStr) return false;
+        const resignedMs = new Date(`${dateStr}T00:00:00`).getTime();
+        const expireMs = resignedMs + 7 * 24 * 60 * 60 * 1000; // +7일
+        return Date.now() < expireMs; // 아직 만료 전이면 true
+    };
+
+    // ✅ 승인 + (미퇴사 or 퇴사 7일 이내) + 검색
     const filteredUsers = useMemo(() => {
         return users
-            .filter(user => user.status === true) // 승인된 직원만
-            .filter(user => searchQuery ? user.userName.includes(searchQuery) : true);
+            .filter(user => user.status === true)
+            .filter(user => !user.resignedAt || isWithin7Days(user.resignedAt))
+            .filter(user => (searchQuery ? user.userName?.includes(searchQuery) : true));
     }, [users, searchQuery]);
 
     const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -38,23 +44,18 @@ const UserLists = () => {
         currentPage * itemsPerPage
     );
 
-    //연락처 형식 변환
     const formatPhoneNumber = (phone) => {
         if (!phone) return "";
-        const cleaned = phone.replace(/\D/g, ""); // 숫자만 추출
-
+        const cleaned = phone.replace(/\D/g, "");
         return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
     };
 
-    // 연봉 3자리마다 콤마 표시
     const formatSalaryNumber = (salary) => {
         if (salary == null) return "";
         const cleaned = String(salary).replace(/\D/g, "");
-
         return Number(cleaned).toLocaleString();
     };
     
-    // 로딩/에러 처리
     const pending = userListLoading(situation, error, users);
     if (pending) return pending;
 
@@ -63,15 +64,13 @@ const UserLists = () => {
             <div className={`${mainContentsTwo} !pb-[40px] overflow-auto`}>
                 <h4 className={`${title2} text-left`}>직원 조회</h4>
 
-                {/* 검색 인풋 */}
                 <DetailedSearchTable
                     searchText={searchText}
                     setSearchText={setSearchText}
                     setSearchQuery={setSearchQuery}
-                    setCurrentPage={setCurrentPage} // 검색 시 페이지 초기화
+                    setCurrentPage={setCurrentPage}
                 />
 
-                {/* 테이블 */}
                 <table className={tableStyle}>
                     <colgroup>
                         <col width={140} />
@@ -122,7 +121,6 @@ const UserLists = () => {
                     </tbody>
                 </table>
 
-                {/* 페이지네이션 */}
                 {totalPages > 1 && (
                     <div className="flex justify-center mt-4 gap-2">
                         <button

@@ -87,3 +87,17 @@ export const profileDelete = async () => {
         throw err;
     }
 };
+
+//퇴사처리
+export const retireOrReinstateUser = async (payload) => {
+    // 안전장치: resigned=true면 resignedAt 없으면 에러
+    if (payload?.resigned === true && !payload?.resignedAt) {
+        throw new Error("resigned=true면 resignedAt(YYYY-MM-DD)이 필요합니다.");
+    }
+
+    // 필요 시 withCredentials 유지
+    const { data } = await axios.patch("https://api.sawonz.world/admin/user/resign", payload, {
+        withCredentials: true,
+    });
+    return data; // 컨벤션에 맞게 data만 반환
+};

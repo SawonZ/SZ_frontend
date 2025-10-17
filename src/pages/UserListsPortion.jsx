@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { mainContentsTwo, mainLayout, title2 } from '../shared/styles/commonTailwind';
 import { useAuth, useUserInquiryPortion } from '../store/useUserStore';
 import useLoading from '../features/hooks/useLoading';
@@ -13,25 +13,30 @@ const UserListsPortion = () => {
     const { usersPortion = [], situation, error, userListsNotAdmin } = useUserInquiryPortion();
     const { userListLoading } = useLoading();
     const { koreanPositionTitle } = usePositionTitle();
-
     const navigate = useNavigate();
 
     // 검색 상태
-    const [searchText, setSearchText] = useState("");    // 입력값
-    const [searchQuery, setSearchQuery] = useState("");  // 실제 검색 적용
+    const [searchText, setSearchText] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8;
 
-    // 초기 데이터 가져오기
-    useEffect(() => {
-        userListsNotAdmin();
-    }, [userListsNotAdmin]);
+    useEffect(() => { userListsNotAdmin(); }, [userListsNotAdmin]);
 
-    // 검색 + 페이징
+    // ✅ 퇴사 후 7일 경과 여부 체크 헬퍼
+    const isWithin7Days = (dateStr) => {
+        if (!dateStr) return false;
+        const resignedMs = new Date(`${dateStr}T00:00:00`).getTime();
+        const expireMs = resignedMs + 7 * 24 * 60 * 60 * 1000;
+        return Date.now() < expireMs;
+    };
+
+    // ✅ 승인 + (미퇴사 or 7일 이내) + 검색
     const filteredUsers = useMemo(() => {
         return usersPortion
-            .filter(user => user.status === true) // 승인된 직원만
-            .filter(user => searchQuery ? user.userName.includes(searchQuery) : true);
+            .filter(user => user.status === true)
+            .filter(user => !user.resignedAt || isWithin7Days(user.resignedAt))
+            .filter(user => (searchQuery ? user.userName?.includes(searchQuery) : true));
     }, [usersPortion, searchQuery]);
 
     const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -40,28 +45,23 @@ const UserListsPortion = () => {
         return filteredUsers.slice(start, start + itemsPerPage);
     }, [filteredUsers, currentPage]);
 
-    // 검색 버튼 클릭
     const handleSearch = () => {
         setSearchQuery(searchText);
-        setCurrentPage(1); // 검색 후 페이지 초기화
+        setCurrentPage(1);
     };
 
-    // 초기화 버튼 클릭
     const handleReset = () => {
         setSearchText("");
         setSearchQuery("");
         setCurrentPage(1);
     };
 
-    //연락처 형식 변환
     const formatPhoneNumber = (phone) => {
         if (!phone) return "";
-        const cleaned = phone.replace(/\D/g, ""); // 숫자만 추출
-
+        const cleaned = phone.replace(/\D/g, "");
         return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
     };
 
-    // 로딩/에러 처리
     const pending = userListLoading(situation, error, usersPortion);
     if (pending) return pending;
 
@@ -70,17 +70,15 @@ const UserListsPortion = () => {
             <div className={`${mainContentsTwo} !pb-[40px] overflow-auto`}>
                 <h4 className={`${title2} text-left`}>직원 조회</h4>
 
-                {/* 검색 입력 + 버튼 */}
                 <DetailedSearchTable
                     searchText={searchText}
                     setSearchText={setSearchText}
-                    setSearchQuery={handleSearch} 
-                    filterStatus={undefined}    
+                    setSearchQuery={handleSearch}
+                    filterStatus={undefined}
                     setFilterStatus={() => {}}
                     onReset={handleReset}
                 />
 
-                {/* 테이블 */}
                 <table className={tableStyle}>
                     <colgroup>
                         <col width={203} />
@@ -102,7 +100,7 @@ const UserListsPortion = () => {
                             <tr 
                                 className={trStyle} key={user.email}
                                 onClick={() => {
-                                    if(userData.email === user.email) {
+                                    if (userData.email === user.email) {
                                         navigate(`/staff-view/${user.email}`);
                                     }
                                 }}
@@ -123,7 +121,6 @@ const UserListsPortion = () => {
                     </tbody>
                 </table>
 
-                {/* 페이지네이션 */}
                 {totalPages > 1 && (
                     <div className="flex justify-center mt-4 gap-2">
                         <button

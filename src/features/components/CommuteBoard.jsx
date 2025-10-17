@@ -10,6 +10,8 @@ import { useState } from 'react';
 const CommuteBoard = ({ arrow }) => {
     const [workModal, setWorkModal] = useState(false);
     const [workModalText, setWorkModalText] = useState('');
+    const [modalTime, setModalTime] = useState('');
+    const [modalKind, setModalKind] = useState('');
     const { user } = useAuth();
     const {
         workState,
@@ -76,8 +78,10 @@ const CommuteBoard = ({ arrow }) => {
                         className='w-[50%] h-[60px] rounded-[8px] text-[18px] text-[#fff]'
                         onClick={() => {
                             handleClickGoToWork();
-                            setWorkModal(true);
+                            setModalKind('go');
+                            setModalTime(goToWork);
                             setWorkModalText('출근 처리되었습니다.');
+                            setWorkModal(true);
                         }}
                     >
                         출근하기
@@ -87,8 +91,10 @@ const CommuteBoard = ({ arrow }) => {
                         className='w-[50%] h-[60px] rounded-[8px] text-[18px] text-[#fff]'
                         onClick={() => {
                             handleClickLeaveWork();
-                            setWorkModal(true);
+                            setModalKind('leave');
+                            setModalTime(leaveWork);
                             setWorkModalText('퇴근 처리되었습니다.');
+                            setWorkModal(true);
                         }}
                     >
                         퇴근하기
@@ -101,6 +107,8 @@ const CommuteBoard = ({ arrow }) => {
                     modalText={workModalText}
                     setWorkModalText={setWorkModalText}
                     setWorkModal={setWorkModal}
+                    modalTime={modalTime}
+                    modalKind={modalKind}
                 />
             }
         </div>

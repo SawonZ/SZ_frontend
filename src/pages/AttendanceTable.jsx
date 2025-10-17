@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { mainContentsTwo, mainLayout, title2 } from "../shared/styles/commonTailwind";
 import { tableStyle, thStyle, trStyle, tdStyleThree } from "../features/styles/tableTailwind";
 import { useUserInquiry } from "../store/useUserStore";
-import useLoading from "../features/hooks/useLoading";
+//import useLoading from "../features/hooks/useLoading";
 
 const AttendanceTable = () => {
     const { users, userLists } = useUserInquiry();
-    const { userListLoading } = useLoading();
+    //const { userListLoading } = useLoading();
 
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchName, setSearchName] = useState("");
@@ -258,22 +258,22 @@ const AttendanceTable = () => {
                 {/* 근태 테이블 */}
                 <table className={tableStyle}>
                     <colgroup>
-                        <col width={140} />
-                        <col width={140} />
-                        <col width={140} />
-                        <col width={440} />
-                        <col width={140} />
-                        <col width={440} />
-                        <col width={140} />
+                        <col width={240} />
+                        <col width={240} />
+                        <col width={240} />
+                        {/* <col width={440} /> */}
+                        <col width={240} />
+                        {/* <col width={440} /> */}
+                        <col width={240} />
                     </colgroup>
                     <tbody>
                         <tr className={trStyle}>
                             <th className={thStyle}>이름</th>
                             <th className={thStyle}>일자</th>
                             <th className={thStyle}>출근 시각</th>
-                            <th className={thStyle}>출근 등록 방식</th>
+                            {/* <th className={thStyle}>출근 등록 방식</th> */}
                             <th className={thStyle}>퇴근 시각</th>
-                            <th className={thStyle}>퇴근 등록 방식</th>
+                            {/* <th className={thStyle}>퇴근 등록 방식</th> */}
                             <th className={thStyle}>근태 구분</th>
                         </tr>
 
@@ -281,16 +281,16 @@ const AttendanceTable = () => {
                             user.attendanceList.map((att) => {
                                 const checkInTime = att.checkInAt ? att.checkInAt.slice(0, 5) : "-";
                                 const checkOutTime = att.checkOutAt ? att.checkOutAt.slice(0, 5) : "-";
-                                const state = checkInTime > "09:00" ? "지각" : "정상";
+                                //const state = checkInTime > "09:00" ? "지각" : "정상";
 
                                 return (
                                     <tr className={trStyle} key={att.attendanceId}>
                                         <td className={tdStyleThree}>{user.userName}</td>
                                         <td className={tdStyleThree}>{att.workDate}</td>
                                         <td className={tdStyleThree}>{checkInTime}</td>
-                                        <td className={tdStyleThree}>{att.checkInIp || "-"}</td>
+                                        {/* <td className={tdStyleThree}>{att.checkInIp || "-"}</td> */}
                                         <td className={tdStyleThree}>{checkOutTime}</td>
-                                        <td className={tdStyleThree}>{att.checkOutIp || "-"}</td>
+                                        {/* <td className={tdStyleThree}>{att.checkOutIp || "-"}</td> */}
                                         <td className={`${tdStyleThree} ${att.checkInAt && att.checkInAt.split(':')[0]*1 >= 9 ? 'text-[#FF4242]' : 'text-[#1F2937]'}`}>
                                             {att.checkInAt && att.checkInAt.split(':')[0]*1 >= 9 ? '지각' : '정상'}
                                         </td>

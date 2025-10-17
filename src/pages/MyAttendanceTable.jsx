@@ -195,22 +195,22 @@ const MyAttendanceTable = () => {
                 {/* 출퇴근 테이블 */}
                 <table className={tableStyle}>
                     <colgroup>
-                        <col width={140} />
-                        <col width={140} />
-                        <col width={140} />
-                        <col width={440} />
-                        <col width={140} />
-                        <col width={440} />
-                        <col width={140} />
+                        <col width={240} />
+                        <col width={240} />
+                        <col width={240} />
+                        {/* <col width={440} /> */}
+                        <col width={240} />
+                        {/* <col width={440} /> */}
+                        <col width={240} />
                     </colgroup>
                     <tbody>
                         <tr className={trStyle}>
                             <th className={thStyle}>이름</th>
                             <th className={thStyle}>일자</th>
                             <th className={thStyle}>출근 시각</th>
-                            <th className={thStyle}>출근 등록 방식</th>
+                            {/* <th className={thStyle}>출근 등록 방식</th> */}
                             <th className={thStyle}>퇴근 시각</th>
-                            <th className={thStyle}>퇴근 등록 방식</th>
+                            {/* <th className={thStyle}>퇴근 등록 방식</th> */}
                             <th className={thStyle}>근태 구분</th>
                         </tr>
                         {filteredAttendance.map(att => (
@@ -218,9 +218,9 @@ const MyAttendanceTable = () => {
                                 <td className={tdStyleThree}>{staffData.userName}</td>
                                 <td className={tdStyleThree}>{att.workDate}</td>
                                 <td className={tdStyleThree}>{formatTime(att.checkInAt)}</td>
-                                <td className={tdStyleThree}>{att.checkInIp || "-"}</td>
+                               {/*  <td className={tdStyleThree}>{att.checkInIp || "-"}</td> */}
                                 <td className={tdStyleThree}>{formatTime(att.checkOutAt)}</td>
-                                <td className={tdStyleThree}>{att.checkOutIp || "-"}</td>
+                               {/*  <td className={tdStyleThree}>{att.checkOutIp || "-"}</td> */}
                                 <td className={`${tdStyleThree} ${att.checkInAt && att.checkInAt.split(':')[0]*1 >= 9 ? 'text-[#FF4242]' : 'text-[#1F2937]'}`}>
                                     {att.checkInAt && att.checkInAt.split(':')[0]*1 >= 9 ? '지각' : '정상'}
                                 </td>
