@@ -57,7 +57,7 @@ const NoticeDetail = () => {
                     <p>{notice.content}</p>
                 </div>
 
-                {user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER" && (
+                {(user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER") && (
                     <div className='flex gap-[8px] mt-[40px]'>
                         <button
                             className="w-[100px] h-[40px] rounded-[8px] text-[16px] text-[#fff] bg-[#62CCD0]"

@@ -56,8 +56,8 @@ const Notice = () => {
                     )}
                 </ul>
 
-                {user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER" && (
-                    <button 
+                {(user?.role === "ROLE_ADMIN" || user?.role === "ROLE_MANAGER") && (
+                    <button
                         className="w-[200px] h-[60px] rounded-[8px] text-[18px] text-[#fff] bg-[#62CCD0] ml-auto mr-auto block"
                         onClick={() => navigate('/notice-write')}
                     >
