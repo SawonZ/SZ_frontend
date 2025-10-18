@@ -26,8 +26,9 @@ const CommuteBoard = ({ arrow }) => {
     } = useCommute();
 
     const timeToSeconds = (timeStr) => {
+        if (!timeStr) return 0; // undefined나 빈 문자열일 경우 0으로 처리
         const [h, m, s] = timeStr.split(':').map(Number);
-        return h * 3600 + m * 60 + s;
+        return (h || 0) * 3600 + (m || 0) * 60 + (s || 0);
     };
 
     return (
@@ -56,9 +57,13 @@ const CommuteBoard = ({ arrow }) => {
                 <div className='mb-[10px]'>
                     <div className='flex items-end justify-between mb-[12px]'>
                         <p 
-                            className={timeToSeconds(goToWork.slice(0,5)) > timeToSeconds('09:00') ? 'text-[#FF4242]' : 'text-[#9CA3AF]'}
-                        >
-                            {goToWork.slice(0,5)}
+                            className={
+                                goToWork && timeToSeconds(goToWork.slice(0,5)) > timeToSeconds('09:00')
+                                ? 'text-[#FF4242]'
+                                : 'text-[#9CA3AF]'
+                            }
+                            >
+                            {goToWork ? goToWork.slice(0,5) : '--:--'}
                         </p>
                         <p className='text-[#1F2937] text-[28px] font-[600]'>{formatElapsed(elapsedTime)}</p>
                         <p className='text-[#9CA3AF]'>{!leaveState ? "18:00" : leaveWork.slice(0,5)}</p>

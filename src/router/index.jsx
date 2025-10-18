@@ -19,6 +19,9 @@ import MyAttendanceTable from "../pages/MyAttendanceTable";
 import Quitter from "../pages/Quitter";
 import Notice from "../pages/Notice";
 import AttendanceTable from "../pages/AttendanceTable";
+import NoticeWrite from "../pages/NoticeWrite";
+import NoticeDetail from "../pages/NoticeDetail";
+import NoticeEdit from "../pages/NoticeEdit";
 
 const router = createBrowserRouter([
     { 
@@ -53,6 +56,9 @@ const router = createBrowserRouter([
             { path: "commute-individual", element: <MyAttendanceTable /> },
             { path: "quitter", element: <Quitter /> },
             { path: "notice", element: <Notice /> },
+            { path: "notice-write", element: <NoticeWrite /> },
+            { path: "notice-detail/:noticeId", element: <NoticeDetail /> },
+            { path: "notice-edit/:noticeId", element: <NoticeEdit /> },
         ]
     }
 ]);

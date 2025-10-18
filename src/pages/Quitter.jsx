@@ -75,56 +75,56 @@ const Quitter = () => {
 
             {/* 테이블 */}
             <table className={tableStyle}>
-            <colgroup>
-                <col width={140} />
-                <col width={140} />
-                <col width={140} />
-                <col width={203} />
-                <col width={203} />
-                <col width={203} />
-                <col width={203} />
-                <col width={203} />
-                <col width={203} />
-            </colgroup>
-            <tbody>
-                <tr className={trStyle}>
-                <th className={thStyle}>프로필</th>
-                <th className={thStyle}>이름</th>
-                <th className={thStyle}>직급</th>
-                <th className={thStyle}>이메일</th>
-                <th className={thStyle}>연락처</th>
-                <th className={thStyle}>주소</th>
-                <th className={thStyle}>입사일</th>
-                {/* ✅ 잔여 연차 대신 퇴사일 표시 */}
-                <th className={thStyle}>연봉</th>
-                <th className={thStyle}>퇴사일</th>
-                </tr>
+                <colgroup>
+                    {/* <col width={140} />
+                    <col width={140} />
+                    <col width={140} /> */}
+                    <col width={203} />
+                    <col width={203} />
+                    <col width={203} />
+                    <col width={203} />
+                    <col width={203} />
+                    <col width={203} />
+                </colgroup>
+                <tbody>
+                    <tr className={trStyle}>
+                       {/*  <th className={thStyle}>프로필</th> */}
+                        <th className={thStyle}>이름</th>
+                        <th className={thStyle}>직급</th>
+                        <th className={thStyle}>이메일</th>
+                        <th className={thStyle}>연락처</th>
+                        {/* <th className={thStyle}>주소</th> */}
+                        <th className={thStyle}>입사일</th>
+                        {/* ✅ 잔여 연차 대신 퇴사일 표시 */}
+                        {/* <th className={thStyle}>연봉</th> */}
+                        <th className={thStyle}>퇴사일</th>
+                    </tr>
 
-                {paginatedUsers.map(user => (
-                <tr
-                    className={trStyle}
-                    key={user.email}
-                    onClick={() => navigate(`/user-view/${user.email}`)}
-                >
-                    <td className={tdStyleThree}>
-                    <img
-                        className="w-[100px] h-[100px] rounded-[50%]"
-                        src={user.imgUrl === null ? profileIco3 : user.imgUrl}
-                        alt="직원 프로필"
-                    />
-                    </td>
-                    <td className={tdStyleThree}>{user?.userName}</td>
-                    <td className={tdStyleThree}>{koreanPositionTitle(user?.positionTitle)}</td>
-                    <td className={tdStyleThree}>{user?.email}</td>
-                    <td className={tdStyleThree}>{formatPhoneNumber(user?.phone)}</td>
-                    <td className={tdStyleThree}>{user?.address}</td>
-                    <td className={tdStyleThree}>{user?.hiredAt}</td>
-                    <td className={tdStyleThree}>{formatSalaryNumber(user?.salary)}원</td>
-                    {/* ✅ 퇴사일 컬럼 */}
-                    <td className={tdStyleThree}>{user?.resignedAt}</td>
-                </tr>
-                ))}
-            </tbody>
+                    {paginatedUsers.map(user => (
+                    <tr
+                        className={trStyle}
+                        key={user.email}
+                        onClick={() => navigate(`/user-view/${user.email}`)}
+                    >
+                        {/* <td className={tdStyleThree}>
+                            <img
+                                className="w-[100px] h-[100px] rounded-[50%]"
+                                src={user.imgUrl === null ? profileIco3 : user.imgUrl}
+                                alt="직원 프로필"
+                            />
+                        </td> */}
+                        <td className={tdStyleThree}>{user?.userName}</td>
+                        <td className={tdStyleThree}>{koreanPositionTitle(user?.positionTitle)}</td>
+                        <td className={tdStyleThree}>{user?.email}</td>
+                        <td className={tdStyleThree}>{formatPhoneNumber(user?.phone)}</td>
+                        {/* <td className={tdStyleThree}>{user?.address}</td> */}
+                        <td className={tdStyleThree}>{user?.hiredAt}</td>
+                       {/*  <td className={tdStyleThree}>{formatSalaryNumber(user?.salary)}원</td> */}
+                        {/* ✅ 퇴사일 컬럼 */}
+                        <td className={tdStyleThree}>{user?.resignedAt}</td>
+                    </tr>
+                    ))}
+                </tbody>
             </table>
 
             {/* 페이지네이션 */}

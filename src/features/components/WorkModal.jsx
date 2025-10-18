@@ -8,9 +8,9 @@ const WorkModal = ({ modalText, setWorkModalText, setWorkModal, modalTime, modal
                 <img src={workCheck} alt="체크표시" className='mb-[12px]' />
 
                 {/* ✅ 시간 표시 (초 단위 포함) */}
-                <p className='text-[28px] font-[600] text-[#1F2937] leading-[1.5]'>
+                {/* <p className='text-[28px] font-[600] text-[#1F2937] leading-[1.5]'>
                     {modalKind === 'go' ? '출근 시간' : '퇴근 시간'} : {modalTime || '--:--:--'}
-                </p>
+                </p> */}
 
                 <p className='text-[#1f2937] leading-[1.5] mb-[40px]'>
                     {modalText}

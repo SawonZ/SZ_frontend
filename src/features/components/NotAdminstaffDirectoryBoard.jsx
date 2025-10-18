@@ -12,8 +12,6 @@ const NotAdminstaffDirectoryBoard = ({ arrow }) => {
     const { userListLoading } = useLoading();
     const { koreanPositionTitle } = usePositionTitle();
 
-    console.log(usersPortion)
-
     const [searchList, setSearchList] = useState('');
     const [debounced, setDebounced] = useState('');
 
