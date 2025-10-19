@@ -13,12 +13,15 @@ const ScheduleViewBoard = () => {
         const fetchSchedules = async () => {
             try {
                 const res = await fetchGetSchedule();
-                if(res.data.responseCode !== "SUCCESS") {
+                if (res.data.responseCode !== "SUCCESS") {
                     console.log('연차 내역 조회 오류');
                     return;
                 }
-                setScheduleHistoryState(res.data.data);
-            } catch(err) {
+
+                // ✅ calendarId 기준 내림차순 정렬 (최신순)
+                const sortedData = res.data.data.sort((a, b) => b.calendarId - a.calendarId);
+                setScheduleHistoryState(sortedData);
+            } catch (err) {
                 console.error('연차 내역 조회 실패:', err.response?.data?.message || err);
             }
         };
@@ -36,7 +39,7 @@ const ScheduleViewBoard = () => {
     };
 
     const getCalendarTypeText = (type) => {
-        switch(type) {
+        switch (type) {
             case 'pm_rest': return '오후 반차';
             case 'am_rest': return '오전 반차';
             case 'full_rest': return '연차';
@@ -47,7 +50,7 @@ const ScheduleViewBoard = () => {
     };
 
     const getCalendarTypeTime = (type) => {
-        switch(type) {
+        switch (type) {
             case 'pm_rest': return '0.5일';
             case 'am_rest': return '0.5일';
             case 'full_rest': return '1일';
@@ -56,7 +59,7 @@ const ScheduleViewBoard = () => {
     };
 
     const getCalendarTypeRealTime = (type) => {
-        switch(type) {
+        switch (type) {
             case 'pm_rest': return '근무시간 09:00~13:00';
             case 'am_rest': return '근무시간 13:00~18:00';
             default: return null;
@@ -75,7 +78,7 @@ const ScheduleViewBoard = () => {
                         <li 
                             key={his.calendarId} 
                             className='pb-[12px] border-b border-[#E6E8EB] mb-[12px] last:mb-0 cursor-pointer'
-                            onClick={() => { if(his.status === null) openEditPopup(his); }}
+                            onClick={() => { if (his.status === null) openEditPopup(his); }}
                         >
                             <div className='flex items-center justify-between mb-2'>
                                 <p className='text-[14px] text-[#1F2937]'>{formatDate(his.date)}</p>
@@ -88,20 +91,20 @@ const ScheduleViewBoard = () => {
                                 <p className='text-[12px] text-[#4B5563]'>{getCalendarTypeText(his.calendarType)}</p>
                                 {
                                     his.calendarType !== 'outside_work' && his.calendarType !== 'worktime_update' ?
-                                    <p 
-                                        className='text-[12px] text-[#4B5563] pl-[10px] relative before:absolute before:content-[""] before:top-[50%] before:left-[0] before:translate-y-[-50%] before:w-[4px] before:h-[4px] before:bg-[#9CA3AF] before:rounded-[50%]'
-                                    >
-                                        {getCalendarTypeTime(his.calendarType)}
-                                    </p> : 
-                                    <p 
-                                        className='text-[12px] text-[#4B5563] pl-[10px] relative before:absolute before:content-[none] before:top-[50%] before:left-[0] before:translate-y-[-50%] before:w-[4px] before:h-[4px] before:bg-[#9CA3AF] before:rounded-[50%]'
-                                    >
-                                        {getCalendarTypeTime(his.calendarType)}
-                                    </p> 
+                                        <p
+                                            className='text-[12px] text-[#4B5563] pl-[10px] relative before:absolute before:content-[""] before:top-[50%] before:left-[0] before:translate-y-[-50%] before:w-[4px] before:h-[4px] before:bg-[#9CA3AF] before:rounded-[50%]'
+                                        >
+                                            {getCalendarTypeTime(his.calendarType)}
+                                        </p> :
+                                        <p
+                                            className='text-[12px] text-[#4B5563] pl-[10px] relative before:absolute before:content-[none] before:top-[50%] before:left-[0] before:translate-y-[-50%] before:w-[4px] before:h-[4px] before:bg-[#9CA3AF] before:rounded-[50%]'
+                                        >
+                                            {getCalendarTypeTime(his.calendarType)}
+                                        </p>
                                 }
                                 {
-                                    his.calendarType === 'outside_work' || his.calendarType === 'worktime_update' && 
-                                    <p 
+                                    (his.calendarType === 'outside_work' || his.calendarType === 'worktime_update') &&
+                                    <p
                                         className='text-[12px] text-[#4B5563] pl-[10px] relative before:absolute before:content-[none] before:top-[50%] before:left-[0] before:translate-y-[-50%] before:w-[4px] before:h-[4px] before:bg-[#9CA3AF] before:rounded-[50%]'
                                     >
                                         {getCalendarTypeRealTime(his.calendarType)}
@@ -114,8 +117,8 @@ const ScheduleViewBoard = () => {
             </div>
 
             {editPopupOpen && selectedSchedule && (
-                <ScheduleCorrectionPopup 
-                    closePopup={closeEditPopup} 
+                <ScheduleCorrectionPopup
+                    closePopup={closeEditPopup}
                     initialData={selectedSchedule}
                 />
             )}
