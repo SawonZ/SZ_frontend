@@ -81,7 +81,7 @@ const StaffCorrectionModal = ({ params, closePopup }) => {
     };
 
     return (
-        <div className='fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.5)] z-99'>
+        <div className='fixed top-[0] left-[0] w-full h-full bg-[rgba(0,0,0,0.5)] z-99'>
             <div className={annuleLeave}>
                 <div className='flex items-center justify-between mb-[24px]'>
                     <p className='font-[600]'>내 정보 수정</p>
