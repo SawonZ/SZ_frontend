@@ -100,6 +100,7 @@ const Login = () => {
                 />
                 <CommonButton 
                     text='로그인'
+                    onClick={loginSubmit}
                 />
                 <div className='flex items-center gap-[6px] mt-[24px]'>
                     <input 

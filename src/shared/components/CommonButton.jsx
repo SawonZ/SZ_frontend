@@ -4,6 +4,7 @@ import { commonButton } from '../styles/commonTailwind';
 const CommonButton = ({ text, onClick }) => {
     return (
         <button 
+            type="submit"
             className={commonButton}
             onClick={onClick}
         >
