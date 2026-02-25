@@ -1,16 +1,19 @@
 import axios from "axios";
-//이메일 인증번호 발송
+
+const api = import.meta.env.VITE_PUBLIC_API;
+
+// 이메일 인증번호 발송
 export const postEmail = async ({ email }) => {
-  const res = await axios.post("https://api.sawonz.world/email/send-code", {
+  const res = await axios.post(`${api}/email/send-code`, {
     email,
   });
 
   return res;
 };
 
-//인증번호 확인
+// 인증번호 확인
 export const citationCheck = async ({ email, verificationCode }) => {
-  const res = await axios.post("https://api.sawonz.world/email/check-code", {
+  const res = await axios.post(`${api}/email/check-code`, {
     email,
     verificationCode,
   });
@@ -18,9 +21,9 @@ export const citationCheck = async ({ email, verificationCode }) => {
   return res;
 };
 
-//회원가입
+// 회원가입
 export const fetchSignUp = async ({ userName, phone, email, password }) => {
-  const res = await axios.post("https://api.sawonz.world/users/signup", {
+  const res = await axios.post(`${api}/users/signup`, {
     userName,
     phone,
     email,
@@ -30,22 +33,24 @@ export const fetchSignUp = async ({ userName, phone, email, password }) => {
   return res;
 };
 
-//신규직원 승인
+// 신규직원 승인
 export const fetchApproval = async ({ email, status }) => {
-  const res = await axios.patch("https://api.sawonz.world/admin/user/status", 
-  {
-    email,
-    status
-  }, 
-  {withCredentials: true}
-);
+  const res = await axios.patch(
+    `${api}/admin/user/status`,
+    {
+      email,
+      status,
+    },
+    { withCredentials: true }
+  );
 
   return res;
 };
 
-//로그인
+// 로그인
 export const fetchLogin = async ({ email, password }) => {
-  const res = await axios.post("https://api.sawonz.world/auth/login",
+  const res = await axios.post(
+    `${api}/auth/login`,
     {
       email,
       password,
@@ -56,22 +61,23 @@ export const fetchLogin = async ({ email, password }) => {
   return res;
 };
 
-//로그아웃
+// 로그아웃
 export const fetchLogout = async () => {
   const res = await axios.post(
-    "https://api.sawonz.world/auth/logout",
+    `${api}/auth/logout`,
     {},
-    {withCredentials: true}
+    { withCredentials: true }
   );
 
   return res;
-}
+};
 
-//리프레쉬 토큰
+// 리프레쉬 토큰
 export const refreshToken = async () => {
-  const res = await axios.post('https://api.sawonz.world/auth/refresh',
+  const res = await axios.post(
+    `${api}/auth/refresh`,
     {},
-    {withCredentials: true}
+    { withCredentials: true }
   );
 
   return res;
