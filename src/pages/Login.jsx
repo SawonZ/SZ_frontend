@@ -28,6 +28,7 @@ const Login = () => {
     }, []);
 
     const loginSubmit = async (e) => {
+        console.log("로그인 서브밋 호출 테스트");
         e.preventDefault();
 
         if(!regularExpression.emailRegex.test(loginState.email.trim())) {
